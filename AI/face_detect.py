@@ -4,7 +4,7 @@ print(mtcnn.__version__)
 
 #load one image
 import matplotlib.pyplot as plt
-filename = "Dataset/Nordin/WIN_20220912_10_14_40_Pro (3).jpg"
+filename = "Dataset/kåhre"
 pixels = plt.imread(filename)
 print("Shape of image/array:",pixels.shape)
 imgplot = plt.imshow(pixels)
