@@ -42,14 +42,18 @@ def cropped_img(image,labels):
     return None
 
 ## save images to new folder.
+## because we return None, we need to skip that when adding to new data. 
 def save_images(data):
   i = 0 ## counter
-  for image, label in data:
-    dir = (f'/DatasetCrop/{label}')
-    os.chdir(dir)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    cv2.imwrite(f'img{i}_{label}.jpg',image)
-    i += 1
+  for item in data:
+    if item is not None:
+      dir = (f'/content/images/{item[1]}')
+      os.chdir(dir)
+      image = cv2.cvtColor(item[0], cv2.COLOR_BGR2RGB)
+      cv2.imwrite(f'img{i}_{item[1]}.jpg',item[0])
+      i += 1
+    else:
+      pass
   
 
 ## calls 
