@@ -25,8 +25,8 @@ def find_face_MTCNN(frame,result_list):
                       5)
 
         #uncommet code below to blur face
-        detectedFace = cv2.GaussianBlur(roi, ksize, 0)
-        frame[y:y + h, x:x + w] = detectedFace
+        #detectedFace = cv2.GaussianBlur(roi, ksize, 0)
+        #frame[y:y + h, x:x + w] = detectedFace
     return frame
 
 print("Streaming started")
