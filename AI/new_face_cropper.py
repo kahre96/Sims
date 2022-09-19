@@ -3,6 +3,7 @@ import mtcnn
 import numpy  as np
 import cv2
 import matplotlib.pyplot as plt
+from PIL import Image
 
 
 ## get images and labels from a directory.
@@ -23,12 +24,22 @@ def path_process(dir):
 face_detector = mtcnn.MTCNN()
 
 ## crop images
-def cropped_img(image, labels):
-    img = cv2.imread(image)
-    faces = face_detector.detect_faces(img)
+def cropped_img(image,labels):
+  # using plt instead
+  img = plt.imread(image)
+  faces = face_detector.detect_faces(img)
+  ## this checks if the len of faces is > 0 and then make the calculation of where the face is. Returns the array of face and label.
+  if len(faces) != 0:
     x, y, width, height, = faces[0]['box']
     cropped_img = img[y:y+height,x:x+width]
-    return cropped_img,labels
+    image = Image.fromarray(cropped_img)
+    ## We could add a size argument to the function instead. 
+    image = image.resize(size = (200,200))
+    face_array = np.asarray(image)
+    return face_array,labels
+  ## if the len of faces is 0. The MTCNN has not detected a face and therefore we return None. 
+  else:
+    return None
 
 ## save images to new folder.
 def save_images(data):
