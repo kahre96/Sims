@@ -1,7 +1,6 @@
 import os
 import mtcnn
 import numpy  as np
-import cv2
 import matplotlib.pyplot as plt
 from PIL import Image
 
@@ -13,14 +12,13 @@ def path_process(dir):
   for label in os.listdir(dir):
     for image in os.listdir(os.path.join(dir,label)):
       path = os.path.join(dir,label,image)
-      label = path.split('/')[-2]
+      label = path.split('\\')[-2]
       images.append(path)
       labels.append(label)
   return images, labels
 
 
 ## Call model
-
 face_detector = mtcnn.MTCNN()
 
 ## crop images
@@ -41,23 +39,28 @@ def cropped_img(image,labels):
   else:
     return None
 
+
+
+
 ## save images to new folder.
 ## because we return None, we need to skip that when adding to new data. 
-def save_images(data):
-  i = 0 ## counter
-  for item in data:
-    if item is not None:
-      dir = (f'/content/images/{item[1]}')
-      os.chdir(dir)
-      image = cv2.cvtColor(item[0], cv2.COLOR_BGR2RGB)
-      cv2.imwrite(f'img{i}_{item[1]}.jpg',item[0])
-      i += 1
-    else:
-      pass
+def save_images(data,directory):
+   i = 0 ## counter
+   for item in data:
+      if item is not None:
+        dir = (f'{directory}\{item[1]}')
+        os.chdir(dir)
+
+        plt.imsave(f'img{i}_{item[1]}.jpg',item[0])
+        i += 1
+      else:
+        pass
   
 
 ## calls 
 
-images, labels = path_process('/Dataset/')
+images, labels = path_process('Dataset')  # chose directory to get images
+directory = "D:\dokument\skolskit\SIMS\Code\Sims\AI\content\images" # chose directory to save images
 cropped = list(map(cropped_img, images, labels))
-save_images(cropped)
+save_images(cropped, directory)
+
