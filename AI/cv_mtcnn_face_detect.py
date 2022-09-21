@@ -1,6 +1,8 @@
 import cv2  # OpenCV
 from mtcnn import MTCNN
+import tensorflow as tf
 
+tf.config.set_visible_devices([], 'GPU')
 
 detector = MTCNN()
 

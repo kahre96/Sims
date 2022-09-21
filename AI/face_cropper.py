@@ -7,7 +7,7 @@ print(mtcnn.__version__)
 
 #load one image
 import matplotlib.pyplot as plt
-filename = "Dataset/kåhre/WIN_20220912_10_11_38_Pro.jpg"
+filename = "dog.jpg"
 img = plt.imread(filename)
 #print("Shape of image/array:",pixels.shape)
 #imgplot = plt.imshow(pixels)
@@ -49,16 +49,16 @@ def draw_facebox(filename, result_list):
         plt.show()
         #ax.add_patch(crosshair)
         #ax.add_patch(ch)
-        print("x:  ",x);
-        print("x2: ",x+width);
-        print("y:  ",y);
-        print("y2: ",y+height);
-        cropped_img = img[y:y+height,x:x+width];
+        #print("x:  ",x);
+        #print("x2: ",x+width);
+        #print("y:  ",y);
+        #print("y2: ",y+height);
+        #cropped_img = img[y:y+height,x:x+width];
 
-        cv2.imwrite("test.jpg", cropped_img);
-        img2 = cv2.imread("test.jpg");
-        img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
-        cv2.imwrite("test.jpg", img2);
+        #cv2.imwrite("test.jpg", cropped_img);
+        #img2 = cv2.imread("test.jpg");
+        #img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
+        #cv2.imwrite("test.jpg", img2);
 
 
 
