@@ -9,14 +9,12 @@ import os
 import numpy as np
 
 ## augmentation pipeline. All Changes have a probability of 0.2 (p = 0.2)
+## augmentation pipeline. All Changes have a probability of 0.2 (p = 0.2)
 transformer = alb.Compose([
-    alb.RandomBrightnessContrast(brightness_limit=(-0.3, 0.7), contrast_limit=(-0.3, 0.7), p=0.2), ## brightness and contrast in range (-0.3 and 0.7)
-    alb.HorizontalFlip(p=0.2), ## flip picture vertical
-    alb.geometric.rotate.Rotate(limit = [-10,10], p = 0.2), ## Rotate 10 degrees left or right
-    alb.RandomCrop(height = 50, width = 200, p =0.2), # random crop of face 
-    alb.RandomGamma(p=0.2),
-    alb.RGBShift(p=0.2), # shifts the RBG
-
+    alb.RandomBrightnessContrast(brightness_limit=(-0.4,0.4), contrast_limit=(-0.4,0.4), p=0.25), ## brightness and contrast in range (-0.3 and 0.7)
+    alb.HorizontalFlip(p=0.25), ## flip picture vertical
+    alb.geometric.rotate.Rotate(limit = [-5,5], p = 0.25), ## Rotate 10 degrees left or right 
+    alb.RandomGamma(p=0.25)
 ])
 
 def image_auger(directory, number_of_augpics):
