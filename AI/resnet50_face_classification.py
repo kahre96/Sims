@@ -2,6 +2,8 @@ import tensorflow as tf
 
 tf.config.set_visible_devices([], 'GPU')
 
+normalization_layer = tf.keras.layers.Rescaling(1./255)
+
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
     "content/images",
     validation_split=0.2,
@@ -23,6 +25,10 @@ val_ds = tf.keras.preprocessing.image_dataset_from_directory(
 
 
 )
+
+
+train_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
+val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
 
 img_height, img_width = 200, 200  # size of images
 num_classes = 4
