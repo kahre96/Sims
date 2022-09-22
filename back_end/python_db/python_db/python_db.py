@@ -1,5 +1,8 @@
 import pymysql
 
+XP_PER_LEVEL = 50
+DICT_WITH_QUERIES = {}
+
 def main():
     connection = pymysql.connect(host="localhost",
                              user="root",
@@ -16,10 +19,16 @@ def main():
         sql   = "SELECT {} FROM {};".format(query, table)
         #addUser(connection, table)
         #getInfo(connection)
-        getAllDataFromUser(connection, "peter", "stegeby")
+        #getAllDataFromUser(connection, "peter", "stegeby")
         cursor.execute(sql)
         result  = cursor.fetchall()
-        printInfo("All the users in this database:", result)
+        #writeOwnQuery(connection)
+        DICT_WITH_QUERIES = dictWithXMostQueries(connection, 2)
+        print(DICT_WITH_QUERIES)
+        #for tuple in result:
+            #getAllDataFromUser(connection, tuple[1], tuple[2])
+            #print()
+        #printInfo("All the users in this database:", result)
    
 
     except pymysql.Error as e:
@@ -29,7 +38,7 @@ def main():
         connection.close()
         print("\nMySQL connection is closed")
 
-
+# I will need to ask knowit how their EmpId is formatted to know if I should use string or int.
 def addUser(connection, table):
     with connection.cursor() as cursor:
         print("\nAdding a new user to the database:")
@@ -55,14 +64,37 @@ def getInfo(connection):
         rows = cursor.fetchall()
         printInfo("A Decription of the table:", rows)
 
+def writeOwnQuery(connection):
+    with connection.cursor() as cursor:
+        query = input("What do you want to search for? >")
+        cursor.execute(query)
+        result = cursor.fetchall()
+        print(result)
+        for tuple in result:
+            getAllDataFromUser(connection, tuple[1], tuple[2])
+            print()
 
 def getAllDataFromUser(connection, fname, lname):
     with connection.cursor() as cursor:
-        sql = "SELECT * FROM Employee WHERE fname=%s AND lname=%s"
-        cursor.execute(sql, (fname, lname))
+        id = "SELECT empID FROM Employee WHERE fname=%s AND lname=%s"
+        cursor.execute(id, (fname, lname))
         result = cursor.fetchone()
         #Will want to have a specific print function for this!
-        printRowFormatted(result)
+        result = str(result)
+        #Format the id from (digit, ) to digit
+        for character in ')(,':
+            result = result.replace(character, '')
+        sql = "SELECT * FROM Employee AS emp, Player AS pl WHERE emp.empID=%s AND pl.empID=%s"
+        cursor.execute(sql, (result, result))
+        result = cursor.fetchone()
+        temp = list(result)
+        #Storing values of temp to named variables to increase readability
+        empID, fName, lName, playerID, xp = str(temp[0]), temp[1].capitalize(), temp[2].capitalize(), str(temp[3]), temp[5]
+        level = xp // XP_PER_LEVEL
+        #To decide how much xp is needed take the xp for a level minus the rest of dividing xp with xp_per_level
+        xp_till_next_level = XP_PER_LEVEL - (xp % XP_PER_LEVEL)
+        result = [empID, playerID, fName, lName, str(xp), str(level), str(xp_till_next_level)]
+        printUserFromList(result)
 
 def printInfo(str, arr):
     rowpadder = "*"
@@ -82,5 +114,42 @@ def printRowFormatted(tup):
     padding = 8-len(fname)
     lname = arr[2].capitalize()
     print("{}: {}{} {}".format(userId,fname,(space*padding),lname))
+
+def printUserFromList(list):
+    space = " "
+    title_list = ["EmpID", "PlayerID", "Firstname", "Lastname", "Experience", "Level", "Next Level"]
+    length = len(list[2]) if len(list[2]) > len(list[3]) else len(list[3])
+    length = 10 if length < 10 else length
+    padding = space * 3
+    padding2 = space*length
+    str = f'{title_list[0]}{padding}{title_list[1]}{padding}{title_list[2]}{padding}{title_list[3]}{padding}{title_list[4]}{padding}{title_list[5]}{padding}{title_list[6]}'
+    print(str)
+    result = ""
+    for i in range(len(list)):
+        if (i < len(list)):
+            padding2 = space*(len(title_list[i]) + 3 - len(list[i]))
+            if i == len(list)-1:
+                result += f'{list[i]}'
+            else:
+                result += f'{list[i]}{padding2}'
+    
+    print(result)
+
+def dictWithXMostQueries(connection, x):
+    with connection.cursor() as cursor:
+        temp_dict = {}
+
+        sql = "SELECT * FROM query ORDER BY times_used DESC"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        index = 0
+        for tuple in result:
+            temp_dict[tuple[0]] = tuple[1]
+            index+=1
+            if index == x:
+                break
+
+        return temp_dict
+    
 
 main()
