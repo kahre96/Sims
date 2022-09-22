@@ -26,7 +26,6 @@ val_ds = tf.keras.preprocessing.image_dataset_from_directory(
 
 )
 
-
 train_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
 val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
 
