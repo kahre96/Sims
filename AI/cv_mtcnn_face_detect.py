@@ -1,8 +1,10 @@
 import cv2  # OpenCV
-from mtcnn import MTCNN
+import numpy
+from facenet_pytorch import MTCNN
+from PIL import ImageDraw, Image
 import tensorflow as tf
 
-tf.config.set_visible_devices([], 'GPU')
+#tf.config.set_visible_devices([], 'GPU')
 
 detector = MTCNN()
 
@@ -17,14 +19,39 @@ else:
     print("Access to the camera was successfully obtained")
 
 
-def find_face_MTCNN(frame,result_list):
-    for result in result_list:
-        x, y, w, h = result['box']
-        roi = frame[y:y + h, x:x + w]
+def find_face_MTCNN(frame):
+
+    #MTCNN detecting faces
+    faces, probabilities = detector.detect(frame)
+
+    #draw = ImageDraw.Draw(frame)
+    print(faces)
+
+    ## grab face and loop though face instead of faces!!!!!!!!!!
+    for face in faces:
+        print(face)
+
+        #if(type(face) != numpy.ndarray):
+        #    break
+
+        #print(type(face))
+        faceList = face.tolist()
+
+
+
+
+        x, y, x2, y2 = faceList
+
+        #print(int(x))
+
+
+
         cv2.rectangle(frame,
-                      (x, y), (x + w, y + h),
+                      (int(x), int(y)), (int(x2), int(y2)),
                       (255, 0, 0),
-                      5)
+                     5)
+
+        #draw.rectangle(face.tolist(), outline=(255, 0, 0), width=6)
 
         #uncommet code below to blur face
         #detectedFace = cv2.GaussianBlur(roi, ksize, 0)
@@ -39,11 +66,10 @@ while True:
         print("Can't receive frame (stream end?). Exiting ...")
         break
 
-    #MTCNN detector detects the face
-    faces = detector.detect_faces(frame)
+    #frame2= cv2.imread('testpic.jpg')
 
     #use a function to change to frame by adding a box around the face
-    detectfaceMTCNN = find_face_MTCNN(frame,faces)
+    detectfaceMTCNN = find_face_MTCNN(frame)
 
 
 
