@@ -21,41 +21,34 @@ else:
 
 def find_face_MTCNN(frame):
 
+    #faces=[]
     #MTCNN detecting faces
     faces, probabilities = detector.detect(frame)
 
     #draw = ImageDraw.Draw(frame)
-    print(faces)
 
-    ## grab face and loop though face instead of faces!!!!!!!!!!
-    for face in faces:
-        print(face)
+    if faces is not None:
 
-        #if(type(face) != numpy.ndarray):
-        #    break
-
-        #print(type(face))
-        faceList = face.tolist()
+        for face in faces:
+            print(face)
 
 
 
+            faceList = face.tolist()
 
-        x, y, x2, y2 = faceList
-
-        #print(int(x))
-
+            x, y, x2, y2 = faceList
 
 
-        cv2.rectangle(frame,
-                      (int(x), int(y)), (int(x2), int(y2)),
-                      (255, 0, 0),
-                     5)
+            cv2.rectangle(frame,
+                          (int(x), int(y)), (int(x2), int(y2)),
+                          (255, 0, 0),
+                         5)
 
-        #draw.rectangle(face.tolist(), outline=(255, 0, 0), width=6)
+            #draw.rectangle(face.tolist(), outline=(255, 0, 0), width=6)
 
-        #uncommet code below to blur face
-        #detectedFace = cv2.GaussianBlur(roi, ksize, 0)
-        #frame[y:y + h, x:x + w] = detectedFace
+            #uncommet code below to blur face
+            #detectedFace = cv2.GaussianBlur(roi, ksize, 0)
+            #frame[y:y + h, x:x + w] = detectedFace
     return frame
 
 print("Streaming started")
