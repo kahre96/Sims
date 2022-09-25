@@ -4,7 +4,7 @@ from facenet_pytorch import MTCNN
 from PIL import ImageDraw, Image
 import tensorflow as tf
 
-#tf.config.set_visible_devices([], 'GPU')
+tf.config.set_visible_devices([], 'GPU')
 
 detector = MTCNN()
 
