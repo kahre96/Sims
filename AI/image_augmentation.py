@@ -9,11 +9,10 @@ import os
 import numpy as np
 
 ## augmentation pipeline. All Changes have a probability of 0.2 (p = 0.2)
-## augmentation pipeline. All Changes have a probability of 0.2 (p = 0.2)
 transformer = alb.Compose([
     alb.RandomBrightnessContrast(brightness_limit=(-0.4,0.4), contrast_limit=(-0.4,0.4), p=0.25), ## brightness and contrast in range (-0.3 and 0.7)
     alb.HorizontalFlip(p=0.25), ## flip picture vertical
-    alb.geometric.rotate.Rotate(limit = [-5,5], p = 0.25), ## Rotate 10 degrees left or right 
+    alb.geometric.rotate.Rotate(limit = [-5,5], p = 0.25), ## Rotate 10 degrees left or right
     alb.RandomGamma(p=0.25)
 ])
 
@@ -29,7 +28,7 @@ def image_auger(directory, number_of_augpics):
         image = np.array(image) ## we need to make it to an array
         augment_img = transformer(image = image) ## image goes through augmentation pipeline. Returns a dict
         os.chdir(os.path.join(directory,label)) ## Go to the folder
-        plt.imsave(f'augmented_{file_name}_{i}.jpg', augment_img['image']) ## Save img using matplotlib.pyplot lib.
+        plt.imsave(f'D:/dokument/skolskit/SIMS/Code/Sims/AI/aug_crop_set/{label}/augmented_{file_name}_{i}.jpg', augment_img['image']) ## Save img using matplotlib.pyplot lib.
         i += 1
 
 

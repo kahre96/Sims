@@ -68,7 +68,7 @@ else:
             class_mode='categorical')
 
 
-base_model = tf.keras.applications.resnet50.ResNet50(
+base_model = tf.keras.applications.efficientnet_v2.EfficientNetV2M(
     include_top=False,
     weights='imagenet',
     input_shape=(img_height, img_width, 3),
@@ -88,7 +88,7 @@ output = keras.layers.Dense(num_classes, activation='softmax')(global_avg_poolin
 
 face_classifier = keras.models.Model(inputs=base_model.input,
                                      outputs=output,
-                                     name='ResNet50')
+                                     name='EffNV2M')
 
 
 from keras.callbacks import ModelCheckpoint
@@ -117,14 +117,13 @@ face_classifier.compile(loss='categorical_crossentropy',    #sparse_categorical_
                         metrics=['accuracy'])
 
 
-history = face_classifier.fit_generator(   #maybe fit_generator?
+history = face_classifier.fit(   #maybe fit_generator?
     train_ds,
     epochs=epochs,
     callbacks=callbacks,
-    #steps_per_epoch=50,
+    #steps_per_epoch=len(train_ds)/train_ds.batch_size,
     validation_data=val_ds,
-    #validation_steps=50
+    #validation_steps=len(val_ds)/val_ds.batch_size
     )
 
-face_classifier.save("models/test.h5")
-
+face_classifier.save("models/EffNV2M_noaug.h5")

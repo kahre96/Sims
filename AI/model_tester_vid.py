@@ -10,9 +10,9 @@ from PIL import Image
 cam = cv2.VideoCapture(0)
 detector = MTCNN()
 
-model = keras.models.load_model('models/resnet50_norcrop_v3.h5')
+model = keras.models.load_model('models/EffNV2M_noaug.h5')
 normalization_layer = tf.keras.layers.Rescaling(1./255)
-labels = ['Andreas', 'Fredrik', 'Nordin', 'Peter']
+labels = ['Andreas', 'Fredrik', 'Glenn', 'Ina', 'Nordin', 'Peter']
 while True:
     check, frame = cam.read()
 
@@ -39,19 +39,20 @@ while True:
             y2 = int(y2)
 
             #crop the image for a prediction
-            cropped_img = frame[y:y2, x:x2]
-            cropped_img = cv2.cvtColor(cropped_img, cv2.COLOR_BGR2RGB)
-            image_predict = Image.fromarray(cropped_img, mode ="RGB")
-            image_predict = image_predict.resize(size = (200,200))
-            face_array = np.asarray(image_predict)
-            #face_array = normalization_layer(face_array)
-            face_array = np.expand_dims(face_array, axis = 0)
-            predictions = model.predict(face_array)
-            score = tf.nn.softmax(predictions)
-            print("pred", predictions)
-            print(score)
-            knas = str(labels[np.argmax(score)])
-            print("This image most likely belongs to {} with a {:.2f} percent confidence.".format(labels[np.argmax(score)], 100 * np.max(score)))
+            if(x>0 and y>0):
+                cropped_img = frame[y:y2, x:x2]
+                cropped_img = cv2.cvtColor(cropped_img, cv2.COLOR_BGR2RGB)
+                image_predict = Image.fromarray(cropped_img, mode ="RGB")
+                image_predict = image_predict.resize(size = (224,224))
+                face_array = np.asarray(image_predict)
+                face_array = normalization_layer(face_array)
+                face_array = np.expand_dims(face_array, axis = 0)
+                predictions = model.predict(face_array)
+                score = tf.nn.softmax(predictions)
+                print("pred", predictions)
+                print(score)
+                knas = str(labels[np.argmax(score)])
+                print("This image most likely belongs to {} with a {:.2f} percent confidence.".format(labels[np.argmax(score)], 100 * np.max(score)))
 
             #draw a rectangle around the face and write predicted name above
             cv2.rectangle(frame,
