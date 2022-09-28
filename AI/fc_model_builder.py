@@ -1,17 +1,22 @@
 import tensorflow as tf
+from kerasv2 import kv2
+import keras
+from keras.callbacks import ModelCheckpoint
+from keras.callbacks import EarlyStopping
+from keras.optimizers import Adam
 
 #tf.config.set_visible_devices([], 'GPU') #uncomment to force CPU
 
 
 img_height, img_width = 224, 224  # size of images
-num_classes = 6
-epochs = 50
+num_classes = 6     #amount of people
+epochs = 100
 batch_size = 32
-patience = 4
-augmentation = False
+patience = 4        #amount of epoch without improvement before early exit
+augmentation = 1         #1.NO  2. keras augmentation 3. kerasv2 albumentation
 
 
-if(augmentation == False):
+if(augmentation == 1):
     print("Training model without augmentation")
     normalization_layer = tf.keras.layers.Rescaling(1./255)
 
@@ -41,7 +46,7 @@ if(augmentation == False):
     )
     train_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
     val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
-else:
+elif(augmentation == 2):
     print("Training with augmented dataset")
     datagen = tf.keras.preprocessing.image.ImageDataGenerator(
         rescale=1/255,  #normalizations
@@ -67,6 +72,12 @@ else:
             batch_size=batch_size,
             class_mode='categorical')
 
+elif(augmentation == 3):
+    train_ds, val_ds, test_ds = kv2(batch_size)
+else:
+    print("incorrect augmentation option")
+    quit()
+
 
 base_model = tf.keras.applications.efficientnet_v2.EfficientNetV2M(
     include_top=False,
@@ -76,13 +87,11 @@ base_model = tf.keras.applications.efficientnet_v2.EfficientNetV2M(
 
 #base_model.summary()
 
-import keras
-
 # Set layers to non-trainable
 for layer in base_model.layers:
     layer.trainable = False
 
-# Add custom layers on top of ResNet
+# Add custom layers on top of the model
 global_avg_pooling = keras.layers.GlobalAveragePooling2D()(base_model.output)
 output = keras.layers.Dense(num_classes, activation='softmax')(global_avg_pooling)
 
@@ -91,9 +100,7 @@ face_classifier = keras.models.Model(inputs=base_model.input,
                                      name='EffNV2M')
 
 
-from keras.callbacks import ModelCheckpoint
-from keras.callbacks import EarlyStopping
-from keras.optimizers import Adam
+
 
 # ModelCheckpoint to save model in case of
 # interrupting the learning process
@@ -126,4 +133,8 @@ history = face_classifier.fit(   #maybe fit_generator?
     #validation_steps=len(val_ds)/val_ds.batch_size
     )
 
-face_classifier.save("models/EffNV2M_noaug.h5")
+face_classifier.save("models/EffNV2M_kv2.h5")
+
+if(augmentation == 3):
+    result = face_classifier.evaluate(test_ds)
+    print(result)
