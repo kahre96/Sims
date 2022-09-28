@@ -10,7 +10,7 @@ from PIL import Image
 cam = cv2.VideoCapture(0)
 detector = MTCNN()
 
-model = keras.models.load_model('models/EffNV2M_noaug.h5')
+model = keras.models.load_model('models/EffNV2M_aug.h5')
 normalization_layer = tf.keras.layers.Rescaling(1./255)
 labels = ['Andreas', 'Fredrik', 'Glenn', 'Ina', 'Nordin', 'Peter']
 while True:
@@ -54,13 +54,13 @@ while True:
                 knas = str(labels[np.argmax(score)])
                 print("This image most likely belongs to {} with a {:.2f} percent confidence.".format(labels[np.argmax(score)], 100 * np.max(score)))
 
-            #draw a rectangle around the face and write predicted name above
-            cv2.rectangle(frame,
-                          (x, y), # start_point
-                          (x2, y2), # end_point
-                          (255, 0, 0),  # color in BGR
-                          2) # thickness in px
-            cv2.putText(frame, knas,(x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
+                #draw a rectangle around the face and write predicted name above
+                cv2.rectangle(frame,
+                              (x, y), # start_point
+                              (x2, y2), # end_point
+                              (255, 0, 0),  # color in BGR
+                              2) # thickness in px
+                cv2.putText(frame, knas,(x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
 
 
 
