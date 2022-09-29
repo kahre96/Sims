@@ -9,7 +9,7 @@ class AdminController():
                 error = 'Invalid Credentials. Please try again.'
             else:
                 cursor = mysql.connection.cursor()
-                playercount = cursor.execute('SELECT COUNT(empid) FROM employee ') # Get total amount of employees (To be changed to players?)
+                playercount = cursor.execute('SELECT * FROM employee ') # Get total amount of employees (To be changed to players?)
                 mysql.connection.commit()
                 cursor.close()
                 return render_template('statistics.html', data=playercount) # Return Statistics page after sucessfull login

@@ -10,7 +10,7 @@ from PIL import Image
 cam = cv2.VideoCapture(0)
 detector = MTCNN()
 
-model = keras.models.load_model('models/EffNV2M_aug.h5')
+model = keras.models.load_model('C:\Users\gaver\Desktop\MIUN\SIMS_REPO\Sims\AI\models\resnet50_face_classifier_10e_croppedimg.h5')
 normalization_layer = tf.keras.layers.Rescaling(1./255)
 labels = ['Andreas', 'Fredrik', 'Glenn', 'Ina', 'Nordin', 'Peter']
 while True:
