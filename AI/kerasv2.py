@@ -74,10 +74,10 @@ def img_aug(image,label):
     return augmented_images,augmented_labels
 
 
-def kv2(bs):
+def kv2(bs,ds_dir):
 
     ## directory where files is located
-    dir = 'cropped_dataset'
+    dir = ds_dir
 
     temp_dataset = dataset(dir,train_size = 0.7, test_size = 0.1, val_size = 0.2)
     created_dataset = temp_dataset.train_test_val()
@@ -98,11 +98,11 @@ def kv2(bs):
 
 
     aug_train = img_aug(x_train,y_train)
-    print(aug_train)
+
     aug_val = img_aug(x_val,y_val)
-    print(aug_val)
+
     aug_test = img_aug(x_test,y_test)
-    print(aug_test)
+
     ## extend training, val and test dataset with the augmentated images
     ## train
     x_train.extend(aug_train[0])
