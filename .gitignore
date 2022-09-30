@@ -3,3 +3,6 @@
 /AI/content/
 .idea
 /AI/cropped_dataset/
+/AI/aug_cropped_dataset/
+/AI/models/
+/AI/images_from_test/
