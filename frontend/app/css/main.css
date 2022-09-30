@@ -180,9 +180,9 @@ textarea {
 }
 
 @media print,
-  (-webkit-min-device-pixel-ratio: 1.25),
-  (min-resolution: 1.25dppx),
-  (min-resolution: 120dpi) {
+(-webkit-min-device-pixel-ratio: 1.25),
+(min-resolution: 1.25dppx),
+(min-resolution: 120dpi) {
   /* Style adjustments for high resolution devices */
 }
 
@@ -261,3 +261,254 @@ textarea {
   }
 }
 
+
+@import url('https://fonts.googleapis.com/css?family=Bangers');
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC');
+
+body, html {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 94px;
+  text-align: center;
+  font-family: 'Bangers', cursive;
+  color: #f28f25;
+  text-shadow: 2px 2px 5px #000;
+  cursor: default;
+  /*   background-image: -webkit-linear-gradient(92deg,#f35626,#feab3a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; */
+}
+
+h3 {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: #fff;
+  text-shadow: 2px 2px 5px #000;
+  font-family: 'Amatic SC', cursive;
+  font-size: 56px;
+}
+
+h3:hover {
+  text-shadow: 0px 0px 15px #2588f2;
+  -webkit-animation: breathe 2s linear infinite;
+  animation: breathe 2s linear infinite;
+  cursor: pointer;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+#banner {
+  padding: 12% 0 0;
+  margin: 0 auto;
+  width: 40%;
+  min-width: 388px;
+}
+
+.scrolling-track-container, .knowit-content, nav {
+  position: absolute;
+  overflow: hidden;
+  min-width: 100vw;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.knowit-content{
+  z-index:1000;
+  height: 100%;
+}
+.knowit-content div{
+}
+nav{
+  z-index: 1000;
+  background-color: rgba(255,255,255,0.4);
+  width: 100vw;
+  height: 60px;
+  --bs-gutter-x: 0rem;
+  margin-left: 0 !important;
+}
+nav .div{
+}
+.sidebar-container {
+  height: 100%;
+  margin-top: 60px;
+}
+.profiles-container {
+  margin-top: 60px;
+}
+.scrolling-track-container .row{
+  min-height:100vh;
+}
+.scrolling-track-container .col{
+  width:100%;
+  height: 300px;
+  position: relative;
+  margin-top:auto;
+}
+#track-characters {
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  left: 0;
+  z-index:600;
+}
+#track-characters .row{
+  min-height:100vh;
+}
+#track-characters .col{
+  width:100%;
+  height: 340px;
+  position: relative;
+  margin-top:auto;
+}
+.track-area{
+}
+.props-group{
+  z-index:100;
+}
+.prop {
+  /*max-width: 400px;*/
+}
+.prop img {
+  position: absolute;
+  /*padding-top: 20px;*/
+  /*-webkit-filter: hue-rotate(0deg) !important;*/
+  filter:grayscale(0%) hue-rotate(0deg);
+  z-index:500;
+}
+
+
+.scrolling-track-container::-webkit-scrollbar {
+  display: none;
+}
+
+#horizontal-scroll {
+  position: absolute;
+  width: 200vw;
+  height: 100%;
+  background: url("../img/themes/seasons/summer/a/bg01.png") repeat-x;
+  background-size: 50%;
+  background-color: #9db9da;
+}
+
+#horizontal-scroll2 {
+  position: absolute;
+  width: 200vw;
+  height: 100%;
+  background: url("../img/themes/seasons/summer/a/bg02.png") repeat-x;
+  background-size: 50%;
+  background-position: left bottom;
+  -webkit-animation: bgBottomScroll 50s linear infinite;
+  animation: bgBottomScroll 50s linear infinite;
+}
+
+#horizontal-scroll3 {
+  position: absolute;
+  width: 200vw;
+  height: 100%;
+  background: url("../img/themes/seasons/summer/a/bg03.png") repeat-x;
+  background-size: 50%;
+  background-position: left bottom;
+  -webkit-animation: bgBottomScroll 17s linear infinite;
+  animation: bgBottomScroll 17s linear infinite;
+}
+
+#horizontal-scroll4 {
+  position: absolute;
+  width: 200vw;
+  height: 100%;
+  background: url("../img/themes/seasons/summer/a/bg04.png") repeat-x;
+  background-size: 50%;
+  -webkit-animation: bgTopScroll 40s linear infinite;
+  animation: bgTopScroll 40s linear infinite;
+}
+
+#track-init-scroll {
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  background: url("../img/themes/seasons/summer/a/track.png") repeat-x;
+  background-size: 100%;
+  background-position: left bottom;
+  -webkit-animation: bgTranslate 6s linear forwards;
+  animation: bgTranslate 6s linear forwards;
+}
+#track-slide1-scroll {
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  left: 100vw;
+  background: url("../img/themes/seasons/summer/a/track.png") repeat-x;
+  background-size: 100%;
+  background-position: left bottom;
+  -webkit-animation: bgTranslate2 12s linear infinite;
+  animation: bgTranslate2 12s linear infinite;
+}
+#track-slide2-scroll {
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  left: 100vw;
+  background: url("../img/themes/seasons/summer/a/track.png") repeat-x;
+  background-size: 100%;
+  background-position: left bottom;
+  -webkit-animation: bgTranslate2 12s linear infinite;
+  animation: bgTranslate2 12s linear infinite;
+  animation-delay: 6s;
+}
+@-webkit-keyframes bgTopScroll {
+  to {
+    background-position: -100% top;
+  }
+}
+
+@keyframes bgTopScroll {
+  to {
+    background-position: -100% top;
+  }
+}
+@-webkit-keyframes bgBottomScroll {
+  to {
+    background-position: -100% bottom;
+  }
+}
+
+@keyframes bgBottomScroll {
+  to {
+    background-position: -100% bottom;
+  }
+}
+@-webkit-keyframes bgTranslate {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes bgTranslate {
+  to {
+    transform: translateX(-100%);
+  }
+}
+@-webkit-keyframes bgTranslate2 {
+  to {
+    transform: translateX(-200%);
+  }
+}
+
+@keyframes bgTranslate2 {
+  to {
+    transform: translateX(-200%);
+  }
+}

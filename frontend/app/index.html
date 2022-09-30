@@ -12,10 +12,11 @@
   <meta property="og:url" content="">
   <meta property="og:image" content="">
 
-  <link rel="manifest" href="site.webmanifest">
+  <!--  <link rel="manifest" href="site.webmanifest">-->
   <link rel="apple-touch-icon" href="icon.png">
   <!-- Place favicon.ico in the root directory -->
-
+  <!-- CSS only -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/main.css">
 
@@ -24,19 +25,70 @@
 
 <body>
 
-  <!-- Add your site or application content here -->
-  <p>Hello world! This is HTML5 Boilerplate.</p>
-  <script src="js/vendor/modernizr-3.11.2.min.js"></script>
-  <script src="js/plugins.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/jquery.js"></script>
+<!-- Add your site or application content here -->
+<div class="container scrolling-track-container">
+  <div id="horizontal-scroll"></div>
+  <div id="horizontal-scroll2"></div>
+  <div id="horizontal-scroll3"></div>
+  <div id="horizontal-scroll4"></div>
+  <div id="track-init-scroll"></div>
+  <div id="track-slide1-scroll" class="props-group">
+    <div id="propslist" class="row text-danger d-flex justify-content-evenly">
+      <div class="col prop spawn0">
+      </div>
+      <div class="col prop spawn1">
+      </div>
+      <div class="col prop spawn2">
+      </div>
+      <div class="col prop spawn3">
+      </div>
+      <div class="col">
+      </div>
+    </div>
+  </div>
+  <div id="track-slide2-scroll" class="props-group">
+    <div id="propslist2" class="row text-danger d-flex justify-content-evenly">
+      <div class="col prop spawn0">
+      </div>
+      <div class="col prop spawn1">
+      </div>
+      <div class="col prop spawn2">
+      </div>
+      <div class="col prop spawn3">
+      </div>
+      <div class="col">
+      </div>
+    </div>
+  </div>
+  <div id="track-characters">
+    <div class="row">
+      <div id="track-area" class="col track-area">
+      </div>
+    </div>
+  </div>
+</div>
+<!--           CONTENT LAYOUT          -->
+<!--<nav class="row">-->
+<!--  <div class="col-12">-->
+<!--    Knowit nav - weather-->
+<!--  </div>-->
+<!--</nav>-->
+<!--<section id="content-container" class="row knowit-content text-danger">-->
+<!--  <div class="col-10 profiles-container">-->
+<!--    recognition user profiles-->
+<!--  </div>-->
+<!--  <aside class="col-2 sidebar-container">-->
+<!--    <section id="news-widget">news and tips</section>-->
+<!--    <section id="winners-widget">last months winners</section>-->
+<!--  </aside>-->
+<!--</section>-->
 
-  <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
-  <script>
-    window.ga = function () { ga.q.push(arguments) }; ga.q = []; ga.l = +new Date;
-    ga('create', 'UA-XXXXX-Y', 'auto'); ga('set', 'anonymizeIp', true); ga('set', 'transport', 'beacon'); ga('send', 'pageview')
-  </script>
-  <script src="https://www.google-analytics.com/analytics.js" async></script>
+<script src="js/jquery-3.6.1.min.js"></script>
+<script src="js/vendor/modernizr-3.11.2.min.js"></script>
+<script src="js/plugins.js"></script>
+<!-- JavaScript Bundle with Popper -->
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/main.js"></script>
+
 </body>
-
 </html>
