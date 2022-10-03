@@ -10,7 +10,7 @@ from keras.optimizers import Adam
 
 img_height, img_width = 224, 224  # size of images
 num_classes = 6  # amount of people
-epochs = 300
+epochs = 3000
 batch_size = 32
 patience = 4  # amount of epoch without improvement before early exit
 augmentation = 1  # 1.NO  2. keras augmentation 3. kerasv2 albumentation

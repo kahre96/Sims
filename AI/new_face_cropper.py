@@ -32,9 +32,9 @@ def cropped_img(image,labels):
     cropped_img = img[y:y+height,x:x+width]
     image = Image.fromarray(cropped_img)
     ## We could add a size argument to the function instead. 
-    image = image.resize(size = (200,200))
+    image = image.resize(size = (224,224))
     face_array = np.asarray(image)
-    return face_array,labels
+    return face_array, labels
   ## if the len of faces is 0. The MTCNN has not detected a face and therefore we return None. 
   else:
     return None
