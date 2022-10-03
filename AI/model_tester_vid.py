@@ -7,15 +7,17 @@ import cv2
 from PIL import Image
 
 #tf.config.set_visible_devices([], 'GPU')
-cam = cv2.VideoCapture(0)
+cam = cv2.VideoCapture(2)
+cam.set(3, 3840)
+cam.set(4, 2160)
 detector = MTCNN()
 
-model = keras.models.load_model('models/EffNV2M_aug.h5')
+model = keras.models.load_model('AI/models/VGG19_aug.h5')
 normalization_layer = tf.keras.layers.Rescaling(1./255)
 labels = ['Andreas', 'Fredrik', 'Glenn', 'Ina', 'Nordin', 'Peter']
 while True:
     check, frame = cam.read()
-
+    print(frame.shape)
     if not check:
         print("Cant recive a frame from camera. exiting...")
         break
@@ -41,6 +43,7 @@ while True:
             #crop the image for a prediction
             if(x>0 and y>0):
                 cropped_img = frame[y:y2, x:x2]
+                print("cropped img", cropped_img.shape)
                 cropped_img = cv2.cvtColor(cropped_img, cv2.COLOR_BGR2RGB)
                 image_predict = Image.fromarray(cropped_img, mode ="RGB")
                 image_predict = image_predict.resize(size = (224,224))
@@ -63,8 +66,13 @@ while True:
                 cv2.putText(frame, knas,(x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
 
 
-
+    #cv2.resize(frame, (640,480))
+    #cv2.imshow('video', frame)
+    cv2.namedWindow('video',cv2.WINDOW_NORMAL)
+    cv2.resizeWindow('video', 1280,720)
     cv2.imshow('video', frame)
+
+    #cv2.resizeWindow('video', 640, 480)
 
 
     #allows to exit the program by pressing ESC
