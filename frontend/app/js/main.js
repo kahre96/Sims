@@ -1,3 +1,14 @@
+document.addEventListener('DOMContentLoaded', () => {
+  let date = new Date();
+  const months = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
+  let monthText = months[date.getMonth()];
+  let day = date.getDate();
+  const days = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
+  let weekday = days[date.getDay()];
+
+  document.getElementById("date").innerHTML = weekday + " " + day + " " + monthText;
+});
+
 $(function () {
   let propFolder = "img/themes/seasons/summer/a/props/";
   // let props = getImgsFromFolder(propFolder);
