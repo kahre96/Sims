@@ -14,23 +14,27 @@ def json_default(value):
             return value.__dict__
 
 class Player():
-    def __init__(self, playerId, empId, xpTotal, xpMonth, level, last_login, consecutive_days, displayName):
+    def __init__(self, playerId, ranking, level, empId, xpTotal, xpMonth, last_login, consecutive_days, displayName, birthday_today):
         self.playerId       = playerId
         self.empId          = empId
+        self.ranking        = ranking
+        self.level          = level
         self.xpTotal        = xpTotal
         self.xpMonth        = xpMonth
-        self.level          = level
         self.last_login     = last_login
         self.consecutive_days=consecutive_days
         self.displayName    = displayName
+        self.birthday_today = birthday_today
     
     def getSQLData(self):
-        return (self.playerId ,self.empId, self.xpTotal, self.xpMonth, self.level, self.last_login, self.consecutive_days) 
+        return (self.playerId ,self.empId, self.ranking, self.level,self.xpTotal, self.xpMonth, self.last_login, self.consecutive_days) 
 
     def getLatestPlayerId(connection):
         with connection.cursor() as cursor:
             sql = "SELECT player_ID FROM Player ORDER BY player_ID DESC LIMIT 1";
             cursor.execute(sql)
+            if cursor.fetchone() is None:
+                return 0
             result = formatTupleIntoStr(cursor.fetchone())
             return int(result)
 

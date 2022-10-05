@@ -26,9 +26,4 @@ def admin():
 def dailyLogin():
     return playercontroller.dailyLogin(mysql)
 
-@app.route('/test', methods = ['GET','POST'])
-def test():
-    return playercontroller.test(mysql),200   
-
-
 app.run(host='localhost', port=5000)

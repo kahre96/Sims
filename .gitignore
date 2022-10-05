@@ -10,3 +10,6 @@
 /AI/Images/
 /AI/wrong_class_img/
 /backend/API/sims
+/backend/API/__pycache__
+/backend/API/models/__pycache__
+/backend/API/controllers/__pycache__

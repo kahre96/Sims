@@ -46,34 +46,17 @@ class EmployeeController():
             values  = user.getSQLData()      
             cursor.execute(sql, values)
             # Adding Player into DB
-            sql     = "INSERT INTO Player(player_ID, emp_ID, xp_total, xp_month, level, last_login, consecutive_days) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            sql     = "INSERT INTO Player(player_ID, emp_ID, ranking_ID, level,xp_total, xp_month, last_login, consecutive_days) VALUES (%s,%s, %s, %s, %s, %s, %s, %s)"
             values  = user.player.getSQLData()
             cursor.execute(sql,values)
-            # Adding Requirement for xp_next_level into DB
-            sql     = "INSERT INTO Player_in_Ranking(player_ID, ranking_ID) VALUES (%s, %s)"
-            values  = (user.player.playerId, 1)
-            cursor.execute(sql,values)
-
-            case=0
-
-        # Get: Get First- and Lastname by ID
-        if request.method == 'GET':
-            
-            cursor.execute(''' SELECT firstname, lastname FROM Employee WHERE emp_ID = %s ''' % id)
-            records = cursor.fetchall()
-            case=1
-        
+ 
         #Saving the changes made by the cursor
         mysql.connection.commit()
 
         #Closing the cursor
         cursor.close()
+    
+        return ("User " + firstname + " with ID " + str(id) + " was successfully created!"), 201 # Return Name and 201, created
 
-        if case == 0:
-            return ("User " + firstname + " with ID " + str(id) + " was successfully created!"), 201 # Return Name and 201, created
-
-        elif case == 1:
-            return {"Employee:":records} # Return First- and Lastname
-
-
+    
 employeecontroller = EmployeeController()            
