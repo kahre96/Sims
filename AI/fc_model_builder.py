@@ -9,13 +9,13 @@ from keras.optimizers import Adam
 
 
 img_height, img_width = 224, 224  # size of images
-num_classes = 6  # amount of people
+num_classes = 5  # amount of people
 epochs = 3000
 batch_size = 32
-patience = 4  # amount of epoch without improvement before early exit
+patience = 5  # amount of epoch without improvement before early exit
 augmentation = 1  # 1.NO  2. keras augmentation 3. kerasv2 albumentation
-ds_dir = "aug_cropped_dataset"  # location of the dataset
-modelname = "VGG19_aug_nofreeze"  # name of the model when saved to disk as h5 file
+ds_dir = "Images"  # location of the dataset
+modelname = "MNv2_newds"  # name of the model when saved to disk as h5 file
 
 if (augmentation == 1):
     print("Training model without augmentation")
@@ -23,10 +23,10 @@ if (augmentation == 1):
 
     # importing data
     train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-        ds_dir + "/train",
-        #validation_split=0.2,
+        ds_dir,
+        validation_split=0.2,
         label_mode="categorical",
-        #subset="training",
+        subset="training",
         seed=1,
         image_size=(img_height, img_width),
         batch_size=batch_size,
@@ -34,29 +34,29 @@ if (augmentation == 1):
     )
 
     val_ds = tf.keras.preprocessing.image_dataset_from_directory(
-        ds_dir + "/val",
-        #validation_split=0.2,
+        ds_dir,
+        validation_split=0.2,
         label_mode="categorical",
-        #subset="validation",
+        subset="validation",
         seed=1,
         image_size=(img_height, img_width),
         batch_size=batch_size,
 
     )
 
-    test_ds = tf.keras.preprocessing.image_dataset_from_directory(
-        ds_dir + "/test",
-        #validation_split=0.2,
-        label_mode="categorical",
-        #subset="testing",
-        seed=1,
-        image_size=(img_height, img_width),
-        batch_size=batch_size,
-
-    )
+    # test_ds = tf.keras.preprocessing.image_dataset_from_directory(
+    #     ds_dir + "/test",
+    #     #validation_split=0.2,
+    #     label_mode="categorical",
+    #     #subset="testing",
+    #     seed=1,
+    #     image_size=(img_height, img_width),
+    #     batch_size=batch_size,
+    #
+    # )
     train_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
     val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
-    test_ds = test_ds.map(lambda x, y: (normalization_layer(x), y))
+    #test_ds = test_ds.map(lambda x, y: (normalization_layer(x), y))
 
 elif (augmentation == 2):
     print("Training with augmented dataset")
@@ -90,7 +90,7 @@ else:
     print("incorrect augmentation option")
     quit()
 
-base_model = tf.keras.applications.vgg19.VGG19(
+base_model = tf.keras.applications.MobileNetV2(
     include_top=False,
     weights='imagenet',
     input_shape=(img_height, img_width, 3),
@@ -144,6 +144,6 @@ face_classifier.save(f"models/{modelname}.h5")
 
 
 # evaluate the model with test dataset
-if (augmentation == 1 or 3):
+if (augmentation == 3):
     result = face_classifier.evaluate(test_ds)
     print(result)
