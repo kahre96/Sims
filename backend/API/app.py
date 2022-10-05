@@ -13,7 +13,7 @@ app.config['MYSQL_DB'] = 'sims'
 mysql = MySQL(app)
 
 # Route to create employees and get their name based on ID
-@app.route('/employee', methods = ['POST','GET'])
+@app.route('/employee/create', methods = ['POST'])
 def employee():
     return employeecontroller.createEmployee(mysql)
     

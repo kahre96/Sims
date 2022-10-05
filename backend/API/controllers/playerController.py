@@ -5,6 +5,9 @@ import sys
 sys.path.append("../models")
 from models.player import Player
 
+# PETER
+# xp_month reset and update
+
 
 def getPlayerByID(connection,emp_ID):
         with connection.cursor() as cursor:

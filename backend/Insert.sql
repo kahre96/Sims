@@ -11,11 +11,11 @@ INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (4, "nordin"
 INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (5, "fredrik", "kåhre", STR_TO_DATE('19961014', '%Y%m%d'));
 INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (6, "ina", "nilsson", STR_TO_DATE('19990116', '%Y%m%d'));
 
-INSERT INTO Ranking(ranking_ID, name, xp_required) VALUES (1, "Android", 0);
-INSERT INTO Ranking(ranking_ID, name, xp_required) VALUES (2, "Ewok",100);
-INSERT INTO Ranking(ranking_ID, name, xp_required) VALUES (3, "Wookie", 200);
-INSERT INTO Ranking(ranking_ID, name, xp_required) VALUES (4, "Padawan",300);
-INSERT INTO Ranking(ranking_ID, name, xp_required) VALUES (5, "Jedi Knight",400);
+INSERT INTO Ranking(ranking_ID, name, xp_required) VALUES (1, "android", 0);
+INSERT INTO Ranking(ranking_ID, name, xp_required) VALUES (2, "ewok",100);
+INSERT INTO Ranking(ranking_ID, name, xp_required) VALUES (3, "wookie", 200);
+INSERT INTO Ranking(ranking_ID, name, xp_required) VALUES (4, "padawan",300);
+INSERT INTO Ranking(ranking_ID, name, xp_required) VALUES (5, "jedi knight",400);
 
 INSERT INTO Player(emp_ID, xp_total, xp_month, level, last_login, consecutive_days) VALUES (6,260, 40, 6, STR_TO_DATE('20221001', '%Y%m%d'), 2);
 INSERT INTO Player(emp_ID, xp_total, xp_month, level, consecutive_days) VALUES (5,80, 10, 2, 3);
