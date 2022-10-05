@@ -1,0 +1,211 @@
+* {
+    font-family: Arial, sans-serif;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+}
+
+h2 {
+    color: #333333;
+    background-color: #B7DEBD;
+    font-size: 2rem;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+h3 {
+    color: #333333;
+    font-size: 1.8rem;
+    margin: 25px 7px 15px;
+}
+
+.greeting-box {
+    text-align: center;
+}
+
+#greeting {
+    color: #333333;
+    font-size: 1.6rem;
+}
+
+.bg-container {
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.left-column {
+    float: left;
+    width: 80%;
+    flex-direction: column;
+}
+
+.right-column {
+    float: right;
+    width: 20%;
+}
+
+.header {
+    background-color: rgba(241, 240, 237, 0.85);
+    height: 100px;
+    margin: 5px;
+    padding-top: 5px;
+    justify-content: left;
+    align-items: center;
+    border-radius: 5px;
+    display: flex;
+}
+
+#logo {
+    display: flex;
+    width: 20%;
+}
+
+#date {
+    display: flex;
+    width: 25%;
+    font-family: Arial, sans-serif;
+    color: #333333;
+    font-size: 1.5rem;
+    margin-left: 120px;
+}
+
+.weatherwidget-io {
+    color: #333333;
+    max-width: 700px;
+    width: 40%;
+    display: flex;
+}
+
+.backbody {
+    display: flex;
+}
+
+.people-box {
+    color: #333333;
+    width: 100%;
+    height: 90%;
+    min-height: 635px;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: space-between;
+    margin: 10px 15px;
+}
+
+#person-1 {
+    color: #333333;
+    background-color: rgba(241, 240, 237, 0.85);
+    width: 25%;
+    height: 95%;
+    min-height: 600px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.top {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.bottom {
+    background-color: rgba(51, 51, 51, 0.7);
+    width: 40%;
+    height: 50%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    bottom: 0;
+    position: absolute;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+#img-1 {
+    width: 25%;
+    height: 17%;
+    object-fit: cover;
+    margin: 10px;
+}
+
+#person-2, #person-3, #person-4, #person-5 {
+    color: #333333;
+    background-color: rgba(241, 240, 237, 0.85);
+    width: 17%;
+    height: 90%;
+    min-height: 600px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+#img-rest {
+    width: 25%;
+    height: 17%;
+    object-fit: cover;
+    margin: 10px;
+}
+
+.barcontainer {
+    background-color: #333333;
+    position: relative;
+    width: 50%;
+    height: 100%;
+}
+
+.bar {
+    background-color: #FF00FF;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 80%;
+    box-sizing: border-box;
+    animation: grow 1.5s ease-out forwards;
+    transform-origin: bottom;
+}
+
+@keyframes grow{
+    from{
+        transform: scaleY(0);
+    }
+}
+
+.news-box {
+    color: #333333;
+    background-color: rgba(241, 240, 237, 0.85);
+    float: right;
+    display: flex;
+    flex-direction: column;
+    min-height: 1020px;
+    margin: 5px;
+    border-radius: 5px;
+    padding: 15px;
+    position: relative;
+}
+
+.leaderboard {
+    position: absolute;
+    bottom: 0;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+#podium {
+    width: 100%;
+}
