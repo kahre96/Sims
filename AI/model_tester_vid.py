@@ -7,17 +7,18 @@ import cv2
 from PIL import Image
 
 #tf.config.set_visible_devices([], 'GPU')
-cam = cv2.VideoCapture(2)
+
+#setting up the camera input
+cam = cv2.VideoCapture(0)
 cam.set(3, 3840)
 cam.set(4, 2160)
 
-
-
-takepics = False # decide if you want to tkae pics or not
-color = (255,0,0)
-namecolor = (36,255,12)
-labels = ['Andreas', 'Fredrik', 'Glenn', 'Ina', 'Nordin', 'Peter']
-model = keras.models.load_model('models/EffNV2M_aug.h5')
+takepics = False  # decide if you want to tkae pics or not
+correct_label = "Fredrik"
+color = (0, 255, 0)
+namecolor = (36, 255, 12)
+labels = ['Andreas', 'Fredrik', 'Glenn', 'Ina', 'Peter']
+model = keras.models.load_model('models/VGG16_newds.h5')
 
 
 detector = MTCNN() #model to detect faces
@@ -27,7 +28,6 @@ if(takepics == True):
 normalization_layer = tf.keras.layers.Rescaling(1./255)
 while True:
     check, frame = cam.read()
-    print(frame.shape)
     if not check:
         print("Cant recive a frame from camera. exiting...")
         break
@@ -74,12 +74,12 @@ while True:
                               color,  # color in BGR
                               2) # thickness in px
                 cv2.putText(frame, labelguess,(x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, namecolor, 2)
-                if(takepics == True):
-                    cv2.imwrite(f"images_from_test/{labelguess}_{counter}.jpg",face_array1)
+                if(takepics == True and correct_label != labelguess):
+                    plt.imssave(f"wrong_class_img/{correct_label}/{labelguess}_{counter}.jpg", face_array1)
                     counter += 1
 
 
-    cv2.namedWindow('video',cv2.WINDOW_NORMAL)
+    cv2.namedWindow('video', cv2.WINDOW_NORMAL)
     cv2.resizeWindow('video', 1280,720)
     cv2.imshow('video', frame)
 
