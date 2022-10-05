@@ -3,7 +3,6 @@ from datetime import date, timedelta
 import json
 import sys
 sys.path.append("../models")
-from models.employee import Employee
 from models.player import Player
 
 
@@ -15,7 +14,6 @@ def getPlayerByID(connection,emp_ID):
             name = cursor.fetchone()
             display_name = f"{name[0].capitalize()} {name[1].capitalize()[0]}"
         return Player(player[0],player[1],player[2],player[3],player[4],player[5],player[6], display_name) 
-        #json.dumps(player.__dict__)["emp_ID"]  
 
 def getPlayerBirthdayByID(connection,emp_ID):
         with connection.cursor() as cursor:
@@ -45,7 +43,7 @@ class PlayerController():
             return "Request failed, no Employee ID provided!", 400
         else:
             if getPlayerBirthdayByID(mysql.connection,emp_ID)[4:]==today.strftime("%Y%m%d")[4:]:
-                xp_to_add += 10
+                xp_to_add += 20
                 birthday_today=True
             if player.last_login==last_weekday:
                 if player.consecutive_days==4:

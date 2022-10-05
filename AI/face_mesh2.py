@@ -13,7 +13,7 @@ label = []
 
 user_name = input('What is your name?\n') 
 
-
+counter = 0
 cap = cv2.VideoCapture(2)
 with mp_face_mesh.FaceMesh(
     max_num_faces=1,
@@ -32,22 +32,30 @@ with mp_face_mesh.FaceMesh(
     # Draw the face mesh annotations on the image.
     image.flags.writeable = True
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    ls_single_face=results.multi_face_landmarks[0].landmark
-
-    for frame in image:
+    #ls_single_face=results.multi_face_landmarks[0].landmark
+    try:
+      if counter == 1000:
+        quit()
+      for frame in image:
         internal_x = []
         internal_y = []
         internal_z = []
-    for landmark in ls_single_face:
+      for landmark in results.multi_face_landmarks[0].landmark:
         internal_x.append(landmark.x)
         internal_y.append(landmark.y)
         internal_z.append(landmark.z)
+
+
     
-    label.append(user_name) ##appends label
+      label.append(user_name) ##appends label
     ## appends each face landmark x,y,z
-    rv_x.append(internal_x) 
-    rv_y.append(internal_y)
-    rv_z.append(internal_z)
+      rv_x.append(internal_x) 
+      rv_y.append(internal_y)
+      rv_z.append(internal_z)
+      print(counter)
+      counter += 1
+    except:
+      print('did not find a landmark')
 
 
     cv2.imshow('MediaPipe Face Mesh', cv2.flip(image, 1))
