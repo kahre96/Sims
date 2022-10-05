@@ -7,15 +7,17 @@ from keras.optimizers import Adam
 
 # tf.config.set_visible_devices([], 'GPU') #uncomment to force CPU
 
-
 img_height, img_width = 224, 224  # size of images
-num_classes = 5  # amount of people
+num_classes = 6  # amount of people
 epochs = 3000
 batch_size = 32
 patience = 5  # amount of epoch without improvement before early exit
 augmentation = 1  # 1.NO  2. keras augmentation 3. kerasv2 albumentation
 ds_dir = "Images"  # location of the dataset
-modelname = "MNv2_newds"  # name of the model when saved to disk as h5 file
+modelname = "VGG19_aug_itt2"  # name of the model when saved to disk as h5 file
+VggBase = False  #true to use base pretrained model, # false to transfer learn one of our models
+tlmodel = "VGG19_aug"  # enter name of model that will be used for transfer learning
+test = False  # Enable if testds is available
 
 if (augmentation == 1):
     print("Training model without augmentation")
@@ -90,25 +92,39 @@ else:
     print("incorrect augmentation option")
     quit()
 
-base_model = tf.keras.applications.MobileNetV2(
-    include_top=False,
-    weights='imagenet',
-    input_shape=(img_height, img_width, 3),
-)
+#decide if base Vgg is gona be used or if our pretrained models will be used
+if VggBase:
+    base_model = tf.keras.applications.vgg16.VGG16(
+        include_top=False,
+        weights='imagenet',
+        input_shape=(img_height, img_width, 3),
+    )
+    # Set layers to non-trainable
+    for layer in base_model.layers:
+        layer.trainable = False
 
-# base_model.summary()
+    # Add custom layers on top of the model
 
-# Set layers to non-trainable
-for layer in base_model.layers:
-    layer.trainable = False
+    global_avg_pooling = keras.layers.GlobalAveragePooling2D()(base_model.output)
+    output = keras.layers.Dense(num_classes, activation='softmax')(global_avg_pooling)
+else:
+    print(f"Transfer learning on {tlmodel}")
+    base_model = keras.models.load_model(f"models/{tlmodel}.h5")
 
-# Add custom layers on top of the model
-global_avg_pooling = keras.layers.GlobalAveragePooling2D()(base_model.output)
-output = keras.layers.Dense(num_classes, activation='softmax')(global_avg_pooling)
+    # Set layers to non-trainable
+    #for layer in base_model.layers:
+    #    layer.trainable = False
+
+    # Add custom layers on top of the model
+
+    output = base_model.output
+
 
 face_classifier = keras.models.Model(inputs=base_model.input,
                                      outputs=output,
-                                     name='CNBase')
+                                     name='VGG16')
+
+#face_classifier.summary()
 
 # ModelCheckpoint to save model in case of
 # interrupting the learning process
@@ -131,7 +147,7 @@ face_classifier.compile(loss='categorical_crossentropy',  # sparse_categorical_c
                         optimizer=Adam(learning_rate=0.01),
                         metrics=['accuracy'])
 
-history = face_classifier.fit(  # maybe fit_generator?
+history = face_classifier.fit(
     train_ds,
     epochs=epochs,
     callbacks=callbacks,
@@ -144,6 +160,6 @@ face_classifier.save(f"models/{modelname}.h5")
 
 
 # evaluate the model with test dataset
-if (augmentation == 3):
+if (test == True):
     result = face_classifier.evaluate(test_ds)
     print(result)

@@ -13,12 +13,12 @@ cam = cv2.VideoCapture(0)
 cam.set(3, 3840)
 cam.set(4, 2160)
 
-takepics = False  # decide if you want to tkae pics or not
+takepics = False  # decide if you want to take pics or not
 correct_label = "Fredrik"
 color = (0, 255, 0)
 namecolor = (36, 255, 12)
-labels = ['Andreas', 'Fredrik', 'Glenn', 'Ina', 'Peter']
-model = keras.models.load_model('models/VGG16_newds.h5')
+labels = ['Andreas', 'Fredrik', 'Glenn', 'Ina', 'Nordin', 'Peter']
+model = keras.models.load_model('models/VGG16_newds_v2.h5')
 
 
 detector = MTCNN() #model to detect faces
