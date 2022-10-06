@@ -36,11 +36,12 @@ class Employee():
         playerID        = Player.getLatestPlayerId(connection) + 1
         displayName     = f"{self.firstname.capitalize()} {self.lastname.capitalize()[0]}"
         ranking         = 1
+        level           = 1
         xp_total        = 0
         xp_month        = 0
-        level           = 1
         last_login      = date.today().strftime("%Y-%m-%d")
         consecutive_days=0
+        birthday_today  = False
 
-        return Player(playerID, self.id, xp_total, xp_month, level, last_login, consecutive_days, displayName)
+        return Player(playerID, self.id, ranking, level,xp_total, xp_month,  last_login, consecutive_days, displayName, birthday_today)
     
