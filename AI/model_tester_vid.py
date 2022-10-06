@@ -18,7 +18,7 @@ correct_label = "Fredrik"
 color = (0, 255, 0)
 namecolor = (36, 255, 12)
 labels = ['Andreas', 'Fredrik', 'Glenn', 'Ina', 'Nordin', 'Peter']
-model = keras.models.load_model('models/VGG16_newds_v2.h5')
+model = keras.models.load_model('models/noaug_N128.h5')
 
 
 detector = MTCNN() #model to detect faces
@@ -51,7 +51,7 @@ while True:
             y2 = int(y2)
 
             #crop the image for a prediction
-            if(x>0 and y>0):
+            if(x>0 and y>0 and x2-x>80 and y2-y>80):
                 cropped_img = frame[y:y2, x:x2]
                 print("cropped img", cropped_img.shape)
                 cropped_img = cv2.cvtColor(cropped_img, cv2.COLOR_BGR2RGB)
