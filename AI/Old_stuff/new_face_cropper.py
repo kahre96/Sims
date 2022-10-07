@@ -59,7 +59,7 @@ def save_images(data,directory):
 
 ## calls 
 
-images, labels = path_process('Dataset')  # chose directory to get images
+images, labels = path_process('../Dataset')  # chose directory to get images
 directory = "D:\dokument\skolskit\SIMS\Code\Sims\AI\content\images" # chose directory to save images
 cropped = list(map(cropped_img, images, labels))
 save_images(cropped, directory)
