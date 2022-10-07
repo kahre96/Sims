@@ -17,29 +17,6 @@ INSERT INTO Ranking(ranking_ID, name) VALUES (3, "wookie");
 INSERT INTO Ranking(ranking_ID, name) VALUES (4, "padawan");
 INSERT INTO Ranking(ranking_ID, name) VALUES (5, "jedi knight");
 
-INSERT INTO Player(emp_ID, xp_total, xp_month, level, last_login, consecutive_days) VALUES (6,260, 40, 6, STR_TO_DATE('20221001', '%Y%m%d'), 2);
-INSERT INTO Player(emp_ID, xp_total, xp_month, level, consecutive_days) VALUES (5,80, 10, 2, 3);
-INSERT INTO Player(emp_ID, xp_total, xp_month, level, consecutive_days) VALUES (4,500, 100, 2, 5);
-INSERT INTO Player(emp_ID, xp_total, xp_month, level) VALUES (3,145, 15, 3);
-INSERT INTO Player(emp_ID, xp_total, xp_month, level) VALUES (2,45, 30, 1);
-INSERT INTO Player(emp_ID, xp_total, xp_month, level) VALUES (1,115, 20, 3);
-
-INSERT INTO Data(Month) VALUES("januari");
-INSERT INTO Data(Month) VALUES("februari");
-INSERT INTO Data(Month) VALUES("mars");
-INSERT INTO Data(Month) VALUES("april");
-INSERT INTO Data(Month) VALUES("maj");
-INSERT INTO Data(Month) VALUES("juni");
-INSERT INTO Data(Month) VALUES("juli");
-INSERT INTO Data(Month) VALUES("augusti");
-INSERT INTO Data(Month) VALUES("september");
-INSERT INTO Data(Month) VALUES("oktober");
-INSERT INTO Data(Month) VALUES("november");
-INSERT INTO Data(Month) VALUES("december");
-
-INSERT INTO Player_in_Data(player_id, data_id, xp_month) VALUES(1,10,20);
-
-
 INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (2,1, 1, 100,0, STR_TO_DATE('20221003', '%Y%m%d'), 1);
 INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (3,1, 1, 100,0, STR_TO_DATE('20221004', '%Y%m%d'), 2);
 INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (4,1, 1, 100,0, STR_TO_DATE('20221004', '%Y%m%d'), 3);

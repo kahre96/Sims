@@ -1,54 +1,56 @@
 from models.player import Player
 from flask import request
 from datetime import date, timedelta, datetime
-import json
 import sys
 sys.path.append("../models")
 
-# PETER
-# xp_month reset and update
-
-
-def getPlayerByID(connection, emp_ID, birthday_today):
-        with connection.cursor() as cursor:
-            cursor.execute(
-                '''SELECT * FROM Player WHERE emp_ID = %s ''' % emp_ID)
-            player = cursor.fetchone()
-            cursor.execute(
-                '''SELECT firstname,lastname FROM Employee WHERE emp_ID = %s ''' % emp_ID)
-            name = cursor.fetchone()
-            display_name = f"{name[0].capitalize()} {name[1].capitalize()[0]}"
+def getPlayerByID(cursor, emp_ID, birthday_today):
+        
+        cursor.execute(
+            '''SELECT * FROM Player WHERE emp_ID = %s ''' % emp_ID)
+        player = cursor.fetchone()
+        cursor.execute(
+            '''SELECT firstname,lastname FROM Employee WHERE emp_ID = %s ''' % emp_ID)
+        name = cursor.fetchone()
+        display_name = f"{name[0].capitalize()} {name[1].capitalize()[0]}"
         return Player(player[0], player[1], player[2], player[3], player[4], player[5], player[6], player[7], display_name, birthday_today)
 
-
-def getPlayerBirthdayByID(connection, emp_ID):
-        with connection.cursor() as cursor:
-            cursor.execute(
-                '''SELECT birthdate FROM Employee WHERE emp_ID = %s ''' % emp_ID)
-            employee = cursor.fetchone()
+def getPlayerBirthdayByID(cursor, emp_ID):
+    
+        cursor.execute(
+            '''SELECT birthdate FROM Employee WHERE emp_ID = %s ''' % emp_ID)
+        employee = cursor.fetchone()
         return employee[0].strftime("%Y%m%d")
 
-
 class PlayerController():
+
     def __init__(self):
         self.newEntries = {}
         self.xp_per_level = 50
 
+    ''' Daily Login function to update player and heros + return the updated player
+    INPUT:  mysql connection and Employee ID
+    OUTPUT: Updated Player in JSON Format
+    '''
     def dailyLogin(self, mysql):
 
-        xp_to_add = 10  # Standard is 10 XP for a daily login
+        # DEFAULT: 10XP, BIRTHDAY = FALSE
+        xp_to_add = 10  
         birthday_today = False
 
+        ##############################################################################################
+        # GET DATES (TODAY AND LAST WEEKDAY)
+        #
         today = date.today()
-        # Get last weekday in YYYYMMDD Format
         _offsets = (3, 1, 1, 1, 1, 1, 2)
         last_weekday = (today-timedelta(days=_offsets[today.weekday()]))
-
         cursor = mysql.connection.cursor()
         args = request.args
         emp_ID = args.get("emp_ID", default="NULL", type=int)
 
-        # Check if existing player ID is passed 
+        ##############################################################################################
+        # CHECK IF EMP_ID IS PASSED AND VALID
+        #  
         if emp_ID == "NULL":
             return "Request failed, no Employee ID provided!", 400
         cursor.execute("select * from Player where emp_ID = %s" % emp_ID)
@@ -56,13 +58,14 @@ class PlayerController():
         if not data:
             return "Player not found!", 404
 
-         # Get information on requested player by their emp_ID
-        player = getPlayerByID(mysql.connection, emp_ID, birthday_today)
-        
+        ##############################################################################################
+        # CHECK CURRENT LAST LOGIN, BIRTHDAY (Y/N) AND CONSECUTIVE DAYS
+        #
+        player = getPlayerByID(cursor, emp_ID, birthday_today)
         if player.last_login==today: # return the current stats, don't add XP when played already logged in today
             return player.toJSON(), 200
 
-        if getPlayerBirthdayByID(mysql.connection, emp_ID)[4:] == today.strftime("%Y%m%d")[4:]:
+        if getPlayerBirthdayByID(cursor, emp_ID)[4:] == today.strftime("%Y%m%d")[4:]:
             xp_to_add += 20 # When it's the players birthday: add 20XP and save birthday_today to add to the return object
             birthday_today = True
     
@@ -73,31 +76,52 @@ class PlayerController():
             if player.consecutive_days==2:
                 xp_to_add += 10  
 
-            if player.consecutive_days==5:
+            if player.consecutive_days==5: # Reset counter when player logged in for 5 days in a row
                 cursor.execute("UPDATE Player SET consecutive_days = 0 WHERE emp_ID = %s" % emp_ID) 
             else:
                 cursor.execute("UPDATE Player SET consecutive_days = %s WHERE emp_ID = %s" % (player.consecutive_days+1,emp_ID))
         
-        else:
+        else: # Reset counter if the last login wasn't on the last weekday
             cursor.execute("UPDATE Player SET consecutive_days = 0 WHERE emp_ID = %s" % emp_ID) 
-
-        if player.last_login.strftime("%Y%m%d")[:6] == today.strftime("%Y%m%d")[6:]: #Check if the most recent XP were gained this month (Has the player logged in this month?)
+        
+        ##############################################################################################
+        # UPDATE XP (PER MONTH AND IN TOTAL)
+        #
+        if player.last_login.strftime("%Y%m%d")[:6] == today.strftime("%Y%m%d")[:6]: #Check if the most recent XP were gained this month (Has the player logged in this month?)
             cursor.execute("UPDATE Player SET xp_Month = xp_Month + %s WHERE emp_ID = %s" % (xp_to_add,emp_ID)) # Update Monthly XP
         else:
             cursor.execute("UPDATE Player SET xp_Month = 0 + %s WHERE emp_ID = %s" % (xp_to_add,emp_ID)) # Update Monthly XP, when player hasn't logged in this month yet
 
         cursor.execute("UPDATE Player SET last_login = %s WHERE emp_ID = %s" % (today.strftime("%Y%m%d"),emp_ID)) # Update last login
         cursor.execute("UPDATE Player SET xp_Total = xp_Total + %s WHERE emp_ID = %s" % (xp_to_add,emp_ID)) # Update Total XP
-    
-        # Saving the changes made by the cursor
+
+        updated_player = getPlayerByID(cursor,emp_ID,birthday_today) # Get updated Player
+        
+        ##############################################################################################
+        # UPDATE HERO TABLE
+        #
+        hero_date = updated_player.last_login.strftime("%Y%m%d")
+        hero_xp = updated_player.xpMonth
+        
+        cursor.execute("SELECT * FROM Heros WHERE MONTH(Date)=%s AND YEAR(Date)=%s AND Xp_Month > %s" % (hero_date[4:6],hero_date[:4],hero_xp-1))
+        results = cursor.fetchall() # Get all Heros for current month (That have more XP than current user)
+        if len(results) <= 2: # If theres two or less, insert current user regardless of XP. If current user is the third hero, delete the hero with least XP so its still 3 in total
+            cursor.execute("INSERT INTO Heros(Emp_ID,Date,Xp_Month) VALUES (%s,%s,%s)" % (emp_ID,hero_date,hero_xp))
+            if len(results) == 2:
+                cursor.execute("DELETE FROM Heros WHERE MONTH(Date)=%s AND YEAR(Date)=%s ORDER BY XP_Month ASC LIMIT 1 " % (hero_date[4:6],hero_date[:4]))
+
+        ##############################################################################################
+        # SAVE CHANGES AND RETURN PLAYER AS JSON
+        #
         mysql.connection.commit()
-
-        updated_player = getPlayerByID(mysql.connection,emp_ID,birthday_today)
-
         cursor.close()
-
         return updated_player.toJSON(), 200 # Return Updated stats in JSON format
 
+
+    ''' New Entry Function used by the AI to push recognized Employees into an array
+    INPUT:  mysql connection, Employee ID
+    OUTPUT: Dict. of ID/Timestamp
+    '''
     def newEntry(self, mysql):
         
         args        = request.args
