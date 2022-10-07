@@ -29,8 +29,9 @@ correct_label = "Fredrik"
 color = (0, 255, 0)
 namecolor = (36, 255, 12)
 labels = ['Andreas', 'Fredrik', 'Glenn', 'Ina', 'Nordin', 'Peter']
-model = keras.models.load_model('models/noaug_N128.h5')
+model = keras.models.load_model('models/noaug_N256x256.h5')
 
+model.summary()
 
 detector = MTCNN() #model to detect faces
 if takepics:

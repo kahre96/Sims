@@ -9,10 +9,10 @@ epochs = 3000
 batch_size = 32
 patience = 5  # amount of epoch without improvement before early exit
 augmentation = 1  # 1.NO  2. keras augmentation 3. kerasv2 albumentation
-neurons = 4096
-dd_layer = False
+neurons = 256
+dd_layer = True
 ds_dir = "Images"  # location of the dataset
-modelname = "noaug_N4096x4096"  # name of the model when saved to disk as h5 file
+modelname = "noaug_N256x256"  # name of the model when saved to disk as h5 file
 VggBase = True  # true to use base pretrained model, # false to transfer learn one of our models
 tl_model = "VGG16_aug"  # enter name of model that will be used for transfer learning
 
