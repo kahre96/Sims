@@ -4,24 +4,29 @@ import keras
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D
-from keras.models import Model
 from keras.callbacks import ModelCheckpoint
 from keras.callbacks import EarlyStopping
 
 
-def TopModel(prev_model, num_classes, neurons):
+# creates top layers to add on top of the vgg base model
+def TopModel(prev_model, num_classes, neurons,ddlayer):
 
     top_model = prev_model.output
     top_model = Flatten(name="flatten")(top_model)
     top_model = Dense(neurons, activation="relu")(top_model)
     top_model = Dropout(0.1)(top_model)
+    if ddlayer:
+        top_model = Dense(neurons, activation="relu")(top_model)
+        top_model = Dropout(0.1)(top_model)
     top_model = Dense(num_classes, activation="softmax")(top_model)
 
     return top_model
 
 
+# imports the data used to train the model
 def import_data(aug, ds_dir, img_height, img_width, batch_size):
-    if (aug == 1):
+    train_ds = val_ds = None
+    if aug == 1:
         print("Training model without augmentation")
         normalization_layer = tf.keras.layers.Rescaling(1. / 255)
 
@@ -62,7 +67,7 @@ def import_data(aug, ds_dir, img_height, img_width, batch_size):
         val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
         # test_ds = test_ds.map(lambda x, y: (normalization_layer(x), y))
 
-    elif (aug == 2):
+    elif aug == 2:
         print("Training with augmented dataset")
         datagen = tf.keras.preprocessing.image.ImageDataGenerator(
             rescale=1 / 255,  # normalizations
@@ -88,7 +93,7 @@ def import_data(aug, ds_dir, img_height, img_width, batch_size):
             batch_size=batch_size,
             class_mode='categorical')
 
-    elif (aug == 3):
+    elif aug == 3:
         train_ds, val_ds, test_ds = kv2(batch_size, ds_dir)
     else:
         print("incorrect augmentation option")
@@ -96,8 +101,9 @@ def import_data(aug, ds_dir, img_height, img_width, batch_size):
 
     return train_ds, val_ds
 
-#creates a model using the pretrained base VGG16
-def create_model(img_height, img_width, num_classes, neurons):
+
+# creates a model using the pretrained base VGG16
+def create_basemodel(img_height, img_width):
 
     base_model = tf.keras.applications.vgg16.VGG16(
         include_top=False,
@@ -108,20 +114,16 @@ def create_model(img_height, img_width, num_classes, neurons):
     for layer in base_model.layers:
         layer.trainable = False
 
-    # Add custom layers on top of the model
+    return base_model
 
-    head = TopModel(base_model, num_classes, neurons)
-
-    theModel = Model(inputs=base_model.input, outputs=head, name='VGG16')
-
-    return theModel
 
 # loads a model saved in a h5 file
-def load_model(tlmodel):
-    print(f"Transfer learning on {tlmodel}")
-    return keras.models.load_model(f"models/{tlmodel}.h5")
+def load_model(tl_model):
+    print(f"Transfer learning on {tl_model}")
+    return keras.models.load_model(f"models/{tl_model}.h5")
 
 
+# creates save checkpoints and rules for early stop of the model
 def create_callbacks(patience):
 
     checkpoint = ModelCheckpoint("models/face_classifier.h5",

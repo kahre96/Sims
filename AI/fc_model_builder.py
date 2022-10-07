@@ -1,5 +1,6 @@
-import fc_model_builder_functions
+import fc_model_builder_functions as fc_f
 from keras.optimizers import Adam
+from keras.models import Model
 # tf.config.set_visible_devices([], 'GPU') #uncomment to force CPU
 
 img_height, img_width = 224, 224  # size of images
@@ -8,28 +9,31 @@ epochs = 3000
 batch_size = 32
 patience = 5  # amount of epoch without improvement before early exit
 augmentation = 1  # 1.NO  2. keras augmentation 3. kerasv2 albumentation
-neurons = 128
+neurons = 4096
+dd_layer = False
 ds_dir = "Images"  # location of the dataset
-modelname = "noaug_N128"  # name of the model when saved to disk as h5 file
-VggBase = True  #true to use base pretrained model, # false to transfer learn one of our models
-tlmodel = "VGG16_aug"  # enter name of model that will be used for transfer learning
+modelname = "noaug_N4096x4096"  # name of the model when saved to disk as h5 file
+VggBase = True  # true to use base pretrained model, # false to transfer learn one of our models
+tl_model = "VGG16_aug"  # enter name of model that will be used for transfer learning
 
 
-train_ds, val_ds = fc_model_builder_functions.import_data(augmentation, ds_dir, img_width, img_height, batch_size)
+train_ds, val_ds = fc_f.import_data(augmentation, ds_dir, img_width, img_height, batch_size)
 
 
 if VggBase:
-    face_classifier = fc_model_builder_functions.create_model(img_height, img_width, num_classes, neurons)
+    base_model = fc_f.create_basemodel(img_height, img_width)
 else:
-    face_classifier = fc_model_builder_functions.load_model(tlmodel)
+    base_model = fc_f.load_model(tl_model)
 
 
-callbacks = fc_model_builder_functions.create_callbacks(patience)
+head = fc_f.TopModel(base_model, num_classes, neurons, dd_layer)
 
-#face_classifier.summary()
+face_classifier = Model(inputs=base_model.input, outputs=head, name='VGG16')
 
-# ModelCheckpoint to save model in case of
-# interrupting the learning process
+callbacks = fc_f.create_callbacks(patience)
+
+face_classifier.summary()
+
 
 face_classifier.compile(loss='categorical_crossentropy',  # sparse_categorical_crossentropy
                         optimizer=Adam(learning_rate=0.01),
