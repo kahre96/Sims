@@ -97,7 +97,7 @@ from keras.optimizers import Adam
 
 # ModelCheckpoint to save model in case of
 # interrupting the learning process
-checkpoint = ModelCheckpoint("models/face_classifier.h5",
+checkpoint = ModelCheckpoint("../models/face_classifier.h5",
                              monitor="val_loss",
                              mode="min",
                              save_best_only=True,

@@ -4,12 +4,17 @@ from controllers.employeeController import employeecontroller
 from controllers.adminController import admincontroller
 from controllers.playerController import playercontroller
 
+db_password = '27amc81pqt01pab52mnc'
+db_name = 'emp_info'
+#db_password = ''
+#db_name = 'sims'
+
 # Define App and open connection to the mysql database
 app = Flask(__name__)
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'sims'
+app.config['MYSQL_HOST']        = 'localhost'
+app.config['MYSQL_USER']        = 'root'
+app.config['MYSQL_PASSWORD']    = db_password
+app.config['MYSQL_DB']          = db_name
 mysql = MySQL(app)
 
 # Route to create employees and get their name based on ID
@@ -25,5 +30,10 @@ def admin():
 @app.route('/dailyLogin', methods = ['GET','POST'])
 def dailyLogin():
     return playercontroller.dailyLogin(mysql)
+
+@app.route('/employee/newEntry', methods = ['GET', 'POST'])
+def newEntries():
+    return playercontroller.newEntry(mysql)
+
 
 app.run(host='localhost', port=5000)

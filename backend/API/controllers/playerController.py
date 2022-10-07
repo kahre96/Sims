@@ -1,6 +1,7 @@
 from models.player import Player
 from flask import request
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
+import json
 import sys
 sys.path.append("../models")
 
@@ -31,6 +32,9 @@ def getPlayerBirthdayByID(connection, emp_ID):
 
 
 class PlayerController():
+    def __init__(self):
+        self.newEntries = {}
+        self.xp_per_level = 50
 
     def dailyLogin(self, mysql):
 
@@ -46,7 +50,7 @@ class PlayerController():
         args = request.args
         emp_ID = args.get("emp_ID", default="NULL", type=int)
 
-        # Check if existing employee ID was passed
+        # What is id here? Do you mean emp_id? //Peter [22-10-06]
         if id == "NULL":
             return "Request failed, no Employee ID provided!", 400
         cursor.execute("select * from Player where emp_ID = %s" % emp_ID)
@@ -90,6 +94,36 @@ class PlayerController():
         cursor.close()
 
         return updated_player.toJSON(), 200 # Return Updated stats in JSON format
+
+    def newEntry(self, mysql):
+        
+        args        = request.args
+        emp_id      = args.get("emp_id", default="NULL", type=str) 
+        timestamp   = 0
+        if emp_id == "NULL":
+            return "Request failed, no Employee ID provided!", 400
+       
+        with mysql.connection.cursor() as cursor:
+            sql = """
+            SELECT p.player_id, CONCAT(firstname," ",lastname), r.name, p.xp_total, xp_month FROM employee e, player p, ranking r
+            WHERE e.emp_id=%s AND (p.emp_id = e.emp_id) AND (p.ranking_id = r.ranking_id)"""
+            cursor.execute(sql, emp_id)
+            result      = cursor.fetchone()
+            if not result:
+                return "Player not found!", 404
+
+            dt          = datetime.now()
+            timestamp   = dt.strftime("%Y-%m-%d %H:%M:%S")
+            print(timestamp)
+            player_id, display_name, ranking, xp_total, xp_month = result[0], result[1], result[2], result[3], result[4]
+            self.newEntries[emp_id] = timestamp
+
+            for key, value in self.newEntries.items():
+                print(key, ":" , value)
+
+            cursor.close()
+            return {"emp_id":emp_id, "player_id":player_id, "name":display_name, "rank":ranking, "total_xp":xp_total, "month_xp":xp_month}, 200
+
 
 playercontroller = PlayerController()
 
