@@ -17,149 +17,16 @@
   <!-- Place favicon.ico in the root directory -->
   <!-- CSS only -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-icons.min.css">
   <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/stilmall.css" type="text/css">
+  <link rel="stylesheet" href="css/main.css">
 
   <meta name="theme-color" content="#fafafa">
 </head>
 
 <body>
 
-<div class="bg-container">
-  <div class="left-column">
-    <div class="header">
-      <img id="logo" src="resources/Logotype-Knowit-Digital-black.png" alt="Knowit logga">
-
-      <div id="date"></div>
-
-      <a class="weatherwidget-io" href="https://forecast7.com/sv/62d3917d31/sundsvall/" data-icons="Climacons Animated" data-days="3" data-textcolor="#333333" data-highcolor="#333333" data-lowcolor="#333333" data-suncolor="#fef72f" data-mooncolor="#c3c3c3" data-cloudcolor="#7c7c7c" data-cloudfill="#cccccc" data-raincolor="#004d77" data-snowcolor="#ffffff" >Sundsvall, Sweden</a>
-      <script>
-        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
-      </script>
-    </div>
-
-    <div class="backbody">
-      <div class="people-box">
-        <div id="person-1">
-          <div class="top">
-            <img id="img-1" src="resources/among-us-41771.png" alt="Person 1">
-            <h3>Godmorgon Björn!</h3>
-          </div>
-          <div class="greeting-box">
-            <p id="greeting">
-              Du ser helt fantastisk ut i dag!
-            </p>
-          </div>
-          <div class="bottom">
-            Level X
-            <div class="barcontainer">
-              <div class="bar">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="person-2">
-          <div class="top">
-            <img id="img-rest" src="resources/among-us-41771.png" alt="Person 2">
-            <h3>Godmorgon Björn!</h3>
-          </div>
-          <div class="greeting-box">
-            <p id="greeting">
-              Du ser helt fantastisk ut i dag!
-            </p>
-          </div>
-          <div class="bottom">
-            Level X
-            <div class="barcontainer">
-              <div class="bar">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="person-3">
-          <div class="top">
-            <img id="img-rest" src="resources/among-us-41771.png" alt="Person 3">
-            <h3>Godmorgon Björn!</h3>
-          </div>
-          <div class="greeting-box">
-            <p id="greeting">
-              Du ser helt fantastisk ut i dag!
-            </p>
-          </div>
-          <div class="bottom">
-            Level X
-            <div class="barcontainer">
-              <div class="bar">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="person-4">
-          <div class="top">
-            <img id="img-rest" src="resources/among-us-41771.png" alt="Person 4">
-            <h3>Godmorgon Björn!</h3>
-          </div>
-          <div class="greeting-box">
-            <p id="greeting">
-              Du ser helt fantastisk ut i dag!
-            </p>
-          </div>
-          <div class="bottom">
-            Level X
-            <div class="barcontainer">
-              <div class="bar">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="person-5">
-          <div class="top">
-            <img id="img-rest" src="resources/among-us-41771.png" alt="Person 5">
-            <h3>Godmorgon Björn!</h3>
-          </div>
-          <div class="greeting-box">
-            <p id="greeting">
-              Du ser helt fantastisk ut i dag!
-            </p>
-          </div>
-          <div class="bottom">
-            Level X
-            <div class="barcontainer">
-              <div class="bar">
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <div class="right-column">
-    <div class="news-box">
-      <div class="news-text">
-        <h2>Nyheter</h2>
-        News and empty meeting rooms <br>
-        Ta in från intranät <br>
-        Ta in från nyhetssida
-      </div>
-      <div class="rooms">
-        <h2>Lediga rum</h2>
-        Ta in lediga mötesrum från Outlook med ett dummy-konto <br>
-        Mötesrum lediga just nu och nästa bokade tid, nånting sånt
-      </div>
-      <div class="leaderboard">
-        <h2>Månadens hjältar</h2>
-        <img id="podium" src="resources/podium.png">
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- Add your site or application content here -->
 <div class="container scrolling-track-container">
@@ -204,27 +71,255 @@
   </div>
 </div>
 <!--           CONTENT LAYOUT          -->
-<!--<nav class="row">-->
-<!--  <div class="col-12">-->
-<!--    Knowit nav - weather-->
-<!--  </div>-->
-<!--</nav>-->
-<!--<section id="content-container" class="row knowit-content text-danger">-->
-<!--  <div class="col-10 profiles-container">-->
-<!--    recognition user profiles-->
-<!--  </div>-->
-<!--  <aside class="col-2 sidebar-container">-->
-<!--    <section id="news-widget">news and tips</section>-->
-<!--    <section id="winners-widget">last months winners</section>-->
-<!--  </aside>-->
-<!--</section>-->
+<section class="container knw-content">
+  <div class="row">
+    <div class="col p-0 m-0">
+      <section class="container knw-header">
+        <div class="row p-0 m-0">
+          <header class="col-12 p-0 m-0">
+            <div class="header m-0 pl-4 rounded-0">
+              <img id="logo" src="resources/Logotype-Knowit-Digital-black.png" alt="Knowit logga">
 
-<script src="js/jquery-3.6.1.min.js"></script>
+              <div id="date"></div>
+
+              <a class="weatherwidget-io" href="https://forecast7.com/sv/62d3917d31/sundsvall/"
+                 data-icons="Climacons Animated"
+                 data-days="3" data-textcolor="#333333" data-highcolor="#333333" data-lowcolor="#333333"
+                 data-suncolor="#fef72f"
+                 data-mooncolor="#c3c3c3" data-cloudcolor="#7c7c7c" data-cloudfill="#cccccc" data-raincolor="#004d77"
+                 data-snowcolor="#ffffff">Sundsvall, Sweden</a>
+              <script>
+                !function (d, s, id) {
+                  var js, fjs = d.getElementsByTagName(s)[0];
+                  if (!d.getElementById(id)) {
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = 'https://weatherwidget.io/js/widget.min.js';
+                    fjs.parentNode.insertBefore(js, fjs);
+                  }
+                }(document, 'script', 'weatherwidget-io-js');
+              </script>
+            </div>
+          </header>
+        </div>
+        <section class="row px-4" id="people-box">
+        </section>
+      </section>
+    </div>
+    <aside class="col p-0 m-0 knw-sidebar">
+      <div class="news-box p-0 m-0 rounded-0 position-relative">
+        <ul class="list-group">
+          <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><i class="bi bi-newspaper"></i> Nyheter
+            - intranät
+          </li>
+          <li href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">List group item heading</h5>
+              <small>3 days ago</small>
+            </div>
+            <p class="mb-1">Some placeholder content in a paragraph.</p>
+            <small>And some small print.</small>
+          </li>
+        </ul>
+        <ul class="list-group">
+          <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><i class="bi bi-info-circle"></i>
+            Nyheter - extern
+          </li>
+          <li href="#" class="list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">List group item heading</h5>
+              <small>3 days ago</small>
+            </div>
+            <p class="mb-1">Some placeholder content in a paragraph.</p>
+            <small>And some small print.</small>
+          </li>
+        </ul>
+        <ul class="list-group">
+          <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><i class="bi bi-calendar-week"></i>
+            Lediga rum
+          </li>
+          <li class="list-group-item">Ta in lediga mötesrum från Outlook med ett dummy-konto
+            Mötesrum lediga just nu och nästa bokade tid, nånting sånt
+          </li>
+        </ul>
+        <ul class="list-group position-absolute bottom-0">
+          <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><i class="bi bi-trophy"></i> Månadens
+            hjältar
+          </li>
+          <img id="podium" src="resources/podium.png">
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+
+<!-- Theme settings-->
+<button class="btn bg-white anim-setting-open" type="button" data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvasBottom"
+        aria-controls="offcanvasBottom">
+  <i class="bi bi-gear-fill"></i>
+  <i class="bi bi-arrow-up-short"></i>
+</button>
+<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+  <div class="offcanvas-header">
+    <button type="button" class="btn text-reset anim-setting-close bg-white" data-bs-dismiss="offcanvas"
+            aria-label="Close">
+      <i class="bi bi-gear-fill"></i>
+      <i class="bi bi-arrow-down-short"></i>
+    </button>
+  </div>
+  <div class="offcanvas-body small">
+    <div class="card text-dark bg-light mb-3">
+      <h4 class="card-header"><i class="bi bi-paint-bucket"></i> Themes setup</h4>
+      <div class="card-body">
+        <div class="alert alert-info" role="alert">
+          Override seasonal theme by picking a theme from the below list.
+        </div>
+        <form action="#">
+          <div class="input-group mb-3">
+            <span class="input-group-text">
+              <input class="form-check-input" type="radio" value="seasonal" checked name="set-theme"
+                     id="seasonal-theme-radio">
+            </span>
+            <input class="form-control form-control-lg" type="text" value="Random seasonal theme: summer - Beach"
+                   name="current-theme" id="seasonal-theme-current" disabled>
+          </div>
+          <div class="input-group mb-3">
+          <span class="input-group-text">
+            <input class="form-check-input" type="radio" value="override" name="set-theme" id="override-theme-radio">
+
+          </span>
+            <select id="override-theme-select" class="form-select form-select-lg"
+                    aria-label=".form-select-lg" disabled>
+              <option selected>Override theme</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="card text-dark bg-light mb-3">
+      <h4 class="card-header"><i class="bi bi-palette"></i> Create new theme</h4>
+      <div class="card-body">
+        <div class="alert alert-info" role="alert">
+          Create new themes by uploading your background and props to spawn into layers.
+        </div>
+        <!--        <div class="recipe">-->
+        <!--          <div class="recipe__ingredients">-->
+        <!--            <table cellpadding="0" cellspacing="0" border="0" class="recipe-table" id="recipeTable">-->
+        <!--              <tbody id="recipeTableBody">-->
+        <!--              <tr>-->
+        <!--                <td class="drag-handler"></td>-->
+        <!--                <td class="recipe-table__cell">-->
+        <!--                  <input type="text" class="recipe__text-field" value="Large bananas" placeholder="Ingredient">-->
+        <!--                </td>-->
+        <!--                <td class="recipe-table__cell">-->
+        <!--                  <input type="text" class="recipe__text-field" value="3" placeholder="Value">-->
+        <!--                </td>-->
+        <!--                <td class="recipe-table__cell">-->
+        <!--                  <button class="recipe-table__del-row-btn">x</button>-->
+        <!--                </td>-->
+        <!--              </tr>-->
+        <!--              <tr>-->
+        <!--                <td class="drag-handler"></td>-->
+        <!--                <td class="recipe-table__cell">-->
+        <!--                  <input type="text" class="recipe__text-field" value="White sugar" placeholder="Ingredient">-->
+        <!--                </td>-->
+        <!--                <td class="recipe-table__cell">-->
+        <!--                  <input type="text" class="recipe__text-field" value="¹⁄₂" placeholder="Value">-->
+        <!--                </td>-->
+        <!--                <td class="recipe-table__cell">-->
+        <!--                  <button class="recipe-table__del-row-btn">x</button>-->
+        <!--                </td>-->
+        <!--              </tr>-->
+        <!--              <tr>-->
+        <!--                <td class="drag-handler"></td>-->
+        <!--                <td class="recipe-table__cell">-->
+        <!--                  <input type="text" class="recipe__text-field" value="Egg" placeholder="Ingredient">-->
+        <!--                </td>-->
+        <!--                <td class="recipe-table__cell">-->
+        <!--                  <input type="text" class="recipe__text-field" value="1" placeholder="Value">-->
+        <!--                </td>-->
+        <!--                <td class="recipe-table__cell">-->
+        <!--                  <button class="recipe-table__del-row-btn">x</button>-->
+        <!--                </td>-->
+        <!--              </tr>-->
+        <!--              </tbody>-->
+        <!--            </table>-->
+        <!--            <div class="recipe-table__add-row">-->
+        <!--              <span class="recipe-table__add-row-btn">+</span>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
+        <!--        <ul id="sortable" class="list-group list-unstyled">-->
+        <!--          <li class="list-group-item active"><input type="text" class="recipe__text-field" value=""-->
+        <!--                                                    placeholder="Ingredient"></li>-->
+        <!--          <li class="list-group-item"><input type="text" class="recipe__text-field" value="" placeholder="Ingredient">-->
+        <!--          </li>-->
+        <!--          <li class="list-group-item"><input type="text" class="recipe__text-field" value="" placeholder="Ingredient">-->
+        <!--          </li>-->
+        <!--          <li class="list-group-item"><input type="text" class="recipe__text-field" value="" placeholder="Ingredient">-->
+        <!--          </li>-->
+        <!--          <li class="list-group-item"><input type="text" class="recipe__text-field" value="" placeholder="Ingredient">-->
+        <!--          </li>-->
+        <!--        </ul>-->
+
+        <ol id="sortable" class="list-group list-group-numbered">
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Subheading lorem</div>
+              Cras justo odio
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Subheading ipsum</div>
+              Cras justo odio
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Subheading dolor</div>
+              Cras justo odio
+            </div>
+            <button class="del-layer">
+              <i class="bi bi-trash"></i>
+            </button>
+          </li>
+        </ol>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/vendor/jquery-3.6.1.min.js"></script>
+<script src="js/vendor/jquery-ui.min.js"></script>
+<script src="js/vendor/chart.js"></script>
 <script src="js/vendor/modernizr-3.11.2.min.js"></script>
 <script src="js/plugins.js"></script>
 <!-- JavaScript Bundle with Popper -->
-<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/vendor/bootstrap.bundle.min.js"></script>
 <script src="js/main.js"></script>
 
+<!-- templates -->
+<script id="rowTemplate" type="text/template">
+  <tr>
+    <td class="drag-handler"></td>
+    <td class="recipe-table__cell">
+      <input type="text" class="recipe__text-field" value="" placeholder="Ingredient">
+    </td>
+    <td class="recipe-table__cell">
+      <input type="text" class="recipe__text-field" value="" placeholder="Value">
+    </td>
+    <td class="recipe-table__cell">
+      <button class="recipe-table__del-row-btn">x</button>
+    </td>
+  </tr>
+</script>
 </body>
 </html>
