@@ -29,8 +29,6 @@ def getPlayerBirthdayByID(connection, emp_ID):
         return employee[0].strftime("%Y%m%d")
 
 
-
-
 class PlayerController():
     def __init__(self):
         self.newEntries = {}
@@ -50,8 +48,8 @@ class PlayerController():
         args = request.args
         emp_ID = args.get("emp_ID", default="NULL", type=int)
 
-        # What is id here? Do you mean emp_id? //Peter [22-10-06]
-        if id == "NULL":
+        # Check if existing player ID is passed 
+        if emp_ID == "NULL":
             return "Request failed, no Employee ID provided!", 400
         cursor.execute("select * from Player where emp_ID = %s" % emp_ID)
         data = cursor.fetchall()
@@ -83,8 +81,13 @@ class PlayerController():
         else:
             cursor.execute("UPDATE Player SET consecutive_days = 0 WHERE emp_ID = %s" % emp_ID) 
 
+        if player.last_login.strftime("%Y%m%d")[:6] == today.strftime("%Y%m%d")[6:]: #Check if the most recent XP were gained this month (Has the player logged in this month?)
+            cursor.execute("UPDATE Player SET xp_Month = xp_Month + %s WHERE emp_ID = %s" % (xp_to_add,emp_ID)) # Update Monthly XP
+        else:
+            cursor.execute("UPDATE Player SET xp_Month = 0 + %s WHERE emp_ID = %s" % (xp_to_add,emp_ID)) # Update Monthly XP, when player hasn't logged in this month yet
+
         cursor.execute("UPDATE Player SET last_login = %s WHERE emp_ID = %s" % (today.strftime("%Y%m%d"),emp_ID)) # Update last login
-        cursor.execute("UPDATE Player SET xp_Total = xp_Total + %s WHERE emp_ID = %s" % (xp_to_add,emp_ID)) # Update XP
+        cursor.execute("UPDATE Player SET xp_Total = xp_Total + %s WHERE emp_ID = %s" % (xp_to_add,emp_ID)) # Update Total XP
     
         # Saving the changes made by the cursor
         mysql.connection.commit()
@@ -98,16 +101,16 @@ class PlayerController():
     def newEntry(self, mysql):
         
         args        = request.args
-        emp_id      = args.get("emp_id", default="NULL", type=str) 
+        emp_ID      = args.get("emp_ID", default="NULL", type=str) 
         timestamp   = 0
-        if emp_id == "NULL":
+        if emp_ID == "NULL":
             return "Request failed, no Employee ID provided!", 400
        
         with mysql.connection.cursor() as cursor:
             sql = """
             SELECT p.player_id, CONCAT(firstname," ",lastname), r.name, p.xp_total, xp_month FROM employee e, player p, ranking r
-            WHERE e.emp_id=%s AND (p.emp_id = e.emp_id) AND (p.ranking_id = r.ranking_id)"""
-            cursor.execute(sql, emp_id)
+            WHERE e.emp_ID=%s AND (p.emp_ID = e.emp_ID) AND (p.ranking_id = r.ranking_id)"""
+            cursor.execute(sql, emp_ID)
             result      = cursor.fetchone()
             if not result:
                 return "Player not found!", 404
@@ -116,13 +119,13 @@ class PlayerController():
             timestamp   = dt.strftime("%Y-%m-%d %H:%M:%S")
             print(timestamp)
             player_id, display_name, ranking, xp_total, xp_month = result[0], result[1], result[2], result[3], result[4]
-            self.newEntries[emp_id] = timestamp
+            self.newEntries[emp_ID] = timestamp
 
             for key, value in self.newEntries.items():
                 print(key, ":" , value)
 
             cursor.close()
-            return {"emp_id":emp_id, "player_id":player_id, "name":display_name, "rank":ranking, "total_xp":xp_total, "month_xp":xp_month}, 200
+            return {"emp_ID":emp_ID, "player_id":player_id, "name":display_name, "rank":ranking, "total_xp":xp_total, "month_xp":xp_month}, 200
 
 
 playercontroller = PlayerController()
