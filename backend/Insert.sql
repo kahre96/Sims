@@ -24,9 +24,20 @@ INSERT INTO Player(emp_ID, xp_total, xp_month, level) VALUES (3,145, 15, 3);
 INSERT INTO Player(emp_ID, xp_total, xp_month, level) VALUES (2,45, 30, 1);
 INSERT INTO Player(emp_ID, xp_total, xp_month, level) VALUES (1,115, 20, 3);
 
-INSERT INTO Query VALUES ("SELECT * FROM employee AS e, player AS p WHERE e.emp_ID = p.emp_ID GROUP BY xp_total DESC;", 2);
-INSERT INTO Query VALUES ("SELECT * FROM employee;", 5);
-INSERT INTO Query VALUES ("SELECT * FROM employee WHERE lastname=s%;", 12);
+INSERT INTO Data(Month) VALUES("januari");
+INSERT INTO Data(Month) VALUES("februari");
+INSERT INTO Data(Month) VALUES("mars");
+INSERT INTO Data(Month) VALUES("april");
+INSERT INTO Data(Month) VALUES("maj");
+INSERT INTO Data(Month) VALUES("juni");
+INSERT INTO Data(Month) VALUES("juli");
+INSERT INTO Data(Month) VALUES("augusti");
+INSERT INTO Data(Month) VALUES("september");
+INSERT INTO Data(Month) VALUES("oktober");
+INSERT INTO Data(Month) VALUES("november");
+INSERT INTO Data(Month) VALUES("december");
+
+INSERT INTO Player_in_Data(player_id, data_id, xp_month) VALUES(1,10,20);
 
 
 INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (2,1, 1, 100,0, STR_TO_DATE('20221003', '%Y%m%d'), 1);

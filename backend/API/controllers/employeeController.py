@@ -12,11 +12,11 @@ class EmployeeController():
         # Creating a connection cursor to the database
         cursor = mysql.connection.cursor()
         # Get Parameters from the Request 
-        args = request.args
-        firstname = args.get("firstname", default="NULL", type=str)
-        lastname = args.get("lastname", default="NULL", type=str)
-        birthdate = args.get("birthdate", default ="NULL", type=str)
-        id=args.get("id", default = "NULL", type=int)
+        args        = request.args
+        firstname   = args.get("firstname", default="NULL", type=str)
+        lastname    = args.get("lastname", default="NULL", type=str)
+        birthdate   = args.get("birthdate", default ="NULL", type=str)
+        id          = args.get("id", default = "NULL", type=int)
 
         # Post: Create Employee based on First- and Lastname, birthdate and ID
         if request.method == 'POST':
@@ -39,6 +39,7 @@ class EmployeeController():
             elif (input_month % 2 == 0 and input_month < 7 or input_month % 2 == 1 and input_month > 8) and input_day > 30:
                 return ("Sorry February, April, June, September, and November does not have {} days, 30 is maximum".format(input_day)),400
             
+            # Could we remove the connection as an argument?
             user = Employee(id, firstname.lower(), lastname.lower(), birthdate, mysql.connection)
 
             # Adding Employee into DB
@@ -57,6 +58,7 @@ class EmployeeController():
         cursor.close()
     
         return ("User " + firstname + " with ID " + str(id) + " was successfully created!"), 201 # Return Name and 201, created
+
 
     
 employeecontroller = EmployeeController()            
