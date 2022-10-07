@@ -1,7 +1,6 @@
 from models.player import Player
 from flask import request
 from datetime import date, timedelta
-import json
 import sys
 sys.path.append("../models")
 
@@ -29,6 +28,8 @@ def getPlayerBirthdayByID(connection, emp_ID):
         return employee[0].strftime("%Y%m%d")
 
 
+
+
 class PlayerController():
 
     def dailyLogin(self, mysql):
@@ -45,6 +46,7 @@ class PlayerController():
         args = request.args
         emp_ID = args.get("emp_ID", default="NULL", type=int)
 
+        # Check if existing employee ID was passed
         if id == "NULL":
             return "Request failed, no Employee ID provided!", 400
         cursor.execute("select * from Player where emp_ID = %s" % emp_ID)
@@ -55,14 +57,14 @@ class PlayerController():
          # Get information on requested player by their emp_ID
         player = getPlayerByID(mysql.connection, emp_ID, birthday_today)
         
-        if player.last_login==today:
+        if player.last_login==today: # return the current stats, don't add XP when played already logged in today
             return player.toJSON(), 200
 
         if getPlayerBirthdayByID(mysql.connection, emp_ID)[4:] == today.strftime("%Y%m%d")[4:]:
-            xp_to_add += 20
+            xp_to_add += 20 # When it's the players birthday: add 20XP and save birthday_today to add to the return object
             birthday_today = True
     
-        if player.last_login==last_weekday:
+        if player.last_login==last_weekday: # Only increment consecutive days if the last login was on the last weekday 
             if player.consecutive_days==4:
                 xp_to_add += 20
             
@@ -77,8 +79,8 @@ class PlayerController():
         else:
             cursor.execute("UPDATE Player SET consecutive_days = 0 WHERE emp_ID = %s" % emp_ID) 
 
-        cursor.execute("UPDATE Player SET last_login = %s WHERE emp_ID = %s" % (today.strftime("%Y%m%d"),emp_ID))
-        cursor.execute("UPDATE Player SET xp_Total = xp_Total + %s WHERE emp_ID = %s" % (xp_to_add,emp_ID))
+        cursor.execute("UPDATE Player SET last_login = %s WHERE emp_ID = %s" % (today.strftime("%Y%m%d"),emp_ID)) # Update last login
+        cursor.execute("UPDATE Player SET xp_Total = xp_Total + %s WHERE emp_ID = %s" % (xp_to_add,emp_ID)) # Update XP
     
         # Saving the changes made by the cursor
         mysql.connection.commit()
@@ -87,7 +89,7 @@ class PlayerController():
 
         cursor.close()
 
-        return updated_player.toJSON(), 200
+        return updated_player.toJSON(), 200 # Return Updated stats in JSON format
 
 playercontroller = PlayerController()
 
