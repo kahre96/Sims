@@ -5,6 +5,7 @@ from facenet_pytorch import MTCNN
 import matplotlib.pyplot as plt
 import cv2
 from PIL import Image
+import pickle
 
 #tf.config.set_visible_devices([], 'GPU')
 gpus = tf.config.experimental.list_physical_devices('GPU')
@@ -28,7 +29,7 @@ takepics = False  # decide if you want to take pics or not
 correct_label = "Fredrik"
 color = (0, 255, 0)
 namecolor = (36, 255, 12)
-labels = ['Andreas', 'Fredrik', 'Glenn', 'Ina', 'Nordin', 'Peter']
+labels = pickle.loads(open('labels.pickle', "rb").read()) ## load the pickle file with labels
 model = keras.models.load_model('models/noaug_N256x256.h5')
 
 model.summary()
