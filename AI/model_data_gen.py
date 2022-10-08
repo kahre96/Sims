@@ -2,18 +2,16 @@ import os
 import numpy as np
 import random
 import tensorflow as tf
-import keras
 import pandas as pd
 from keras.callbacks import ModelCheckpoint
 from keras.callbacks import EarlyStopping
 from keras.optimizers import Adam
 from PIL import Image
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Activation, Flatten
-from keras.layers import Conv2D, MaxPooling2D, ZeroPadding2D
+from keras.layers import Dense, Dropout, Flatten
 from keras.models import Model
 import albumentations as alb
 import matplotlib.pyplot as plt
+import pickle
 
 
 class createDataset():
@@ -37,11 +35,15 @@ class createDataset():
         self.class_names = sorted(os.listdir(self.directory))
     
     def setDataset(self):
+        class_names = self.class_names # this will save the labels for the model
+        f = open('labels.pickle', "wb")
+        f.write(pickle.dumps(class_names))
+        f.close()        
         i = 0
         if self.cat == False:
-            class_number = np.unique(self.class_names, return_inverse=True)[1] ## label encoding
+            class_number = np.unique(self.class_names, return_inverse=True)[1] # label encoding
         else:
-            class_number = np.array(pd.get_dummies(self.class_names).T) ## one hot 
+            class_number = np.array(pd.get_dummies(self.class_names).T) # one hot 
         for labels in self.class_names:   
             i+=1
             for img in os.listdir(os.path.join(self.directory,labels)):
@@ -51,7 +53,7 @@ class createDataset():
 
 
 
-## train and val split. Shuffles the list.
+# train and val split. Shuffles the list.
 
 def train_val_split(data, trainsize):
     data = random.sample(data, len(data))
@@ -62,7 +64,7 @@ def train_val_split(data, trainsize):
 
 
 
-## model class
+# model class
 
 class model():
     def __init__(self, num_classes, loss, base_model, learning_rate, neuron1, neuron2):
@@ -99,20 +101,20 @@ class model():
 
 
 
-## albumentation pipeline
+# albumentation pipeline
 
 transformer = alb.Compose([
     alb.RandomBrightnessContrast(brightness_limit=(-0.35, 0.35), contrast_limit=(-0.35, 0.35), p=0.3),
-    ## brightness and contrast in range (-0.3 and 0.7)
-    alb.HorizontalFlip(p=0.3),  ## flip picture vertical
-    alb.geometric.rotate.Rotate(limit=[-5, 5], p=0.3),  ## Rotate 10 degrees left or right
+    # brightness and contrast in range (-0.3 and 0.7)
+    alb.HorizontalFlip(p=0.3),  # flip picture vertical
+    alb.geometric.rotate.Rotate(limit=[-5, 5], p=0.3),  # Rotate 10 degrees left or right
     alb.RandomGamma(p=0.3)
 ])
 
 
 
 
-## Data generator
+# Data generator
 
 
 class CustomDataGen(tf.keras.utils.Sequence):
@@ -124,7 +126,7 @@ class CustomDataGen(tf.keras.utils.Sequence):
     """
     
     def __init__(self, normalization, transformer, data, batch_size, shuffle = True):
-        self.data = random.sample(data, len(data)) ## shuffles the list again
+        self.data = random.sample(data, len(data)) # shuffles the list again
         self.batch_size = batch_size
         self.n = int(len(self.data))
         self.indices = list(range(0, len(self.data)))
@@ -152,9 +154,9 @@ class CustomDataGen(tf.keras.utils.Sequence):
             image = np.array(image)
             image = self.img_aug(image)
             if self.normalization == 'minmax':
-                image = self.minmaxnorm(image) ## min-max-normalization
+                image = self.minmaxnorm(image) # min-max-normalization
             else:
-                image = self.znorm(image) ## mean std normalization
+                image = self.znorm(image) # mean std normalization
             X.append(image)
         return X,data_y
     
@@ -183,36 +185,35 @@ class CustomDataGen(tf.keras.utils.Sequence):
         return self.n // self.batch_size
 
 
-####
 
-## get base model(VGG16)
+# get base model(VGG16)
 base_model= tf.keras.applications.VGG16(include_top=False,weights='imagenet',input_shape=(224, 224, 3))
 
-## create the new model. Calls the model class. Set learning rate, loss function ('Sparse' if using label encoding, 'Cat' if using one hot)
-## the model is created with two dense layers. Define the number of neurons(neuron1 and neuron2)
+# create the new model. Calls the model class. Set learning rate, loss function ('Sparse' if using label encoding, 'Cat' if using one hot)
+# the model is created with two dense layers. Define the number of neurons(neuron1 and neuron2)
 newModel = model(num_classes = 6, loss = 'Sparse', base_model = base_model, learning_rate = 0.001, neuron1 = 32, neuron2 = 32).model()
 
-## create the dataset
-## set the directory for images
-## set cat = False for label encoding, set cat = True for one hot. Remember to change loss accordingly to the created dataset.
+# create the dataset
+# set the directory for images
+# set cat = False for label encoding, set cat = True for one hot. Remember to change loss accordingly to the created dataset.
 directory = 'PATH HERE'
 dataset = createDataset(directory, cat = False).setDataset()
 
-## get the train and val dataset
-## set the train size
+# get the train and val dataset
+# set the train size
 train,val= train_val_split(dataset, 0.7)
 
 
-## create the generators for training and validation data
-## set normalization to 'znorm' for mean std normalization.
-## set normalization to 'minmax' for min max normalization
-## each normalization is done per image and not per batch.
+# create the generators for training and validation data
+# set normalization to 'znorm' for mean std normalization.
+# set normalization to 'minmax' for min max normalization
+# each normalization is done per image and not per batch.
 training = CustomDataGen(data = train, batch_size =32,normalization = 'minmax',transformer = transformer)
 validation = CustomDataGen(data = val, batch_size =32,normalization = 'minmax',transformer = transformer)
 
 
-## model.fit
-## set epochs and patience for the callbacks
+# model.fit
+# set epochs and patience for the callbacks
 epochs = 200
 patience = 20
 # callbacks from keras
@@ -239,7 +240,7 @@ history = newModel.fit(training,epochs=epochs,callbacks=callbacks,validation_dat
 
 
 ### PLOTTS.
-## this will plot the accuracy and val_accuracy in one plot and loss and val_loss in another (this can be good for the report)
+# this will plot the accuracy and val_accuracy in one plot and loss and val_loss in another (this can be good for the report)
 
 
 fig, axs = plt.subplots(2, 1,figsize=(30,20))
