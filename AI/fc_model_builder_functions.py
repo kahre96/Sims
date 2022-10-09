@@ -157,14 +157,16 @@ def plot_epochs(history):
     s1 = history.history['loss']
     s2 = history.history['val_loss']
 
-    axs[0].plot(t1)
-    axs[0].plot(t2)
+    axs[0].plot(t1, label="accuracy")
+    axs[0].plot(t2, label="val_accuracy")
     axs[0].set_xlabel('epochs')
     axs[0].set_ylabel('accuracy and val_accuracy')
     axs[0].grid(True)
-    axs[1].plot(s1)
-    axs[1].plot(s2)
+    axs[0].legend()
+    axs[1].plot(s1, label="loss")
+    axs[1].plot(s2, label="val_loss")
     axs[1].set_xlabel('epochs')
     axs[1].set_ylabel('loss and val_loss')
     axs[1].grid(True)
+    axs[1].legend()
     plt.show()

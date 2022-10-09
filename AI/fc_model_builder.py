@@ -7,11 +7,11 @@ from keras.models import Model
 
 img_height, img_width = 224, 224  # size of images
 num_classes = 7  # amount of people
-epochs = 3000
+epochs = 3
 batch_size = 32
 patience = 5  # amount of epoch without improvement before early exit
 augmentation = "noaug"  # 1.noaug  2."kaug" for keras augmentation
-neurons = 256
+neurons = 128
 dd_layer = True
 ds_dir = "Images"  # location of the dataset
 VggBase = True  # true to use base pretrained model, # false to transfer learn one of our models
@@ -24,8 +24,8 @@ if dd_layer:
 
 fc_f.save_labels(ds_dir)
 
-modelname = f"{ds_dir}_a{augmentation}_wGlasses_N{neurons}{name_add}"  # name of the model when saved to disk as h5 file
-
+#modelname = f"{ds_dir}_a{augmentation}_wGlasses_N{neurons}{name_add}"  # name of the model when saved to disk as h5 file
+modelname = "asdasd"
 
 train_ds, val_ds = fc_f.import_data(augmentation,ds_dir, img_width, img_height, batch_size)
 
