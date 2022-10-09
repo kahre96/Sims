@@ -6,14 +6,18 @@ import matplotlib.pyplot as plt
 import cv2
 from PIL import Image
 import pickle
+import collections as col
 
 takepics = False  # decide if you want to take pics or not
 correct_label = "Fredrik"
 color = (0, 255, 0)
 namecolor = (36, 255, 12)
-labels=['Andreas','Fredrik','Glenn','Ina','Nordin', "Peter"]
-#labels = pickle.loads(open('labels.pickle', "rb").read()) ## load the pickle file with labels
-model = keras.models.load_model('models/Images_wGuest_N128x128.h5')
+guess_array = col.deque(maxlen=20)
+
+
+#labels=['Andreas','Fredrik','Glenn','Ina','Nordin', "Peter"]
+labels = pickle.loads(open('labels.pickle', "rb").read()) ## load the pickle file with labels
+model = keras.models.load_model('models/Images_anoaug_wGlasses_N256x256.h5')
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
@@ -79,8 +83,9 @@ while True:
                 score = tf.nn.softmax(predictions)
                 #print("pred", predictions)
                 print(score)
-                labelguess = str(labels[np.argmax(score)]) #the label with the highest score
-                print("This image most likely belongs to {} with a {:.2f} percent confidence.".format(labels[np.argmax(score)], 100 * np.max(score)))
+                label_guess = str(labels[np.argmax(score)]) #the label with the highest score
+                guess_array.append(label_guess)
+                print("This image most likely belongs to {} with a {:.2f} percent confidence.".format(label_guess, 100 * np.max(score)))
 
                 #draw a rectangle around the face and write predicted name above
                 cv2.rectangle(frame,
@@ -88,10 +93,15 @@ while True:
                               (x2, y2),  # end_point
                               color,  # color in BGR
                               2)  # thickness in px
-                cv2.putText(frame, labelguess,(x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, namecolor, 2)
-                if takepics == True and correct_label != labelguess:
-                    plt.imssave(f"wrong_class_img/{correct_label}/{labelguess}_{counter}.jpg", face_array1)
+                cv2.putText(frame, label_guess, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, namecolor, 2)
+                if takepics and correct_label != label_guess:
+                    plt.imssave(f"wrong_class_img/{correct_label}/{label_guess}_{counter}.jpg", face_array1)
                     counter += 1
+        unique_list = set(guess_array)
+        for elem in unique_list:
+            print(guess_array.count(elem))
+            if guess_array.count(elem) > 4:
+                print(elem)
 
 
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
@@ -107,3 +117,4 @@ while True:
 
 cam.release()
 cv2.destroyAllWindows()
+

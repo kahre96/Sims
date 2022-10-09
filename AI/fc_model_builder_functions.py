@@ -1,9 +1,11 @@
 import tensorflow as tf
 import keras
-from keras.layers import Dense, Dropout, Activation, Flatten
+from keras.layers import Dense, Dropout, Flatten
 from keras.callbacks import ModelCheckpoint
 from keras.callbacks import EarlyStopping
-import numpy as np
+import os
+import pickle
+import matplotlib.pyplot as plt
 
 
 # creates top layers to add on top of the vgg base model
@@ -141,14 +143,28 @@ def create_callbacks(patience):
     return [checkpoint, earlystop]
 
 
-# fit the model
-def fit_model(model, t_ds, v_ds, epochs, callbacks, modelname):
-    model.fit(
-        t_ds,
-        epochs=epochs,
-        callbacks=callbacks,
-        # steps_per_epoch=len(train_ds)/train_ds.batch_size,
-        validation_data=v_ds,
-        # validation_steps=len(val_ds)/val_ds.batch_size
-    )
-    model.save(f"models/{modelname}.h5")
+def save_labels(ds_dir):
+    class_names = sorted(os.listdir(ds_dir))
+    f = open('labels.pickle', "wb")
+    f.write(pickle.dumps(class_names))
+    f.close()
+
+
+def plot_epochs(history):
+    fig, axs = plt.subplots(2, 1, figsize=(30, 20))
+    t1 = history.history['accuracy']
+    t2 = history.history['val_accuracy']
+    s1 = history.history['loss']
+    s2 = history.history['val_loss']
+
+    axs[0].plot(t1)
+    axs[0].plot(t2)
+    axs[0].set_xlabel('epochs')
+    axs[0].set_ylabel('accuracy and val_accuracy')
+    axs[0].grid(True)
+    axs[1].plot(s1)
+    axs[1].plot(s2)
+    axs[1].set_xlabel('epochs')
+    axs[1].set_ylabel('loss and val_loss')
+    axs[1].grid(True)
+    plt.show()
