@@ -1,8 +1,14 @@
+#from backend.API.app import dailyLogin
 from models.player import Player
 from flask import request
 from datetime import date, timedelta, datetime
 import sys
 sys.path.append("../models")
+
+# TODO:
+# - Add Level functionality
+# - Add Rank functionality 
+# - Improve getRecent functionality (?)
 
 def getPlayerByID(cursor, emp_ID, birthday_today):
         
@@ -32,7 +38,7 @@ class PlayerController():
     INPUT:  mysql connection and Employee ID
     OUTPUT: Updated Player in JSON Format
     '''
-    def dailyLogin(self, mysql):
+    def dailyLogin(self, mysql, emp_ID):
 
         # DEFAULT: 10XP, BIRTHDAY = FALSE
         xp_to_add = 10  
@@ -45,8 +51,8 @@ class PlayerController():
         _offsets = (3, 1, 1, 1, 1, 1, 2)
         last_weekday = (today-timedelta(days=_offsets[today.weekday()]))
         cursor = mysql.connection.cursor()
-        args = request.args
-        emp_ID = args.get("emp_ID", default="NULL", type=int)
+        #args = request.args
+        #emp_ID = args.get("emp_ID", default="NULL", type=int)
 
         ##############################################################################################
         # CHECK IF EMP_ID IS PASSED AND VALID
@@ -115,7 +121,7 @@ class PlayerController():
         #
         mysql.connection.commit()
         cursor.close()
-        return updated_player.toJSON(), 200 # Return Updated stats in JSON format
+        return updated_player.toJSON() # Return Updated stats in JSON format
 
 
     ''' New Entry Function used by the AI to push recognized Employees into an array
@@ -149,7 +155,22 @@ class PlayerController():
                 print(key, ":" , value)
 
             cursor.close()
-            return {"emp_ID":emp_ID, "player_id":player_id, "name":display_name, "rank":ranking, "total_xp":xp_total, "month_xp":xp_month}, 200
+            #return {"emp_ID":emp_ID, "player_id":player_id, "name":display_name, "rank":ranking, "total_xp":xp_total, "month_xp":xp_month}, 200
+            return self.newEntries
+
+    ''' Get all recently recognized players
+    INPUT: Mysql connection (also uses the playercontrollers newEntries Dictionary)
+    OUTPUT: List of JSON Data for all recently logged in players
+    '''
+    def getRecent(self,mysql):
+        
+        employees = []
+        for key in self.newEntries.items():
+            employees.append(key[1]) # Append the entry-timestemp to the list
+            employees.append(self.dailyLogin(mysql,int(key[0]))) # Log in all players and append their JSON Data 
+
+        self.newEntries.clear() # Clear the Dictionary, which is temporarily storing the recently recognized players
+        return employees    
 
 
 playercontroller = PlayerController()

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask
 from flask_mysqldb import MySQL
 from controllers.employeeController import employeecontroller
 from controllers.adminController import admincontroller
@@ -27,13 +27,14 @@ def employee():
 def admin():
     return admincontroller.adminPage(mysql)
 
-@app.route('/employee/dailyLogin', methods = ['GET','POST'])
-def dailyLogin():
-    return playercontroller.dailyLogin(mysql)
-
-@app.route('/employee/newEntry', methods = ['GET', 'POST'])
+# Route to register Players that were recently recognized by the AI
+@app.route('/player/newEntry', methods = ['GET', 'POST'])
 def newEntries():
     return playercontroller.newEntry(mysql)
 
+# Route used to log in, and get JSON Info on all recently recognized players, called by the frontend
+@app.route('/player/getRecent', methods = ['GET'])
+def getRecent():
+    return playercontroller.getRecent(mysql)    
 
 app.run(host='localhost', port=5000)
