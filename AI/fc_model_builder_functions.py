@@ -76,8 +76,6 @@ def import_data(aug, ds_dir, img_height, img_width, batch_size):
             #featurewise_center=True,
             #featurewise_std_normalization=True,
             rotation_range=5,
-            width_shift_range=0.1,
-            height_shift_range=0.1,
             brightness_range=(-0.2, 0.2),
             horizontal_flip=True,
             validation_split=0.2)

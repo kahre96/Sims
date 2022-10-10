@@ -15,9 +15,9 @@ namecolor = (36, 255, 12)
 guess_array = col.deque(maxlen=20)
 
 
-#labels=['Andreas','Fredrik','Glenn','Ina','Nordin', "Peter"]
-labels = pickle.loads(open('labels.pickle', "rb").read()) ## load the pickle file with labels
-model = keras.models.load_model('models/Images_anoaug_wGlasses_N256x256.h5')
+# labels=['Andreas','Fredrik','Glenn','Ina','Nordin', "Peter"]
+labels = pickle.loads(open('labels.pickle', "rb").read())  # load the pickle file with labels
+model = keras.models.load_model('models/Images_anoaug_wGlasses_N128x128.h5')
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
@@ -70,7 +70,7 @@ while True:
             y2 = int(y2)
 
             # crop the image for a prediction
-            if x > 0 and y > 0 and x2-x > 80 and y2-y > 80:
+            if x > 0 and y > 0 and x2-x > 120 and y2-y > 120:
                 cropped_img = frame[y:y2, x:x2]
                 print("cropped img", cropped_img.shape)
                 cropped_img = cv2.cvtColor(cropped_img, cv2.COLOR_BGR2RGB)
