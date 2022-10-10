@@ -8,6 +8,7 @@ from PIL import Image
 import pickle
 import collections as col
 
+
 takepics = False  # decide if you want to take pics or not
 correct_label = "Fredrik"
 color = (0, 255, 0)
@@ -59,24 +60,19 @@ while True:
 
         for face in faces:
 
-            # covert it into a list to access variables
-            faceList = face.tolist()
-
             # cordinates for box around a face
-            x, y, x2, y2 = faceList
-            x = int(x)
-            y = int(y)
-            x2 = int(x2)
-            y2 = int(y2)
+            x = int(face[0])
+            y = int(face[1])
+            x2 = int(face[2])
+            y2 = int(face[3])
 
             # crop the image for a prediction
             if x > 0 and y > 0 and x2-x > 120 and y2-y > 120:
                 cropped_img = frame[y:y2, x:x2]
                 print("cropped img", cropped_img.shape)
                 cropped_img = cv2.cvtColor(cropped_img, cv2.COLOR_BGR2RGB)
-                image_predict = Image.fromarray(cropped_img, mode="RGB")
-                image_predict = image_predict.resize(size=(224, 224))
-                face_array1 = np.asarray(image_predict)
+                reimage = cv2.resize(cropped_img, (224, 224))
+                face_array1 = np.asarray(reimage)
                 face_array = normalization_layer(face_array1)
                 face_array = np.expand_dims(face_array, axis=0)
                 predictions = model.predict(face_array)
@@ -102,6 +98,7 @@ while True:
             print(guess_array.count(elem))
             if guess_array.count(elem) > 4:
                 print(elem)
+
 
 
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)

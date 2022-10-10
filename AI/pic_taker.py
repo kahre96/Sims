@@ -2,7 +2,12 @@ import cv2
 from facenet_pytorch import MTCNN
 import sys
 import os
+import time
 
+now = int(time.time())
+
+
+counter_max = 750  # amount of pics before program quits
 dir_loc = "testfolder"  # directory where folders will be saved
 cam = cv2.VideoCapture(0)
 cam.set(3, 3840)  # set width
@@ -28,22 +33,19 @@ while True:
     if faces is not None:
         for face in faces:
             # covert it into a list to access variables
-            faceList = face.tolist()
+            x = int(face[0])
+            y = int(face[1])
+            x2 = int(face[2])
+            y2 = int(face[3])
 
-            # cordinates for box around a face
-            x, y, x2, y2 = faceList
-            x = int(x)
-            y = int(y)
-            x2 = int(x2)
-            y2 = int(y2)
-
-            if x > 0 and y > 0 and y2 > 0 and x2 > 0 and x2-x > 120 and y2-y > 120:
+            if x > 0 and y > 0 and y2 > 0 and x2 > 0 and x2-x > 140 and y2-y > 140:
                 cropped_img = frame[y:y2, x:x2]
 
-                cv2.imwrite(f"{dir_loc}/{label}/{label}_{counter}.jpg", cropped_img)
+                reimage = cv2.resize(cropped_img, (224, 224))
+                cv2.imwrite(f"{dir_loc}/{label}/{label}_{now}_{counter}.jpg", reimage)
                 counter += 1
                 print(counter)
-                if counter > 750:
+                if counter > counter_max:
                     quit()
 
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
