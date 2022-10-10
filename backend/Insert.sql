@@ -1,6 +1,6 @@
 /* 	Created by:	Peter Stegeby
 	Date:		22-09-14
-	Modified:	22-09-26
+	Modified:	22-10-10
 */
 
 -- Fills the database with dummy information
