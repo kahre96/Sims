@@ -4,7 +4,7 @@ import sys
 import os
 
 dir="testfolder" # directory where folders will be saved
-cam = cv2.VideoCapture(0)
+cam = cv2.VideoCapture(1)
 cam.set(3, 3840)  # set width
 cam.set(4, 2160)  # set height
 
@@ -34,7 +34,7 @@ while True:
 
             cropped_img = frame[y:y2, x:x2]
 
-            cv2.imwrite(f"{dir}/{label}/{label}_{counter}.jpg", cv2.cvtColor(cropped_img, cv2.COLOR_2RGB))
+            cv2.imwrite(f"{dir}/{label}/{label}_01{counter}.jpg", cropped_img)
             counter += 1
 
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
