@@ -4,8 +4,6 @@ SELECT * FROM player;
 
 SELECT * FROM ranking GROUP BY ranking_id;
 
-
-
 SELECT CONCAT(e.firstname," ",e.lastname) AS Display_name, p.Player_ID, r.Name AS Ranking, p.xp_Total AS "Total XP", p.Level
 FROM employee AS e, player AS p, ranking AS r
 WHERE e.emp_ID = p.emp_ID AND p.ranking_id = r.ranking_id;
