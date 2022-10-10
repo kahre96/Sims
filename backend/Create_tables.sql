@@ -11,7 +11,6 @@ Firstname				VARCHAR(20),
 Lastname				VARCHAR(20),
 Birthdate				DATE,
 Added_date				DATE DEFAULT CURDATE(),
-Gender					CHAR(1),
 PRIMARY KEY (Emp_ID));
 
 CREATE TABLE Ranking (

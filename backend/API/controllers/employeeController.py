@@ -1,3 +1,4 @@
+from numpy import rint
 from flask import request
 import sys
 sys.path.append("../models")
@@ -16,14 +17,13 @@ class EmployeeController():
         firstname   = args.get("firstname", default="NULL", type=str)
         lastname    = args.get("lastname", default="NULL", type=str)
         birthdate   = args.get("birthdate", default ="NULL", type=str)
-        id          = args.get("id", default = "NULL", type=int)
 
         # Post: Create Employee based on First- and Lastname, birthdate and ID
         if request.method == 'POST':
             
             '''Implementing checks for number of arguments and correct date formatting'''
 
-            if "NULL" in (firstname, lastname, birthdate, id):
+            if "NULL" in (firstname, lastname, birthdate):
                 return "Not enough arguments!", 400
             if len(birthdate) != 8:
                 return "Sorry! Wrong format, please try with 4 digits of year, 2 digits for month, and 2 digits for day like YYYYMMDD, no spaces and no dashes.", 400
@@ -39,16 +39,18 @@ class EmployeeController():
             elif (input_month % 2 == 0 and input_month < 7 or input_month % 2 == 1 and input_month > 8) and input_day > 30:
                 return ("Sorry February, April, June, September, and November does not have {} days, 30 is maximum".format(input_day)),400
             
-            # Could we remove the connection as an argument?
-            user = Employee(id, firstname.lower(), lastname.lower(), birthdate, mysql.connection)
-
             # Adding Employee into DB
-            sql     = "INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (%s, %s, %s, %s)"
-            values  = user.getSQLData()      
+            sql     = "INSERT INTO Employee(firstname, lastname, birthdate) VALUES (%s, %s, %s)"
+            values  = (firstname,lastname,birthdate)      
             cursor.execute(sql, values)
+            cursor.execute("SELECT * FROM Employee ORDER BY added_date LIMIT 1")
+            id = cursor.fetchone()[0]
+            user = Employee(id, firstname.lower(), lastname.lower(), birthdate)
+            player = user.createPlayer()
+
             # Adding Player into DB
-            sql     = "INSERT INTO Player(player_ID, emp_ID, ranking_ID, level,xp_total, xp_month, last_login, consecutive_days) VALUES (%s,%s, %s, %s, %s, %s, %s, %s)"
-            values  = user.player.getSQLData()
+            sql     = "INSERT INTO Player(emp_ID, ranking_ID, level,xp_total, xp_month, last_login, consecutive_days) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            values  = player.getSQLData()
             cursor.execute(sql,values)
  
         #Saving the changes made by the cursor

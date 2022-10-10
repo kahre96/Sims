@@ -6,33 +6,46 @@ import sys
 sys.path.append("../models")
 
 # TODO:
-# - Add Level functionality
-# - Add Rank functionality 
 # - Improve getRecent functionality (?)
+# - Fix Heroes function 
 
+''' Helper Function to get Player Object by employee ID and birthday_today variable'''
 def getPlayerByID(cursor, emp_ID, birthday_today):
         
         cursor.execute(
-            '''SELECT * FROM Player WHERE emp_ID = %s ''' % emp_ID)
+            "SELECT * FROM Player WHERE emp_ID = %s " % emp_ID)
         player = cursor.fetchone()
         cursor.execute(
-            '''SELECT firstname,lastname FROM Employee WHERE emp_ID = %s ''' % emp_ID)
+            "SELECT firstname,lastname FROM Employee WHERE emp_ID = %s " % emp_ID)
         name = cursor.fetchone()
         display_name = f"{name[0].capitalize()} {name[1].capitalize()[0]}"
-        return Player(player[0], player[1], player[2], player[3], player[4], player[5], player[6], player[7], display_name, birthday_today)
+        return Player(player[0], player[1], player[2], player[3], player[4], player[5], player[6], display_name, birthday_today)
 
+''' Helper Function to return players birthday '''
 def getPlayerBirthdayByID(cursor, emp_ID):
     
         cursor.execute(
-            '''SELECT birthdate FROM Employee WHERE emp_ID = %s ''' % emp_ID)
+            "SELECT birthdate FROM Employee WHERE emp_ID = %s " % emp_ID)
         employee = cursor.fetchone()
         return employee[0].strftime("%Y%m%d")
+
 
 class PlayerController():
 
     def __init__(self):
-        self.newEntries = {}
-        #self.xp_per_level = 50
+        self.newEntries = {} # Used to keep track of recently recognized players
+        self.Levels = { # Defines the XP requirements for the specific levels
+            1:  0,
+            2:  50,
+            3:  100,
+            4:  150,    
+            5:  200,
+            6:  250,
+            7:  350,
+            8:  450,
+            9:  600,
+            10: 800
+        }
 
     ''' Daily Login function to update player and heroes + return the updated player
     INPUT:  mysql connection and Employee ID
@@ -101,11 +114,34 @@ class PlayerController():
         cursor.execute("UPDATE Player SET last_login = %s WHERE emp_ID = %s" % (today.strftime("%Y%m%d"),emp_ID)) # Update last login
         cursor.execute("UPDATE Player SET xp_Total = xp_Total + %s WHERE emp_ID = %s" % (xp_to_add,emp_ID)) # Update Total XP
 
-        updated_player = getPlayerByID(cursor,emp_ID,birthday_today) # Get updated Player
-        
+        ##############################################################################################
+        # UPDATE RANK AND LEVEL
+        #
+        xp = player.xpTotal + xp_to_add # Total XP of updated player (without another DB query)
+        rank = 1
+        level = 1
+        # Calculate the rank, 0-999 = Rank 1, 1000-1999 = Rank 2 etc.
+        for i in range (1000,5000,1000):
+            if i <= xp < i+1000:
+                rank = int((i/1000)+1)
+        # Player over 5000 XP are marked by special "level 11"
+        if xp > 5000: 
+            rank = 5
+            level = 11 
+        else:   # Calculate Level, Strip away rank (1000XP * Rank), then see what level in the Levels Dict is corresponding
+            xp = xp-((rank-1)*1000)
+            for key in self.Levels:
+                if self.Levels[key] <= xp:
+                    level = key
+        # Update Rank and Level in the database
+        cursor.execute("UPDATE Player SET Ranking_ID = %s WHERE emp_ID = %s" % (rank,emp_ID))
+        cursor.execute("UPDATE Player SET Level = %s WHERE emp_ID = %s" % (level,emp_ID))
+                    
         ##############################################################################################
         # UPDATE HERO TABLE
         #
+        updated_player = getPlayerByID(cursor,emp_ID,birthday_today) # Get updated Player
+        
         hero_date = updated_player.last_login.strftime("%Y%m%d")
         hero_xp = updated_player.xpMonth
         
@@ -137,10 +173,7 @@ class PlayerController():
             return "Request failed, no Employee ID provided!", 400
        
         with mysql.connection.cursor() as cursor:
-            sql = """
-            SELECT p.player_id, CONCAT(firstname," ",lastname), r.name, p.xp_total, xp_month FROM employee e, player p, ranking r
-            WHERE e.emp_ID=%s AND (p.emp_ID = e.emp_ID) AND (p.ranking_id = r.ranking_id)"""
-            cursor.execute(sql, emp_ID)
+            cursor.execute("SELECT * FROM Player WHERE Emp_ID = %s"% emp_ID)
             result      = cursor.fetchone()
             if not result:
                 return "Player not found!", 404

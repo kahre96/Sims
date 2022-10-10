@@ -13,12 +13,12 @@ today_day   = int(now[-2:])
 
 class Employee():
 
-    def __init__(self, id, firstname, lastname, birthdate, connection):
+    def __init__(self, id, firstname, lastname, birthdate):
         self.id                 = id
-        self.firstname              = firstname
-        self.lastname              = lastname
+        self.firstname          = firstname
+        self.lastname           = lastname
         self.SSN                = birthdate
-        self.player             = self.createPlayer(connection)
+        self.player             = self.createPlayer()
         self.birthYear          = int(birthdate[:4])
         self.birthMonth         = int(birthdate[4:6])
         self.birthDay           = int(birthdate[-2:])
@@ -32,8 +32,7 @@ class Employee():
     def getSQLData(self):
         return (self.id, self.firstname, self.lastname, self.SSN)
 
-    def createPlayer(self,connection):
-        playerID        = Player.getLatestPlayerId(connection) + 1
+    def createPlayer(self):
         displayName     = f"{self.firstname.capitalize()} {self.lastname.capitalize()[0]}"
         ranking         = 1
         level           = 1
@@ -43,5 +42,5 @@ class Employee():
         consecutive_days=0
         birthday_today  = False
 
-        return Player(playerID, self.id, ranking, level,xp_total, xp_month,  last_login, consecutive_days, displayName, birthday_today)
+        return Player(self.id, ranking, level,xp_total, xp_month,  last_login, consecutive_days, displayName, birthday_today)
     
