@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 
 
 # creates top layers to add on top of the vgg base model
-def topModel(prev_model, num_classes, neurons, ddlayer):
+def topModel(prev_model, num_classes, neurons, ddlayer, neurons2):
 
     top_model = prev_model.output
     top_model = Flatten(name="flatten")(top_model)
     top_model = Dense(neurons, activation="relu")(top_model)
     top_model = Dropout(0.1)(top_model)
     if ddlayer:
-        top_model = Dense(neurons, activation="relu")(top_model)
+        top_model = Dense(neurons2, activation="relu")(top_model)
         top_model = Dropout(0.1)(top_model)
     top_model = Dense(num_classes, activation="softmax")(top_model)
 

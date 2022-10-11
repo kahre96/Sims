@@ -17,7 +17,7 @@ cam.set(3, 3840)
 cam.set(4, 2160)
 
 labels = pickle.loads(open('labels.pickle', "rb").read())  # load the pickle file with labels
-model = keras.models.load_model('AI/models/face_classifier_1006.h5')
+model = keras.models.load_model('models/Images_anoaug_wGlasses_N128x128.h5')
 
 normalization_layer = tf.keras.layers.Rescaling(1./255)
 detector = MTCNN()
@@ -48,14 +48,14 @@ while True:
                 face_array = np.expand_dims(face_array, axis=0)
                 predictions = model.predict(face_array)
                 score = tf.nn.softmax(predictions)
-                label_guess = str(labels[np.argmax(score)])  # the label with the highest score
+                label_guess = labels[np.argmax(score)]  # the label with the highest score
                 guess_queue.append(label_guess)
         unique_list = set(guess_queue)
         for elem in unique_list:
             print(guess_queue.count(elem))
             if guess_queue.count(elem) > 4:
-                request_parameters = {"emp_ID":elem}
-                requests.post(url, params = request_parameters)
+                request_parameters = {"emp_ID": elem}
+                requests.post(url, params=request_parameters)
 
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
     cv2.resizeWindow('video', 1280, 720)

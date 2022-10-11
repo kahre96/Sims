@@ -12,6 +12,7 @@ batch_size = 32
 patience = 5  # amount of epoch without improvement before early exit
 augmentation = "noaug"  # 1.noaug  2."kaug" for keras augmentation
 neurons = 128
+neurons2 = 64
 dd_layer = True
 ds_dir = "Images"  # location of the dataset
 VggBase = True  # true to use base pretrained model, # false to transfer learn one of our models
@@ -19,7 +20,7 @@ tl_model = "VGG16_aug"  # enter name of model that will be used for transfer lea
 
 name_add = ""
 if dd_layer:
-    name_add = f"x{neurons}"
+    name_add = f"x{neurons2}"
 
 
 fc_f.save_labels(ds_dir)
@@ -36,7 +37,7 @@ else:
     base_model = fc_f.load_model(tl_model)
 
 
-head = fc_f.topModel(base_model, num_classes, neurons, dd_layer)
+head = fc_f.topModel(base_model, num_classes, neurons, dd_layer, neurons2)
 
 face_classifier = Model(inputs=base_model.input, outputs=head, name='VGG16')
 
