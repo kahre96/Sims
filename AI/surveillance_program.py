@@ -10,14 +10,14 @@ import requests
 color = (0, 255, 0)
 namecolor = (36, 255, 12)
 guess_queue = col.deque(maxlen=20)
-url= "localhost:asdasd"
+url= "http://localhost:5000/player/newEntry"
 
 cam = cv2.VideoCapture(0)
 cam.set(3, 3840)
 cam.set(4, 2160)
 
 labels = pickle.loads(open('labels.pickle', "rb").read())  # load the pickle file with labels
-model = keras.models.load_model('models/Images_anoaug_wGlasses_N128x128.h5')
+model = keras.models.load_model('AI/models/face_classifier_1006.h5')
 
 normalization_layer = tf.keras.layers.Rescaling(1./255)
 detector = MTCNN()
@@ -54,7 +54,8 @@ while True:
         for elem in unique_list:
             print(guess_queue.count(elem))
             if guess_queue.count(elem) > 4:
-                requests.post(url, elem)
+                request_parameters = {"emp_ID":elem}
+                requests.post(url, params = request_parameters)
 
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
     cv2.resizeWindow('video', 1280, 720)
