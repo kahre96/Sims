@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<head>
+    <title>Admin Index page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+<body>
+    <h2>Admin page</h2>
+    <a href="{{ url_for('admin') }}">Index</a>
+    <a href="{{ url_for('statistics') }}">Statistics</a>
+    <a href="{{ url_for('addUser') }}">Add user</a>
+    <a href="{{ url_for('deleteUser') }}">Delete user</a>
+    <br />
+<style>
+ td {
+        width: 150px;
+        text-align: center;
+        border: 1px solid black;
+        padding: 5px;
+      }
+</style>
+<p> These are your options!</p>
+{% block body %}
+
+
+{% endblock %}
+</body>
+</html>
