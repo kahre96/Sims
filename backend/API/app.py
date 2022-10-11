@@ -39,7 +39,7 @@ def deleteUser():
     return admincontroller.deleteUserPage(mysql)
 
 # Route to register Players that were recently recognized by the AI
-@app.route('/player/newEntry', methods = ['GET', 'POST'])
+@app.route('/player/newEntry', methods = ['POST'])
 def newEntries():
     return playercontroller.newEntry(mysql)
 

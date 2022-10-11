@@ -12,7 +12,7 @@ model = tf.keras.models.load_model("models/resnet50_noaug_nofreeze.h5")
 
 normalization_layer = tf.keras.layers.Rescaling(1./255)
 
-dir = 'cropped_dataset'
+dir = '../cropped_dataset'
 labels = []
 for label in os.listdir(dir):
     labels.append(label)

@@ -17,9 +17,8 @@ INSERT INTO Ranking(ranking_ID, name) VALUES (3, "wookie");
 INSERT INTO Ranking(ranking_ID, name) VALUES (4, "padawan");
 INSERT INTO Ranking(ranking_ID, name) VALUES (5, "jedi knight");
 
-INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (1,1, 1, 100,0, STR_TO_DATE('20221003', '%Y%m%d'), 1);
-INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (2,1, 1, 100,0, STR_TO_DATE('20221003', '%Y%m%d'), 1);
-INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (3,1, 1, 100,0, STR_TO_DATE('20221004', '%Y%m%d'), 2);
-INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (4,1, 1, 100,0, STR_TO_DATE('20221004', '%Y%m%d'), 3);
-INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (5,1, 1, 100,0, STR_TO_DATE('20221004', '%Y%m%d'), 4);
-INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (6,1, 1, 100,0, STR_TO_DATE('20221004', '%Y%m%d'), 5);
+INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (1,1, 1, 10,0, STR_TO_DATE('20221003', '%Y%m%d'), 1);
+INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (2,1, 1, 40,0, STR_TO_DATE('20221004', '%Y%m%d'), 2);
+INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (3,1, 1, 50,0, STR_TO_DATE('20221004', '%Y%m%d'), 3);
+INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (4,1, 1, 990,0, STR_TO_DATE('20221004', '%Y%m%d'), 4);
+INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (5,1, 1, 991,0, STR_TO_DATE('20221004', '%Y%m%d'), 5);

@@ -132,7 +132,7 @@ class CustomDataGen(tf.keras.utils.Sequence):
 
 
 
-dir = '/content/images/' ## define the directory where the pictures are stored.
+dir = '../content/images/'  ## define the directory where the pictures are stored.
 class_names = os.listdir(dir) ## returns a list of the label names. This will be used later when creating the sequential model.
 
 
