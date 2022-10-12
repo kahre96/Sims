@@ -14,30 +14,34 @@ correct_label = "Fredrik"
 color = (0, 255, 0)
 namecolor = (36, 255, 12)
 guess_array = col.deque(maxlen=20)
-labels = pickle.loads(open('../labels.pickle', "rb").read())  # load the pickle file with labels
-model = keras.models.load_model('../models/Images_noaug_7c_N256x128.h5')
 
-# gpus = tf.config.experimental.list_physical_devices('GPU')
-# if gpus:
-#     try:
-#         # Currently, memory growth needs to be the same across GPUs
-#         for gpu in gpus:
-#             tf.config.experimental.set_memory_growth(gpu, True)
-#         logical_gpus = tf.config.experimental.list_logical_devices('GPU')
-#         print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
-#     except RuntimeError as e:
-#         # Memory growth must be set before GPUs have been initialized
-#         print(e)
+
+# labels=['Andreas','Fredrik','Glenn','Ina','Nordin', "Peter"]
+labels = pickle.loads(open('labels.pickle', "rb").read())  # load the pickle file with labels
+model = keras.models.load_model('models/Images_anoaug_wGlasses_N128x128.h5')
+
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus:
+    try:
+        # Currently, memory growth needs to be the same across GPUs
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        logical_gpus = tf.config.experimental.list_logical_devices('GPU')
+        print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
+    except RuntimeError as e:
+        # Memory growth must be set before GPUs have been initialized
+        print(e)
 
 # setting up the camera input
 cam = cv2.VideoCapture(0)
 cam.set(3, 3840)
 cam.set(4, 2160)
 
-# prints structure of the model used
+
+
 model.summary()
 
-detector = MTCNN()  # model to detect faces
+detector = MTCNN() # model to detect faces
 if takepics:
     counter = 0  # counter for saving images with diffrent names,
 
@@ -95,12 +99,12 @@ while True:
             if guess_array.count(elem) > 4:
                 print(elem)
 
-    else:
-        guess_array.pop()
+
 
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
     cv2.resizeWindow('video', 1280,720)
     cv2.imshow('video', frame)
+
 
 
     #allows to exit the program by pressing ESC

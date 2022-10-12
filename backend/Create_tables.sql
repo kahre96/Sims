@@ -44,6 +44,7 @@ PRIMARY KEY (Char_ID),
 FOREIGN KEY (Emp_ID) REFERENCES Employee(Emp_ID));
 
 CREATE TABLE Greeting (
-Greetings_ID			INTEGER(4) NOT NULL,
+Greetings_ID			INTEGER(4) NOT NULL AUTO_INCREMENT,
 Text					VARCHAR(300),
+Category				VARCHAR(10),
 PRIMARY KEY (Greetings_ID));

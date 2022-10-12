@@ -3,7 +3,6 @@ from facenet_pytorch import MTCNN
 import os
 import time
 
-now = int(time.time())
 
 
 class picTaker():
@@ -18,6 +17,7 @@ class picTaker():
         self.detector = MTCNN()
         self.counter = 0
         self.frame = None
+        self.now = int(time.time())
         self.check_folder()
         self.take_pics()
 
@@ -65,13 +65,8 @@ class picTaker():
         cropped_img = self.frame[y:y2, x:x2]
 
         reimage = cv2.resize(cropped_img, (224, 224))
-        cv2.imwrite(f"{self.dir_path}/{self.label}_{now}_{self.counter}.jpg", reimage)
+        cv2.imwrite(f"{self.dir_path}/{self.label}_{self.now}_{self.counter}.jpg", reimage)
         self.counter += 1
         print(f"Pictures taken: {self.counter}")
         if self.counter >= self.pic_amount:
             quit()
-
-
-
-
-

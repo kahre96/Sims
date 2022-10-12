@@ -22,3 +22,14 @@ INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, co
 INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (3,1, 1, 50,0, STR_TO_DATE('20221004', '%Y%m%d'), 3);
 INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (4,1, 1, 990,0, STR_TO_DATE('20221004', '%Y%m%d'), 4);
 INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (5,1, 1, 991,0, STR_TO_DATE('20221004', '%Y%m%d'), 5);
+
+INSERT INTO Greeting(Text,Category) VALUES ("Hej","default");
+INSERT INTO Greeting(Text,Category) VALUES ("Hej Hej","default");
+INSERT INTO Greeting(Text,Category) VALUES ("God dag","default");
+INSERT INTO Greeting(Text,Category) VALUES ("Hur går allt","default");
+INSERT INTO Greeting(Text,Category) VALUES ("Grattis på födelsedagen","birthday");
+INSERT INTO Greeting(Text,Category) VALUES ("Grattis","birthday");
+INSERT INTO Greeting(Text,Category) VALUES ("God morgon","morning");
+INSERT INTO Greeting(Text,Category) VALUES ("Morgon","morning");
+INSERT INTO Greeting(Text,Category) VALUES ("Välkommen tillbaka","second");
+INSERT INTO Greeting(Text,Category) VALUES ("Trevligt att se dig igen","second");
