@@ -24,6 +24,7 @@ class surveillance():
         self.frame = None
         self.url = "http://localhost:5000/player/newEntry"
         self.color = (0, 255, 0)
+        self.counter = 0
         self.surveillance()
 
     def surveillance(self):
@@ -42,9 +43,9 @@ class surveillance():
                         break
 
                     x, y, x2, y2 = face.astype(int)
-                    if x2 - x < 140:
+                    if x2 - x < 180:
                         break
-                    if y2 - y < 140:
+                    if y2 - y < 180:
                         break
 
                     face_array = self.image_processing(x,y,x2,y2)
@@ -54,6 +55,11 @@ class surveillance():
 
             self.check_time_for_reset()
 
+            self.counter += 1
+            if self.counter > 20:
+                self.reset_guest_lock()
+                self.counter = 0 
+
             cv2.namedWindow('video', cv2.WINDOW_NORMAL)
             cv2.resizeWindow('video', 1280, 720)
             cv2.imshow('video', self.frame)
@@ -61,6 +67,8 @@ class surveillance():
             key = cv2.waitKey(1)
             if key == 27:
                 break
+        self.cam.release()
+        cv2.destroyAllWindows()
 
     def image_processing(self, x, y, x2, y2):
 
@@ -75,6 +83,8 @@ class surveillance():
         predictions = self.model.predict(face_array)
         score = tf.nn.softmax(predictions)
         label_guess = self.labels[np.argmax(score)]  # the label with the highest score
+        if label_guess in self.already_detected:
+            pass
         self.guess_queue.append(label_guess)
         return label_guess
 
@@ -90,10 +100,10 @@ class surveillance():
                 #request_parameters = {"emp_ID": elem}
                 #requests.post(self.url, params=request_parameters)
 
-    def draw_face(self,x,y,x2,y2, label_guess):
+    def draw_face(self, x, y, x2, y2, label_guess):
         cv2.rectangle(self.frame, (x, y), (x2, y2), self.color, 2)
         cv2.putText(self.frame, label_guess, (x, y - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.9, self.color, 2)
+                    cv2.FONT_HERSHEY_SIMPLEX, 2, self.color, 2)
 
     def check_time_for_reset(self):
         now = time.localtime()
@@ -102,8 +112,16 @@ class surveillance():
             self.guess_queue.clear()
             self.already_detected.clear()
 
+    def reset_guest_lock(self):
+        for elem in self.already_detected:
+            if elem == "Guest":
+                self.already_detected.remove(elem)
+                self.guess_queue.clear()
+                print('Cleared guess que unlocking guest')
+                
 
-surveillance(labels='labels.pickle', model='models/128x64_GnG_BN.h5', video_source=0)
+
+surveillance(labels='models/labels.pickle', model='models/128x64_GnG_BN.h5', video_source=2)
 
 
 

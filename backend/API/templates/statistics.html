@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 <head>
  <title></title>
 </head>
-<body>
+<body>-->
   
 <!-- <style>
  td {
@@ -17,19 +17,23 @@
 {% extends 'index.html' %}
 
 {% block body %}
-<h4>Statistics</h4>
-<table>
-  <thead>
-    <tr>
-        <th>Amount of players in the database</th>
-    </tr>
-    </thead>    
-    <tbody>
-            <tr>
-                <td>{{data}}</td>
-            </tr>
-    </tbody>
-</table>
+
+<div class="body-container">
+    <h3>Statistik</h3>
+    <table>
+        <thead>
+        <tr>
+            <th>Antalet spelare</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{data}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
 {% endblock %}
 </body>
 </html>

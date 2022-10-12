@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-
+<!-- {{ url_for('static', filename='css/main.css') }} -->
 <head>
-    <title>Admin Index page</title>
+    <title>Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css">
 </head>
 <body>
     <h2>Admin page</h2>
     <a href="{{ url_for('admin') }}">Index</a>
     <a href="{{ url_for('statistics') }}">Statistics</a>
     <a href="{{ url_for('addUser') }}">Add user</a>
-    <a href="{{ url_for('takePicture') }}">Take pictures</a>
     <a href="{{ url_for('deleteUser') }}">Delete user</a>
     <br />
 <style>
@@ -23,7 +22,6 @@
 </style>
 <p> These are your options!</p>
 {% block body %}
-
 
 {% endblock %}
 </body>
