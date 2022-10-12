@@ -1,28 +1,26 @@
 <!DOCTYPE html>
-
+<!-- {{ url_for('static', filename='css/main.css') }} -->
 <head>
-    <title>Admin Index page</title>
+    <title>Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" type="text/css">
 </head>
 <body>
-    <h2>Admin page</h2>
-    <a href="{{ url_for('admin') }}">Index</a>
-    <a href="{{ url_for('statistics') }}">Statistics</a>
-    <a href="{{ url_for('addUser') }}">Add user</a>
-    <a href="{{ url_for('deleteUser') }}">Delete user</a>
-    <br />
-<style>
- td {
-        width: 150px;
-        text-align: center;
-        border: 1px solid black;
-        padding: 5px;
-      }
-</style>
-<p> These are your options!</p>
-{% block body %}
+<div class="header">
+    <div class="logo">
+        <img src="../static/css/Logotype-Knowit-Digital-black.png">
+        <h1>Adminsida</h1>
+    </div>
 
+    <div class="menu-items">
+        <a href="{{ url_for('statistics') }}" class="menu-link">Statistik</a>
+        <a href="{{ url_for('addUser') }}" class="menu-link">Lägg till</a>
+        <a href="{{ url_for('deleteUser') }}" class="menu-link">Ta bort</a>
+        <a href="{{ url_for('admin') }}" class="menu-link">Logga ut</a>
+    </div>
+</div>
+
+{% block body %}
 
 {% endblock %}
 </body>

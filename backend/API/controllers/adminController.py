@@ -1,5 +1,6 @@
 from flask import request, render_template
 import requests
+#from pic_taker import picTaker
 
 # PETER [22-10-11]
 # I will need to add character when creating a new user
@@ -68,6 +69,8 @@ class AdminController():
 
                 if len(birthdate) != 8:
                     error += "Sorry! Birthdate has the wrong format, please try with 4 digits of year, 2 digits for month, and 2 digits for day like YYYYMMDD, no spaces and no dashes."
+                elif birthdate.find('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#"%&/()=?@${[]}\'~^*'):
+                    error+= "Invalid characters in birthdate!"    
                     return render_template('addUser.html', Error=error)
 
                 input_month = int(birthdate[4:6])
@@ -90,7 +93,29 @@ class AdminController():
                 print("error: ", error)
                 return render_template('addUser.html', Error=error)
         return render_template('addUserForm.html')
-        
+    
+    
+    def takePictures(self, mysql):
+        with mysql.connection.cursor() as cursor:
+            sql = "SELECT emp_id, firstname, lastname FROM employee ORDER BY emp_id DESC LIMIT 5"
+            cursor.execute(sql)
+            users = cursor.fetchall()
+            message = ""
+
+            if request.method == 'POST':
+                emp_id          = request.form['emp_id']
+                amount_pictures = request.form['pictures']
+                
+                if amount_pictures == "":
+                    message = f"1000 pictures are being taken with ID: {emp_id}!"
+                    #picTaker(emp_id)
+                else:
+                    message = f"{amount_pictures} pictures are being taken with ID: {emp_id}!"
+                    #picTaker(emp_id, int(amount_pictures))
+                return render_template('picTaker.html', Status=message)
+
+            return render_template('picTaker.html', Data=users)
+
 
 # Create Admin Controller instance to use its functions
 admincontroller = AdminController()       

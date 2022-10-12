@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
- <title>Admin Delete User</title>
+ <title>Ta bort spelare</title>
 </head>
 <body>
 
 {% extends 'index.html' %}
 
 {% block body %}
-<h4>Delete User</h4>
+<div class="body-container">
+    <h3>Ta bort en spelare</h3>
+    <div class="form-container">
+        <form action="" method="post">
+            <input class="form-field" type="text" name="emp_id" placeholder="SpelarID" value="{{
+            request.form.emp_id }}" required> <br />
+            <input class="button" type="submit" value="Ta bort">
+        </form>
+    </div>
 
-
-    <form action="" method="post">
-        <input type="text" name="emp_id" placeholder="Employee ID" value="{{
-            request.form.emp_id }}" required>
-        <input class="btn btn-default" type="submit" value="Delete user">
-    </form>
-
+    <h4>Nuvarande spelare</h4>
     <ul>
         <li>{{ Data }}</li>
     </ul>
 
     {{ Deleted_user }}
+</div>
 
 {% endblock %}
 </body>
