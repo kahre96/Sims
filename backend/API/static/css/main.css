@@ -52,12 +52,13 @@ h4 {
     transition: all 0.3s ease;
 }
 
-.menu_link:hover {
-    color: #FAC0B1;
+.menu-link:hover {
+    color: #A5B1AA;
     transition: all 0.3s ease;
 }
 
 .body-container {
+    color: #333333;
     margin: 20px;
     width: 50%;
 }
