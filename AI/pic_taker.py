@@ -1,60 +1,77 @@
 import cv2
 from facenet_pytorch import MTCNN
-import sys
 import os
 import time
 
 now = int(time.time())
 
 
-counter_max = 750  # amount of pics before program quits
-dir_loc = "testfolder"  # directory where folders will be saved
-cam = cv2.VideoCapture(0)
-cam.set(3, 3840)  # set width
-cam.set(4, 2160)  # set height
+class picTaker():
 
-detector = MTCNN()
-label = sys.argv[1]
-path = f"{dir_loc}/{label}"
-if os.path.exists(path):
-    print("folder already exists")
-    quit()
+    def __init__(self, label, p_amount=750):
+        self.pic_amount = p_amount
+        self.label = label
+        self.dir_path = f"testfolder/{label}"
+        self.cam = cv2.VideoCapture(0)
+        self.cam.set(3, 3840)
+        self.cam.set(4, 2160)
+        self.detector = MTCNN()
+        self.counter = 0
+        self.frame = None
+        self.check_folder()
+        self.take_pics()
 
-os.mkdir(path)
-counter = 0
-while True:
-    check, frame = cam.read()
-    if not check:
-        print("Cant recive a frame from camera. exiting...")
-        break
+    def take_pics(self):
+        while True:
+            check, self.frame = self.cam.read()
+            if not check:
+                print("Cant recive a frame from camera. exiting...")
+                break
 
-    faces, probability = detector.detect(frame)
+            faces, probability = self.detector.detect(self.frame)
 
-    if faces is not None:
-        for face in faces:
-            # covert it into a list to access variables
-            x = int(face[0])
-            y = int(face[1])
-            x2 = int(face[2])
-            y2 = int(face[3])
+            if faces is not None:
+                for face in faces:
+                    if any(cord < 0 for cord in face):
+                        break
 
-            if x > 0 and y > 0 and y2 > 0 and x2 > 0 and x2-x > 140 and y2-y > 140:
-                cropped_img = frame[y:y2, x:x2]
+                    x, y, x2, y2 = face.astype(int)
+                    if x2 - x < 180:
+                        break
+                    if y2 - y < 180:
+                        break
 
-                reimage = cv2.resize(cropped_img, (224, 224))
-                cv2.imwrite(f"{dir_loc}/{label}/{label}_{now}_{counter}.jpg", reimage)
-                counter += 1
-                print(counter)
-                if counter > counter_max:
-                    quit()
+                    self.save_image(x, y, x2, y2)
 
-    cv2.namedWindow('video', cv2.WINDOW_NORMAL)
-    cv2.resizeWindow('video', 1280, 720)
-    cv2.imshow('video', frame)
 
-    key = cv2.waitKey(1)
-    if key == 27:
-        break
+            cv2.namedWindow('video', cv2.WINDOW_NORMAL)
+            cv2.resizeWindow('video', 1280, 720)
+            cv2.imshow('video', self.frame)
 
-cam.release()
-cv2.destroyAllWindows()
+            key = cv2.waitKey(1)
+            if key == 27:
+                break
+        self.cam.release()
+        cv2.destroyAllWindows()
+
+    # look if folder already exists otherwise creates it
+    def check_folder(self):
+        if os.path.exists(self.dir_path):
+            return
+        else:
+            os.mkdir(self.dir_path)
+
+    def save_image(self, x, y, x2, y2):
+        cropped_img = self.frame[y:y2, x:x2]
+
+        reimage = cv2.resize(cropped_img, (224, 224))
+        cv2.imwrite(f"{self.dir_path}/{self.label}_{now}_{self.counter}.jpg", reimage)
+        self.counter += 1
+        print(f"Pictures taken: {self.counter}")
+        if self.counter > self.pic_amount:
+            quit()
+
+
+
+
+
