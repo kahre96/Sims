@@ -24,42 +24,44 @@ class EmployeeController():
 
             if "NULL" in (firstname, lastname, birthdate):
                 return "Not enough arguments!", 400
-            if len(birthdate) != 8:
-                return "Sorry! Wrong format, please try with 4 digits of year, 2 digits for month, and 2 digits for day like YYYYMMDD, no spaces and no dashes.", 400
             
-            input_year  = int(birthdate[:4])
-            input_month = int(birthdate[4:6])
-            input_day   = int(birthdate[-2:])
+            self.addUser(mysql, firstname, lastname, birthdate)
 
-            if input_month > 12 or input_month < 0:
-                return ("Month {} is not an option! Please enter a month between 01 - 12".format(input_month)),400
-            elif input_month == 2 and input_day > 29:
-                return ("February only has 28 sometimes 29 days, please enter a lower value!"), 400
-            elif (input_month % 2 == 0 and input_month < 7 or input_month % 2 == 1 and input_month > 8) and input_day > 30:
-                return ("Sorry February, April, June, September, and November does not have {} days, 30 is maximum".format(input_day)),400
-            
-            # Adding Employee into DB
-            sql     = "INSERT INTO Employee(firstname, lastname, birthdate) VALUES (%s, %s, %s)"
-            values  = (firstname,lastname,birthdate)      
+            sql = "SELECT emp_id FROM employee WHERE firstname=%s and lastname=%s"
+            values = (firstname.lower(), lastname.lower())
             cursor.execute(sql, values)
-            cursor.execute("SELECT * FROM Employee ORDER BY added_date LIMIT 1")
-            id = cursor.fetchone()[0]
-            user = Employee(id, firstname.lower(), lastname.lower(), birthdate)
-            player = user.createPlayer()
+            
+            # Fetching the id from the newly created employee
+            emp_id = int(cursor.fetchone()[0])
+            print("emp_id: ", emp_id)
 
+            user = Employee(emp_id, firstname.lower(), lastname.lower(), birthdate)
+            
             # Adding Player into DB
-            sql     = "INSERT INTO Player(emp_ID, ranking_ID, level,xp_total, xp_month, last_login, consecutive_days) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            values  = player.getSQLData()
+            sql     = "INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            values  = user.player.getSQLData()
             cursor.execute(sql,values)
- 
+            
+            #Closing the cursor
+            cursor.close()   
+
         #Saving the changes made by the cursor
         mysql.connection.commit()
 
-        #Closing the cursor
-        cursor.close()
+            
+
+        
+        
     
         return ("User " + firstname + " with ID " + str(id) + " was successfully created!"), 201 # Return Name and 201, created
 
+    def addUser(self, mysql, firstname, lastname, birthdate):
+        with mysql.connection.cursor() as cursor:
+            values = (firstname.lower(), lastname.lower(), birthdate)
 
+            # Adding Employee into DB
+            sql     = "INSERT INTO Employee(firstname, lastname, birthdate) VALUES (%s, %s, %s)"
+            cursor.execute(sql, values)
+        mysql.connection.commit()
     
 employeecontroller = EmployeeController()            

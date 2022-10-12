@@ -4,15 +4,20 @@
  <title></title>
 </head>
 <body>
-<style>
- 
+  
+<!-- <style>
  td {
         width: 150px;
         text-align: center;
         border: 1px solid black;
         padding: 5px;
       }
-</style>
+</style> -->
+
+{% extends 'index.html' %}
+
+{% block body %}
+<h4>Statistics</h4>
 <table>
   <thead>
     <tr>
@@ -25,5 +30,6 @@
             </tr>
     </tbody>
 </table>
+{% endblock %}
 </body>
 </html>

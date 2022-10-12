@@ -25,7 +25,19 @@ def employee():
 # Route for admin to see statistics     
 @app.route('/admin', methods = ['GET','POST'])
 def admin():
-    return admincontroller.adminPage(mysql)
+    return admincontroller.adminPage()
+
+@app.route('/admin/statistics', methods = ['GET', 'POST'])
+def statistics():
+    return admincontroller.statisticsPage(mysql)
+
+@app.route('/admin/addUser', methods = ['GET', 'POST'])
+def addUser():
+    return admincontroller.addUser()
+
+@app.route('/admin/deleteUser', methods = ['GET', 'POST'])
+def deleteUser():
+    return admincontroller.deleteUserPage(mysql)
 
 # Route to register Players that were recently recognized by the AI
 @app.route('/player/newEntry', methods = ['POST'])
