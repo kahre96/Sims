@@ -12,6 +12,8 @@
     align-items: center;
     height: 120px;
     width: 100%;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 img {
@@ -74,7 +76,7 @@ td {
 .form-field {
     border-color: #B7DEBD;
     width: 250px;
-    padding: 10px;
+    padding: 15px;
     border-radius: 5px;
     margin: 10px 0;
 }
@@ -88,4 +90,11 @@ td {
     cursor: pointer;
     font-size: 16px;
     border-radius: 5px;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    color: #A5B1AA;
+    transition: all 0.3s ease;
 }
