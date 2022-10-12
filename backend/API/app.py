@@ -4,10 +4,9 @@ from controllers.employeeController import employeecontroller
 from controllers.adminController import admincontroller
 from controllers.playerController import playercontroller
 
-db_password     = '27amc81pqt01pab52mnc'
-db_name         = 'emp_info'
-#db_password    = ''
-#db_name        = 'sims'
+
+db_password    = ''
+db_name        = 'sims'
 
 # Define App and open connection to the mysql database
 app = Flask(__name__)
@@ -38,10 +37,6 @@ def addUser():
 @app.route('/admin/deleteUser', methods = ['GET', 'POST'])
 def deleteUser():
     return admincontroller.deleteUserPage(mysql)
-
-@app.route('/admin/takePictures', methods = ['GET', 'POST'])
-def takePicture():
-    return admincontroller.takePictures(mysql)
 
 # Route to register Players that were recently recognized by the AI
 @app.route('/player/newEntry', methods = ['POST'])
