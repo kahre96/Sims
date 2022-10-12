@@ -8,7 +8,7 @@ now = int(time.time())
 
 class picTaker():
 
-    def __init__(self, label, p_amount=750):
+    def __init__(self, label, p_amount=1000):
         self.pic_amount = p_amount
         self.label = label
         self.dir_path = f"testfolder/{label}"
@@ -68,7 +68,7 @@ class picTaker():
         cv2.imwrite(f"{self.dir_path}/{self.label}_{now}_{self.counter}.jpg", reimage)
         self.counter += 1
         print(f"Pictures taken: {self.counter}")
-        if self.counter > self.pic_amount:
+        if self.counter >= self.pic_amount:
             quit()
 
 
