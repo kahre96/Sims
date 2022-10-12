@@ -1,4 +1,3 @@
-from numpy import rint
 from flask import request
 import sys
 sys.path.append("../models")
