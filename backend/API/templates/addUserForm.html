@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Admin Add User</title>
+</head>
+<body>
+
+{% extends 'index.html' %}
+
+{% block body %}
+<h4>Create User</h4>
+
+<div>
+    <form action ="" method="post">
+        <input type="text" name="firstname" placeholder="First name" value="{{
+            request.form.firstname }}" required> <br />
+        <input type="text" name="lastname" placeholder="Last name" value="{{
+            request.form.lastname }}" required>  <br />
+        <input type="text" name="birthdate" placeholder="YYYYMMDD" value="{{
+            request.form.birthdate }}" required> <br />
+        <input class="btn btn-default" type="submit" value="Add user">
+    </form>
+</div>
+{% endblock %}
+</body>
+</html>
