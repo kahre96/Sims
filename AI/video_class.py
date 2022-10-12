@@ -7,7 +7,7 @@ import cv2
 from PIL import Image
 import pickle
 import collections as col
-import time 
+import time
 
 class multimedia():
 
@@ -24,14 +24,24 @@ class multimedia():
     def video(self):
         while True:
             check, frame = self.cam.read()
+            faces, _ = self.mtcnn.detect(frame)
             if not check:
                 print("No frame, exiting...")
                 break
-            face = self.getFace(frame)
-            if face is not None:
-                x,y,x2,y2 = face[1]
-                cv2.rectangle(frame,(x, y),(x2, y2), (0, 255, 0), 2) 
-                cv2.putText(frame, face[0], (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12), 2)
+           
+            if faces is not None:
+                for face in faces:
+                    x = int(face[0])
+                    y = int(face[1])
+                    x2 = int(face[2])
+                    y2 = int(face[3])
+
+                    if x > 0 and y>0 and x2-x > 120 and y2-y > 120:
+                        face_crop = frame[y:y2, x:x2]
+                        image = self.img_hndlr(face_crop)
+                        image_pred = self.predictions(image)
+                    cv2.rectangle(frame,(x, y),(x2, y2), (0, 255, 0), 2) 
+                    cv2.putText(frame, image_pred, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36, 255, 12), 2)
             cv2.namedWindow('video', cv2.WINDOW_NORMAL)
             cv2.resizeWindow('video', 1280,720)
             cv2.imshow('video', frame)
@@ -87,23 +97,6 @@ class multimedia():
         label_guess = str(self.labels[np.argmax(score)])
         self.quecheck(label_guess)
         return label_guess 
-
-    def getFace(self, frame):
-        faces, _ = self.mtcnn.detect(frame)
-        if faces is not None:
-            for face in faces:
-                x = int(face[0])
-                y = int(face[1])
-                x2 = int(face[2])
-                y2 = int(face[3])
-
-                if x > 0 and y>0 and x2-x > 120 and y2-y > 120:
-                    face_crop = frame[y:y2, x:x2]
-                    image = self.img_hndlr(face_crop)
-                    image_pred = self.predictions(image)
-
-                    return image_pred, [x,y,x2,y2]
-
 
     
 
