@@ -147,9 +147,12 @@ class PlayerController():
         
         cursor.execute("SELECT * FROM Hero WHERE MONTH(Date)=%s AND YEAR(Date)=%s AND Xp_Month > %s" % (hero_date[4:6],hero_date[:4],hero_xp-1))
         results = cursor.fetchall() # Get all Heroes for current month (That have more XP than current user)
-        if len(results) <= 2: # If there's two or less, insert current user regardless of XP. If current user is the third hero, delete the hero with least XP so its still 3 in total
+        if len(results) <= 2: # If there's two or less, insert current user regardless of XP
             cursor.execute("INSERT INTO Hero(Emp_ID,Date,Xp_Month) VALUES (%s,%s,%s)" % (emp_ID,hero_date,hero_xp))
-            if len(results) == 2:
+            # Check if there are more than 3 Heroes for this month after insertion. If so, delete the one with least XP 
+            cursor.execute("SELECT * FROM Hero WHERE MONTH(Date)=%s AND YEAR(Date)=%s" % (hero_date[4:6],hero_date[:4]) )
+            results = cursor.fetchall()
+            if len(results) > 3:
                 cursor.execute("DELETE FROM Hero WHERE MONTH(Date)=%s AND YEAR(Date)=%s ORDER BY XP_Month ASC LIMIT 1 " % (hero_date[4:6],hero_date[:4]))
 
         ##############################################################################################

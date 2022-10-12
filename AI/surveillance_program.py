@@ -7,11 +7,13 @@ import pickle
 import collections as col
 import requests
 
-color = (0, 255, 0)
-namecolor = (36, 255, 12)
+# queue holding label guesses
 guess_queue = col.deque(maxlen=20)
+
+# url used to send post to the db
 url= "http://localhost:5000/player/newEntry"
 
+# set up the capture source and resolution
 cam = cv2.VideoCapture(0)
 cam.set(3, 3840)
 cam.set(4, 2160)
@@ -19,9 +21,11 @@ cam.set(4, 2160)
 labels = pickle.loads(open('labels.pickle', "rb").read())  # load the pickle file with labels
 model = keras.models.load_model('models/Images_anoaug_wGlasses_N128x128.h5')
 
+# array of people already detected
+already_detected = []
+
 normalization_layer = tf.keras.layers.Rescaling(1./255)
 detector = MTCNN()
-
 
 while True:
     check, frame = cam.read()
@@ -41,7 +45,6 @@ while True:
 
             if x > 0 and y > 0 and x2 - x > 140 and y2 - y > 140:
                 cropped_img = frame[y:y2, x:x2]
-
                 reimage = cv2.resize(cropped_img, (224, 224))
                 face_array = np.asarray(reimage)
                 face_array = normalization_layer(face_array)
@@ -52,10 +55,18 @@ while True:
                 guess_queue.append(label_guess)
         unique_list = set(guess_queue)
         for elem in unique_list:
-            print(guess_queue.count(elem))
+            if elem in already_detected:
+                continue
             if guess_queue.count(elem) > 4:
+                already_detected.append(elem)
                 request_parameters = {"emp_ID": elem}
                 requests.post(url, params=request_parameters)
+    else:
+        try:
+            guess_queue.pop()
+
+        except IndexError:
+            continue
 
     cv2.namedWindow('video', cv2.WINDOW_NORMAL)
     cv2.resizeWindow('video', 1280, 720)
