@@ -27,7 +27,6 @@ class EmployeeController():
                 return "Not enough arguments!", 400
             
             self.addUser(mysql, firstname, lastname, birthdate)
-
             sql = "SELECT emp_id FROM employee WHERE firstname=%s and lastname=%s"
             values = (firstname.lower(), lastname.lower())
             cursor.execute(sql, values)
@@ -49,11 +48,6 @@ class EmployeeController():
         #Saving the changes made by the cursor
         mysql.connection.commit()
 
-            
-
-        
-        
-    
         return ("User " + firstname + " with ID " + str(id) + " was successfully created!"), 201 # Return Name and 201, created
 
     def addUser(self, mysql, firstname, lastname, birthdate):

@@ -1,13 +1,11 @@
 #from backend.API.app import dailyLogin
+from turtle import update
 from models.player import Player
 from flask import request
 from datetime import date, timedelta, datetime
 import sys
+import json
 sys.path.append("../models")
-
-# TODO:
-# - Improve getRecent functionality (?)
-# - Fix Heroes function 
 
 ''' Helper Function to get Player Object by employee ID and birthday_today variable'''
 def getPlayerByID(cursor, emp_ID, birthday_today):
@@ -29,7 +27,24 @@ def getPlayerBirthdayByID(cursor, emp_ID):
         employee = cursor.fetchone()
         return employee[0].strftime("%Y%m%d")
 
-
+''' Helper function to select Greeting for the player'''
+def greet(cursor, player, first_login):   
+        greeting = "Hej"     
+        if first_login == True: # Is it the players first login today?
+            if player.birthday_today == True: # Player birthday is today: Randomly select from birthday greetings
+                cursor.execute("SELECT Text FROM Greeting WHERE Category = 'birthday' ORDER BY RAND() LIMIT 1")
+            elif int(datetime.now().strftime("%H")) <= 10: # It's before 10AM: Randomly select from default OR morning greetings
+                cursor.execute("SELECT Text FROM Greeting WHERE Category = 'default' OR Category = 'morning' ORDER BY RAND() LIMIT 1")
+            else: # Randomly select regular greeting
+                cursor.execute("SELECT Text FROM Greeting WHERE Category = 'default' ORDER BY RAND() LIMIT 1")
+        else: 
+            cursor.execute("SELECT Text FROM Greeting WHERE Category = 'second' ORDER BY RAND() LIMIT 1")
+    
+        greeting = cursor.fetchone() 
+        greeting = str(greeting[0]) + ", " + player.displayName + "!"
+        player.greeting = greeting # Update the players greeting
+        return player    
+                
 class PlayerController():
 
     def __init__(self):
@@ -82,7 +97,8 @@ class PlayerController():
         #
         player = getPlayerByID(cursor, emp_ID, birthday_today)
         if player.last_login==today: # return the current stats, don't add XP when played already logged in today
-            return player.toJSON(), 200
+            player = greet(cursor, player, False)
+            return player
 
         if getPlayerBirthdayByID(cursor, emp_ID)[4:] == today.strftime("%Y%m%d")[4:]:
             xp_to_add += 20 # When it's the players birthday: add 20XP and save birthday_today to add to the return object
@@ -158,9 +174,10 @@ class PlayerController():
         ##############################################################################################
         # SAVE CHANGES AND RETURN PLAYER AS JSON
         #
+        updated_player=greet(cursor, updated_player, True) # Update player greeting
         mysql.connection.commit()
         cursor.close()
-        return updated_player.toJSON() # Return Updated stats in JSON format
+        return updated_player # Return Updated stats in JSON format
 
 
     ''' New Entry Function used by the AI to push recognized Employees into an array
@@ -202,16 +219,16 @@ class PlayerController():
         
         employees = []
         for key in self.newEntries.items():
-            employees.append(key[1]) # Append the entry-timestemp to the list
-            employees.append(self.dailyLogin(mysql,int(key[0]))) # Log in all players and append their JSON Data 
+            employees.append(self.dailyLogin(mysql,int(key[0])))
+            #employees.append(key[1]) # Append the entry-timestemp to the list
+            #employees.append(self.dailyLogin(mysql,int(key[0]))) # Log in all players and append their JSON Data 
 
         self.newEntries.clear() # Clear the Dictionary, which is temporarily storing the recently recognized players
         
         if len(employees) == 0:
             return "No new entries!", 400
-        
-        # Must remake this as a tuple ^^' [22-10-10] Peter
-        return employees, 200
+
+        return json.dumps([obj.__dict__ for obj in employees],indent=4, sort_keys=True, default=str,ensure_ascii=False).encode('utf-8'),200
 
 
 playercontroller = PlayerController()
