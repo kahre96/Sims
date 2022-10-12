@@ -18,8 +18,8 @@ cam = cv2.VideoCapture(0)
 cam.set(3, 3840)
 cam.set(4, 2160)
 
-labels = pickle.loads(open('labels.pickle', "rb").read())  # load the pickle file with labels
-model = keras.models.load_model('models/Images_anoaug_wGlasses_N128x128.h5')
+labels = pickle.loads(open('../labels.pickle', "rb").read())  # load the pickle file with labels
+model = keras.models.load_model('../models/Images_anoaug_wGlasses_N128x128.h5')
 
 # array of people already detected
 already_detected = []
