@@ -873,3 +873,9 @@ nav .div {
   margin: 0;
   padding: 0;
 }
+
+.icon-images {
+  width: 8%;
+  max-height: 28px;
+  margin-right: 10px;
+}
