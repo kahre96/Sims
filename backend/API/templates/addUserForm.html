@@ -2,6 +2,9 @@
 <html>
 <head>
  <title>Admin Add User</title>
+ <script src="C:\1_Universitet\3_DT169G_SIMS\Projekt\frontend\app\js\main.js"></script>
+ <script src="js/vendor/jquery-3.6.1.min.js"></script>
+ <script src="js/vendor/jquery-ui.min.js"></script>
 </head>
 <body>
 
@@ -9,7 +12,6 @@
 
 {% block body %}
 <h4>Create User</h4>
-
 <div>
     <form action ="" method="post">
         <input type="text" name="firstname" placeholder="First name" value="{{
@@ -21,6 +23,19 @@
         <input class="btn btn-default" type="submit" value="Add user">
     </form>
 </div>
+
+<div>
+ <ul class="characters">
+
+ </ul>
+</div>
+
+<script>
+    img = getImgsFromFolder("C:\1_Universitet\3_DT169G_SIMS\Projekt\frontend\app\img\characters")
+   $.each(img, function (index, element) {
+    jQuery('#characters').append('<li>' + index + ": " + element + '</li>')
+   });
+</script>
 {% endblock %}
 </body>
 </html>
