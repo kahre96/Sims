@@ -1,6 +1,10 @@
 from flask import request, render_template
 import requests
-#from pic_taker import picTaker
+import sys
+
+sys.path.insert(0, "C:\\1_Universitet\\3_DT169G_SIMS\\Projekt\\AI")
+from pic_taker import picTaker
+
 
 # PETER [22-10-11]
 # I will need to add character when creating a new user
@@ -36,12 +40,13 @@ class AdminController():
             if request.method == 'POST':
                 emp_id  = request.form['emp_id']
                 sql     = "SELECT emp_id, firstname, lastname FROM employee WHERE emp_id=%s;"
-                cursor.execute(sql, emp_id)
+                cursor.execute(sql, (emp_id,))
                 user = cursor.fetchone()
+                print("user: ", user)
                 deleted_user  = f"User {user[1]} {user[2]} with id {user[0]} has been removed from the database"
-                
+                print("deleted_user: ", deleted_user)
                 query   = "DELETE FROM player WHERE emp_id=%s"
-                cursor.execute(query, emp_id)
+                cursor.execute(query, (emp_id,))
 
                 #query   = "DELETE FROM char_emp WHERE emp_id=%s"
                 #cursor.execute(query, emp_id)
@@ -50,7 +55,7 @@ class AdminController():
                 #cursor.execute(query, emp_id)
                 
                 query   = "DELETE FROM employee WHERE emp_id=%s"
-                cursor.execute(query, emp_id)
+                cursor.execute(query, (emp_id,))
                 mysql.connection.commit()
                 return render_template('deleteUserForm.html', Deleted_user=deleted_user)
 
@@ -69,8 +74,8 @@ class AdminController():
 
                 if len(birthdate) != 8:
                     error += "Sorry! Birthdate has the wrong format, please try with 4 digits of year, 2 digits for month, and 2 digits for day like YYYYMMDD, no spaces and no dashes."
-                elif birthdate.find('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#"%&/()=?@${[]}\'~^*'):
-                    error+= "Invalid characters in birthdate!"    
+                #elif birthdate.find('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#"%&/()=?@${[]}\'~^*'):
+                    #error+= "Invalid characters in birthdate!"    
                     return render_template('addUser.html', Error=error)
 
                 input_month = int(birthdate[4:6])
@@ -108,10 +113,10 @@ class AdminController():
                 
                 if amount_pictures == "":
                     message = f"1000 pictures are being taken with ID: {emp_id}!"
-                    #picTaker(emp_id)
+                    picTaker(emp_id)
                 else:
                     message = f"{amount_pictures} pictures are being taken with ID: {emp_id}!"
-                    #picTaker(emp_id, int(amount_pictures))
+                    picTaker(emp_id, int(amount_pictures))
                 return render_template('picTaker.html', Status=message)
 
             return render_template('picTaker.html', Data=users)

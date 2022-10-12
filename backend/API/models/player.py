@@ -8,8 +8,6 @@ def json_default(value):
             return value.__dict__
 
 class Player():
-    def __init__(self, empId, ranking, level, xpTotal, xpMonth, last_login, consecutive_days, displayName, birthday_today):
-        self.empId          = empId
     def __init__(self, emp_id, ranking, level, xpTotal, xpMonth, last_login, consecutive_days, displayName, birthday_today):
         self.emp_id         = emp_id
         self.ranking        = ranking
