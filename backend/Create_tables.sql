@@ -6,7 +6,7 @@
 -- Create tables
 
 CREATE TABLE Employee (
-Emp_ID					INTEGER(3) NOT NULL AUTO_INCREMENT,
+Emp_ID					INTEGER(4) NOT NULL AUTO_INCREMENT,
 Firstname				VARCHAR(20),
 Lastname				VARCHAR(20),
 Birthdate				DATE,
@@ -19,7 +19,7 @@ Name					VARCHAR(40),
 PRIMARY KEY(Ranking_ID));
 
 CREATE TABLE Player (
-Emp_ID					INTEGER(3) NOT NULL,
+Emp_ID					INTEGER(4) NOT NULL,
 Ranking_ID				INTEGER(2) NOT NULL DEFAULT 1,
 Level					INTEGER(2) DEFAULT 1,
 Xp_Total				INTEGER(5) DEFAULT 0,
@@ -31,7 +31,7 @@ FOREIGN KEY (Emp_ID) REFERENCES Employee(Emp_ID),
 FOREIGN KEY (Ranking_ID) REFERENCES Ranking(Ranking_ID));
 
 CREATE TABLE Hero (
-Emp_ID					INTEGER(3) NOT NULL,
+Emp_ID					INTEGER(4) NOT NULL,
 Date					DATE,
 Xp_Month				INTEGER(3),
 PRIMARY KEY (Emp_ID),
@@ -39,7 +39,7 @@ FOREIGN KEY (Emp_ID) REFERENCES Employee(Emp_ID));
 
 CREATE TABLE Char_emp (
 Char_ID					INTEGER(3) NOT NULL,
-Emp_ID					INTEGER(3) NOT NULL,
+Emp_ID					INTEGER(4) NOT NULL,
 PRIMARY KEY (Char_ID),
 FOREIGN KEY (Emp_ID) REFERENCES Employee(Emp_ID));
 

@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+
+{% block body %}
+<h4>Take pictures</h4>
+
+<p> The ID of the 5 last users {{ Data }}</p>
+
+<p> Status: {{ Status }}</p>
+
+<form action="" method="post">
+    <input type="text" name="emp_id" placeholder="Employee ID" value="{{
+        request.form.emp_id }}" required>  <br />
+    <input type="number" name="pictures" placeholder="Default=1000" value="{{
+        request.form.birthdate }}"> <br />
+    <input class="btn btn-default" type="submit" value="Take pictures">
+</form>
+
+{% endblock %}
+</body>
+</html>
