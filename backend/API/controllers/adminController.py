@@ -1,5 +1,5 @@
 from flask import request, render_template
-import requests
+#import requests
 
 # PETER [22-10-11]
 # I will need to add character when creating a new user
@@ -85,7 +85,7 @@ class AdminController():
                 if error == "Error:":
                     create_str = f"?firstname={firstname}&lastname={lastname}&birthdate={birthdate}"
                     message = f"User [{firstname} {lastname}] with birthdate {birthdate} has been created"
-                    res = requests.post(url+create_str)
+                    #res = requests.post(url+create_str)
                     return render_template('addUser.html', Data=message)
                 print("error: ", error)
                 return render_template('addUser.html', Error=error)

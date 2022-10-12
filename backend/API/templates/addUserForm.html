@@ -1,26 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
- <title>Admin Add User</title>
+ <title>Lägg till spelare</title>
 </head>
 <body>
 
 {% extends 'index.html' %}
 
 {% block body %}
-<h4>Create User</h4>
-
-<div>
-    <form action ="" method="post">
-        <input type="text" name="firstname" placeholder="First name" value="{{
+<div class="body-container">
+    <h3>Skapa en spelare</h3>
+    <div class="form-container">
+        <form action ="" method="post">
+            <input class="form-field" type="text" name="firstname" placeholder="Förnamn" value="{{
             request.form.firstname }}" required> <br />
-        <input type="text" name="lastname" placeholder="Last name" value="{{
+            <input class="form-field" type="text" name="lastname" placeholder="Efternamn" value="{{
             request.form.lastname }}" required>  <br />
-        <input type="text" name="birthdate" placeholder="YYYYMMDD" value="{{
+            <input class="form-field" type="text" name="birthdate" placeholder="ÅÅÅÅMMDD" value="{{
             request.form.birthdate }}" required> <br />
-        <input class="btn btn-default" type="submit" value="Add user">
-    </form>
+            <input class="button" type="submit" value="Lägg till">
+        </form>
+    </div>
 </div>
+
 {% endblock %}
 </body>
 </html>
