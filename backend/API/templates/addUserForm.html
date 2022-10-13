@@ -2,6 +2,9 @@
 <html>
 <head>
  <title>Lägg till spelare</title>
+ <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -10,19 +13,58 @@
 {% block body %}
 <div class="body-container">
     <h3>Skapa en spelare</h3>
+    <h5>Observera att 'Lägga till' knappen kan vara långt nere på sidan om det finns många karaktärer!</h5>
     <div class="form-container">
-        <form action ="" method="post">
+        <form class="form" action ="" method="post">
             <input class="form-field" type="text" name="firstname" placeholder="Förnamn" value="{{
             request.form.firstname }}" required> <br />
             <input class="form-field" type="text" name="lastname" placeholder="Efternamn" value="{{
             request.form.lastname }}" required>  <br />
             <input class="form-field" type="text" name="birthdate" placeholder="ÅÅÅÅMMDD" value="{{
             request.form.birthdate }}" required> <br />
-            <input class="button" type="submit" value="Lägg till">
+            <ul class="characters">
+              <!-- This area is getting filled below -->
+            </ul>
+            <input class="button" type="submit" value="Lägg till"> <br />
         </form>
     </div>
 </div>
 
+<script> 
+  picture = ""; 
+  temp = [];
+</script>
+
+{% for gif in images %}
+<script>
+  if ("{{gif}}" == "&#34;" || "{{gif}}" == "[" || "{{gif}}" == "]" ||  "{{gif}}" == "," || "{{gif}}" == ' ' || "{{gif}}" == '') {
+    temp.push(picture);
+    picture = "";
+  } else {
+    picture += "{{gif}}";
+  }
+</script>
+  {% endfor %}
+
+      <!-- https://stackoverflow.com/questions/10314800/flask-url-for-urls-in-javascript -->
+      {% set url=url_for('static', filename='characters/') %}
+<script>
+  imgs = []
+  $.each(temp, function (index, element) {
+      if (element.length > 0) {
+        imgs.push(element)
+      }
+  });
+
+  
+  $.each(imgs, function (index, element) {
+      $(".characters").append("<input class='form-check-input' type='radio' name='characters' id="+index+" value="+index+">")  
+      $(".characters").append("<label class='form-check-input' for="+index+"><img src='{{url}}"+element+"' name='characters' id=\'"+index+"\' value='{{request.form.characters }}'> </label> <br />")
+      
+  });
+    
+  //$('.form-check-input input:radio:checked').id()
+</script>
 {% endblock %}
 </body>
 </html>
