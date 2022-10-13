@@ -1,4 +1,3 @@
-#from backend.API.app import dailyLogin
 from turtle import update
 from models.player import Player
 from flask import request
@@ -6,6 +5,9 @@ from datetime import date, timedelta, datetime
 import sys
 import json
 sys.path.append("../models")
+
+#TODO:
+# Change Heroes Table (Re-implement HeroID?)
 
 ''' Helper Function to get Player Object by employee ID and birthday_today variable'''
 def getPlayerByID(cursor, emp_ID, birthday_today):
@@ -41,7 +43,7 @@ def greet(cursor, player, first_login):
             cursor.execute("SELECT Text FROM Greeting WHERE Category = 'second' ORDER BY RAND() LIMIT 1")
     
         greeting = cursor.fetchone() 
-        greeting = str(greeting[0]) + ", " + player.displayName + "!"
+        greeting = str(greeting[0]) + "!"
         player.greeting = greeting # Update the players greeting
         return player    
                 
@@ -208,23 +210,27 @@ class PlayerController():
             cursor.close()
             return self.newEntries, 200
 
+
     ''' Get last months Top Three players (most monthly XP)
     INPUT: Mysql connection 
     OUTPUT: Dictionary of lists with Player Display Name and Employee ID
     '''
     def getTop(self,mysql):
          with mysql.connection.cursor() as cursor:
-
+            # Get last months date by getting the first day of this month and going back one day
             first_day_this_month = (date.today().replace(day=1))   
             last_month = (first_day_this_month-timedelta(days=1)).strftime("%Y%m%d")
+            # Select the top players for last month
             cursor.execute("SELECT Emp_ID From Hero WHERE MONTH(Date)=%s AND YEAR(Date)=%s ORDER BY Xp_Month DESC" % (last_month[4:6],last_month[:4]))
             employees = cursor.fetchall()
             top = {}
+            # Create Dict, including List of Employee ID and Display Name
             for emp in employees:
                 player = getPlayerByID(cursor,emp[0],False)
                 top[employees.index(emp)+1]=(player.displayName,player.emp_id)
 
             return top
+
 
     ''' Get all recently recognized players
     INPUT: Mysql connection (also uses the playercontrollers newEntries Dictionary)
