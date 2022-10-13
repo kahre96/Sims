@@ -5,7 +5,8 @@ from os import listdir
 #from PIL import Image as PImage
 import json
 
-sys.path.insert(0, "C:\\1_Universitet\\3_DT169G_SIMS\\Projekt\\AI")
+sys.path.append("../../AI")
+
 from pic_taker import picTaker
 
 

@@ -19,6 +19,8 @@ class Player():
         self.displayName    = displayName
         self.birthday_today = birthday_today
         self.greeting       = "Hej"
+        self.xpLevel        = 0
+        self.xpNextLevel    = 0
     
     def getSQLData(self):
         return (self.emp_id, self.ranking, self.level, self.xpTotal, self.xpMonth, self.last_login, self.consecutive_days) 
