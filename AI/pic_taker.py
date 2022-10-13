@@ -3,14 +3,12 @@ from facenet_pytorch import MTCNN
 import os
 import time
 
-
-
 class picTaker():
 
     def __init__(self, label, p_amount=1000):
         self.pic_amount = p_amount
         self.label = label
-        self.dir_path = f"testfolder/{label}"
+        self.dir_path = f"images_ds/{label}"
         self.cam = cv2.VideoCapture(0)
         self.cam.set(3, 3840)
         self.cam.set(4, 2160)
@@ -43,7 +41,8 @@ class picTaker():
 
                     self.save_image(x, y, x2, y2)
 
-
+            if self.counter >= self.pic_amount:
+                break
             cv2.namedWindow('video', cv2.WINDOW_NORMAL)
             cv2.resizeWindow('video', 1280, 720)
             cv2.imshow('video', self.frame)
@@ -67,6 +66,5 @@ class picTaker():
         reimage = cv2.resize(cropped_img, (224, 224))
         cv2.imwrite(f"{self.dir_path}/{self.label}_{self.now}_{self.counter}.jpg", reimage)
         self.counter += 1
-        print(f"Pictures taken: {self.counter}")
-        if self.counter >= self.pic_amount:
-            quit()
+        #print(f"Pictures taken: {self.counter}")
+        

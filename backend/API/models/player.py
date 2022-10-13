@@ -8,8 +8,6 @@ def json_default(value):
             return value.__dict__
 
 class Player():
-    def __init__(self, empId, ranking, level, xpTotal, xpMonth, last_login, consecutive_days, displayName, birthday_today):
-        self.empId          = empId
     def __init__(self, emp_id, ranking, level, xpTotal, xpMonth, last_login, consecutive_days, displayName, birthday_today):
         self.emp_id         = emp_id
         self.ranking        = ranking
@@ -21,6 +19,8 @@ class Player():
         self.displayName    = displayName
         self.birthday_today = birthday_today
         self.greeting       = "Hej"
+        self.xpLevel        = 0
+        self.xpNextLevel    = 0
     
     def getSQLData(self):
         return (self.emp_id, self.ranking, self.level, self.xpTotal, self.xpMonth, self.last_login, self.consecutive_days) 
