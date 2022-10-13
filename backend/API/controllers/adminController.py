@@ -1,6 +1,9 @@
 from flask import request, render_template
 import requests
 import sys
+from os import listdir
+#from PIL import Image as PImage
+import json
 
 sys.path.insert(0, "C:\\1_Universitet\\3_DT169G_SIMS\\Projekt\\AI")
 from pic_taker import picTaker
@@ -71,6 +74,9 @@ class AdminController():
                 firstname   = request.form['firstname']
                 lastname    = request.form['lastname']
                 birthdate   = request.form['birthdate']
+                character   = request.form['characters']
+
+                #print("character: ", character)
 
                 if len(birthdate) != 8:
                     error += "Sorry! Birthdate has the wrong format, please try with 4 digits of year, 2 digits for month, and 2 digits for day like YYYYMMDD, no spaces and no dashes."
@@ -97,7 +103,10 @@ class AdminController():
                     return render_template('addUser.html', Data=message)
                 print("error: ", error)
                 return render_template('addUser.html', Error=error)
-        return render_template('addUserForm.html')
+        path = "../../frontend/app/img/characters/"
+        imagesList = listdir(path)
+        
+        return render_template('addUserForm.html', images=json.dumps(imagesList, allow_nan=False))
     
     
     def takePictures(self, mysql):
@@ -121,6 +130,22 @@ class AdminController():
 
             return render_template('picTaker.html', Data=users)
 
+    #https://stackoverflow.com/questions/36774431/how-to-load-images-from-a-directory-on-the-computer-in-python
+    def showCharacters(self):
+        
+        img = "url_for('static', filename='/static/characters/305563338_465058502310320_5321222513826696470_n.jpg')"
+        print(img)
+        
+        g = ''
+        gif_list = []
+        #for gif in imagesList:
+            #g = f'<img  class="animated-gif" src="{{url_for("static", filename="{gif}")}}" />'
+            #gif_list.append(f'<img  class="animated-gif" src="{{url_for("static", filename="{gif}")}}" />')
+        
+        return render_template('addUserForm.html', image_file=img), 400
+
+    
+    
 
 # Create Admin Controller instance to use its functions
 admincontroller = AdminController()       

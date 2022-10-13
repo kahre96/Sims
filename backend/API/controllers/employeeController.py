@@ -16,6 +16,7 @@ class EmployeeController():
         firstname   = args.get("firstname", default="NULL", type=str)
         lastname    = args.get("lastname", default="NULL", type=str)
         birthdate   = args.get("birthdate", default ="NULL", type=str)
+        character   = args.get("character", default ="NULL", type=str)
 
         # Post: Create Employee based on First- and Lastname, birthdate and ID
         if request.method == 'POST':
