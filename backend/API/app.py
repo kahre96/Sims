@@ -52,4 +52,9 @@ def newEntries():
 def getRecent():
     return playercontroller.getRecent(mysql)    
 
+# Route to get last months heroes (top 3 most monthly XP), as well as the current Top player
+@app.route('/player/getTop', methods = ['GET'])
+def getTop():
+    return playercontroller.getTop(mysql)        
+
 app.run(host='localhost', port=5000)

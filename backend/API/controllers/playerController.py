@@ -146,6 +146,7 @@ class PlayerController():
             level = 11 
         else:   # Calculate Level, Strip away rank (1000XP * Rank), then see what level in the Levels Dict is corresponding
             xp = xp-((rank-1)*1000)
+
             for key in self.Levels:
                 if self.Levels[key] <= xp:
                     level = key
@@ -154,17 +155,19 @@ class PlayerController():
         cursor.execute("UPDATE Player SET Level = %s WHERE emp_ID = %s" % (level,emp_ID))
                     
         ##############################################################################################
-        # UPDATE HERO TABLE
+        # UPDATE HERO TABLE (AND UPDATE XPLEVEL + XPNEXTLEVEL)
         #
         updated_player = getPlayerByID(cursor,emp_ID,birthday_today) # Get updated Player
-        
+
+        updated_player.xpLevel = updated_player.xpTotal % 1000 - self.Levels[level]
+        updated_player.xpNextLevel = self.Levels[level+1]-self.Levels[level]
         hero_date = updated_player.last_login.strftime("%Y%m%d")
         hero_xp = updated_player.xpMonth
         
         cursor.execute("SELECT * FROM Hero WHERE MONTH(Date)=%s AND YEAR(Date)=%s AND Xp_Month > %s" % (hero_date[4:6],hero_date[:4],hero_xp-1))
         results = cursor.fetchall() # Get all Heroes for current month (That have more XP than current user)
         if len(results) <= 2: # If there's two or less, insert current user regardless of XP
-            cursor.execute("INSERT INTO Hero(Emp_ID,Date,Xp_Month) VALUES (%s,%s,%s)" % (emp_ID,hero_date,hero_xp))
+            cursor.execute("INSERT INTO Hero(Emp_ID,Date,Xp_Month) VALUES (%s,%s,%s) ON DUPLICATE KEY UPDATE Date = %s, Xp_Month = %s" % (emp_ID,hero_date,hero_xp,hero_date,hero_xp))
             # Check if there are more than 3 Heroes for this month after insertion. If so, delete the one with least XP 
             cursor.execute("SELECT * FROM Hero WHERE MONTH(Date)=%s AND YEAR(Date)=%s" % (hero_date[4:6],hero_date[:4]) )
             results = cursor.fetchall()
@@ -200,16 +203,28 @@ class PlayerController():
 
             dt          = datetime.now()
             timestamp   = dt.strftime("%H:%M:%S")
-            #print(timestamp)
-            #player_id, display_name, ranking, xp_total, xp_month = result[0], result[1], result[2], result[3], result[4]
             self.newEntries[emp_ID] = timestamp
 
-            #for key, value in self.newEntries.items():
-                #print(key, ":" , value)
-
             cursor.close()
-            #return {"emp_ID":emp_ID, "player_id":player_id, "name":display_name, "rank":ranking, "total_xp":xp_total, "month_xp":xp_month}, 200
             return self.newEntries, 200
+
+    ''' Get last months Top Three players (most monthly XP)
+    INPUT: Mysql connection 
+    OUTPUT: Dictionary of lists with Player Display Name and Employee ID
+    '''
+    def getTop(self,mysql):
+         with mysql.connection.cursor() as cursor:
+
+            first_day_this_month = (date.today().replace(day=1))   
+            last_month = (first_day_this_month-timedelta(days=1)).strftime("%Y%m%d")
+            cursor.execute("SELECT Emp_ID From Hero WHERE MONTH(Date)=%s AND YEAR(Date)=%s ORDER BY Xp_Month DESC" % (last_month[4:6],last_month[:4]))
+            employees = cursor.fetchall()
+            top = {}
+            for emp in employees:
+                player = getPlayerByID(cursor,emp[0],False)
+                top[employees.index(emp)+1]=(player.displayName,player.emp_id)
+
+            return top
 
     ''' Get all recently recognized players
     INPUT: Mysql connection (also uses the playercontrollers newEntries Dictionary)
@@ -220,8 +235,6 @@ class PlayerController():
         employees = []
         for key in self.newEntries.items():
             employees.append(self.dailyLogin(mysql,int(key[0])))
-            #employees.append(key[1]) # Append the entry-timestemp to the list
-            #employees.append(self.dailyLogin(mysql,int(key[0]))) # Log in all players and append their JSON Data 
 
         self.newEntries.clear() # Clear the Dictionary, which is temporarily storing the recently recognized players
         
