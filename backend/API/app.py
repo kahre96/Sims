@@ -42,6 +42,10 @@ def deleteUser():
 def takePictures():
     return admincontroller.takePictures(mysql)
 
+@app.route('/admin/addUser/characters', methods = ['GET', 'POST'])
+def showCharacters():
+    return admincontroller.showCharacters()
+
 # Route to register Players that were recently recognized by the AI
 @app.route('/player/newEntry', methods = ['POST'])
 def newEntries():
