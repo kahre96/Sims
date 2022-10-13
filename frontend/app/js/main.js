@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById("date").innerHTML = weekday + " " + day + " " + monthText;
 
-
   let BirstaID = "ChIJ_zc5o4JgZEYR9MoQtnVmOKs";
   let GatanID = "ChIJRzq-RFxnZEYRcYtGa2wwq4Y";
 
