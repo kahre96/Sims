@@ -4,12 +4,12 @@
 */
 
 -- Fills the database with dummy information
-INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (1, "peter", "stegeby", STR_TO_DATE('19930805', '%Y%m%d'));
-INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (2, "andreas", "norin", STR_TO_DATE('19951218', '%Y%m%d'));
+INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (1, "andreas", "norin", STR_TO_DATE('19951218', '%Y%m%d'));
+INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (2, "fredrik", "kåhre", STR_TO_DATE('19961014', '%Y%m%d'));
 INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (3, "glenn", "verhaag", STR_TO_DATE('19980906', '%Y%m%d'));
-INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (4, "nordin", "suleimani", STR_TO_DATE('19830328', '%Y%m%d'));
-INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (5, "fredrik", "kåhre", STR_TO_DATE('19961014', '%Y%m%d'));
-INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (6, "ina", "nilsson", STR_TO_DATE('19990116', '%Y%m%d'));
+INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (4, "ina", "nilsson", STR_TO_DATE('19990116', '%Y%m%d'));
+INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (5, "nordin", "suleimani", STR_TO_DATE('19830328', '%Y%m%d'));
+INSERT INTO Employee(emp_ID, firstname, lastname, birthdate) VALUES (6, "peter", "stegeby", STR_TO_DATE('19930805', '%Y%m%d'));
 
 INSERT INTO Ranking(ranking_ID, name) VALUES (1, "android");
 INSERT INTO Ranking(ranking_ID, name) VALUES (2, "ewok");
