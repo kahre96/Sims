@@ -1,7 +1,7 @@
 from flask import request, render_template
 import requests
 import sys
-from os import listdir
+from os import listdir, rename
 #from PIL import Image as PImage
 import json
 
@@ -17,7 +17,9 @@ from pic_taker import picTaker
 
 
 class AdminController():
-        
+    def __init__(self):
+        self.img_path = "static/characters/"
+
     def statisticsPage(self,mysql):
         cursor = mysql.connection.cursor()
         playercount = cursor.execute('SELECT * FROM employee ') # Get total amount of employees (To be changed to players?)
@@ -52,8 +54,13 @@ class AdminController():
                 query   = "DELETE FROM player WHERE emp_id=%s"
                 cursor.execute(query, (emp_id,))
 
-                #query   = "DELETE FROM char_emp WHERE emp_id=%s"
-                #cursor.execute(query, emp_id)
+                for i, filename in enumerate(listdir(self.img_path)):
+                    print("filename.endswith(emp_id): ", filename.endswith(emp_id),3)
+                    print("filename: ", filename)
+                    print("emp_id:", emp_id, " type: ", type(emp_id))
+                    if filename.endswith(emp_id,3):
+                        print("Image:", self.img_path+filename," was renamed to => ", self.img_path+"yyy_reverted.gif")
+                        rename(self.img_path+filename, self.img_path+"yyy_reverted.gif")
                 
                 #query   = "DELETE FROM hero WHERE emp_id=%s"
                 #cursor.execute(query, emp_id)
@@ -98,16 +105,22 @@ class AdminController():
                     error += "Sorry, no month has {} days in it!".format(input_day)
            
                 if error == "Error:":
-                    create_str = f"?firstname={firstname}&lastname={lastname}&birthdate={birthdate}"
+                    create_str = f"?firstname={firstname}&lastname={lastname}&birthdate={birthdate}&character={character}"
                     message = f"User [{firstname} {lastname}] with birthdate {birthdate} has been created"
-                    res = requests.post(url+create_str)
+                    res = requests.post(url+create_str)                        
+
                     return render_template('addUser.html', Data=message)
                 print("error: ", error)
                 return render_template('addUser.html', Error=error)
-        path = "../../frontend/app/img/characters/"
-        imagesList = listdir(path)
         
-        return render_template('addUserForm.html', images=json.dumps(imagesList, allow_nan=False))
+        #https://stackoverflow.com/questions/36774431/how-to-load-images-from-a-directory-on-the-computer-in-python
+        imagesList = [ x for x in listdir(self.img_path) if not x.startswith("xxx_")]
+        
+        if len(imagesList) == 0:
+            error += "No more characters to use from, please add more characters to /static/characters!"
+            return render_template('addUser.html', Error=error)
+        else:
+            return render_template('addUserForm.html', images=json.dumps(imagesList, allow_nan=False))
     
     
     def takePictures(self, mysql):
@@ -122,28 +135,14 @@ class AdminController():
                 amount_pictures = request.form['pictures']
                 
                 if amount_pictures == "":
-                    message = f"1000 pictures are being taken with ID: {emp_id}!"
+                    message = f"1000 pictures has been taken of ID: {emp_id}!"
                     picTaker(emp_id)
                 else:
-                    message = f"{amount_pictures} pictures are being taken with ID: {emp_id}!"
+                    message = f"{amount_pictures} pictures has been taken of ID: {emp_id}!"
                     picTaker(emp_id, int(amount_pictures))
                 return render_template('picTaker.html', Status=message)
 
             return render_template('picTaker.html', Data=users)
-
-    #https://stackoverflow.com/questions/36774431/how-to-load-images-from-a-directory-on-the-computer-in-python
-    def showCharacters(self):
-        
-        img = "url_for('static', filename='/static/characters/305563338_465058502310320_5321222513826696470_n.jpg')"
-        print(img)
-        
-        g = ''
-        gif_list = []
-        #for gif in imagesList:
-            #g = f'<img  class="animated-gif" src="{{url_for("static", filename="{gif}")}}" />'
-            #gif_list.append(f'<img  class="animated-gif" src="{{url_for("static", filename="{gif}")}}" />')
-        
-        return render_template('addUserForm.html', image_file=img), 400
 
     
     
