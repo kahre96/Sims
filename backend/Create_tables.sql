@@ -34,7 +34,7 @@ CREATE TABLE Hero (
 Emp_ID					INTEGER(4) NOT NULL,
 Date					DATE,
 Xp_Month				INTEGER(3),
-PRIMARY KEY (Emp_ID),
+PRIMARY KEY (Emp_ID,Date),
 FOREIGN KEY (Emp_ID) REFERENCES Employee(Emp_ID));
 
 CREATE TABLE Greeting (
