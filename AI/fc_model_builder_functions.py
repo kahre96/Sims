@@ -6,21 +6,7 @@ from keras.callbacks import EarlyStopping
 import os
 import pickle
 import matplotlib.pyplot as plt
-
-
-# creates top layers to add on top of the vgg base model
-def topModel(prev_model, num_classes, neurons, ddlayer, neurons2):
-
-    top_model = prev_model.output
-    top_model = Flatten(name="flatten")(top_model)
-    top_model = Dense(neurons, activation="relu")(top_model)
-    top_model = Dropout(0.1)(top_model)
-    if ddlayer:
-        top_model = Dense(neurons2, activation="relu")(top_model)
-        top_model = Dropout(0.1)(top_model)
-    top_model = Dense(num_classes, activation="softmax")(top_model)
-
-    return top_model
+from keras_vggface import VGGFace
 
 
 # imports the data used to train the model
@@ -100,14 +86,30 @@ def import_data(aug, ds_dir, img_height, img_width, batch_size):
     return train_ds, val_ds
 
 
-# creates a model using the pretrained base VGG16
-def create_basemodel(img_height, img_width):
+# creates top layers to add on top of the vgg base model
+def topModel(prev_model, num_classes, neurons, ddlayer, neurons2, drop_rate, drop_rate2):
 
-    base_model = tf.keras.applications.vgg16.VGG16(
+    top_model = prev_model.output
+    top_model = Flatten(name="flatten")(top_model)
+    top_model = Dense(neurons, activation="relu")(top_model)
+    top_model = Dropout(drop_rate)(top_model)
+    if ddlayer:
+        top_model = Dense(neurons2, activation="relu")(top_model)
+        top_model = Dropout(drop_rate2)(top_model)
+    top_model = Dense(num_classes, activation="softmax")(top_model)
+
+    return top_model
+
+
+# creates a model using the pretrained base VGG16
+def create_basemodel(img_height, img_width,modelname):
+
+    base_model = VGGFace(
+        model=modelname,
         include_top=False,
-        weights='imagenet',
         input_shape=(img_height, img_width, 3),
     )
+
     # Set layers to non-trainable
     for layer in base_model.layers:
         layer.trainable = False
