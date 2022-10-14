@@ -6,8 +6,6 @@ import sys
 import json
 sys.path.append("../models")
 
-#TODO:
-# Change Heroes Table (Re-implement HeroID?)
 
 ''' Helper Function to get Player Object by employee ID and birthday_today variable'''
 def getPlayerByID(cursor, emp_ID, birthday_today):
@@ -35,7 +33,7 @@ def greet(cursor, player, first_login):
         if first_login == True: # Is it the players first login today?
             if player.birthday_today == True: # Player birthday is today: Randomly select from birthday greetings
                 cursor.execute("SELECT Text FROM Greeting WHERE Category = 'birthday' ORDER BY RAND() LIMIT 1")
-            elif int(datetime.now().strftime("%H")) <= 10: # It's before 10AM: Randomly select from default OR morning greetings
+            elif int(datetime.now().strftime("%H")) < 10: # It's before 10AM: Randomly select from default OR morning greetings
                 cursor.execute("SELECT Text FROM Greeting WHERE Category = 'default' OR Category = 'morning' ORDER BY RAND() LIMIT 1")
             else: # Randomly select regular greeting
                 cursor.execute("SELECT Text FROM Greeting WHERE Category = 'default' ORDER BY RAND() LIMIT 1")
@@ -192,16 +190,17 @@ class PlayerController():
     def newEntry(self, mysql):
         
         args        = request.args
-        emp_ID      = args.get("emp_ID", default="NULL", type=str) 
+        emp_ID      = args.get("emp_ID", default="NULL", type=int) 
         timestamp   = 0
         if emp_ID == "NULL":
             return "Request failed, no Employee ID provided!", 400
        
         with mysql.connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM Player WHERE Emp_ID = %s"% emp_ID)
-            result      = cursor.fetchone()
-            if not result:
-                return "Player not found!", 404
+            if not(emp_ID==0):
+                cursor.execute("SELECT * FROM Player WHERE Emp_ID = %s"% emp_ID)
+                result      = cursor.fetchone()
+                if not result:
+                    return "Player not found!", 404
 
             dt          = datetime.now()
             timestamp   = dt.strftime("%H:%M:%S")
@@ -240,7 +239,10 @@ class PlayerController():
         
         employees = []
         for key in self.newEntries.items():
-            employees.append(self.dailyLogin(mysql,int(key[0])))
+            if key[0]==0:
+                employees.append(Player(0,0,0,0,0,datetime.today(),0,"Guest",False))
+            else:    
+                employees.append(self.dailyLogin(mysql,int(key[0])))
 
         self.newEntries.clear() # Clear the Dictionary, which is temporarily storing the recently recognized players
         
