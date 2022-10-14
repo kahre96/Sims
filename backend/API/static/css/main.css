@@ -1,5 +1,6 @@
 * {
     font-family: Arial, sans-serif;
+    box-sizing: border-box;
 }
 
 .header {
@@ -102,4 +103,30 @@ td {
 .button:hover {
     color: #A5B1AA;
     transition: all 0.3s ease;
+}
+
+.image-container {
+
+}
+
+.characters {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-check-input {
+    width: 28%;
+    margin: 10px;
+    border: 1px solid #A5B1AA;
+    cursor: pointer;
+}
+
+.image-check {
+    width: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.list {
+    list-style: none;
 }

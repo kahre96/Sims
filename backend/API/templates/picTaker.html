@@ -1,19 +1,22 @@
 {% extends 'index.html' %}
 
 {% block body %}
-<h4>Take pictures</h4>
 
-<p> The ID of the 5 last users {{ Data }}</p>
 
-<p> Status: {{ Status }}</p>
-
-<form action="" method="post">
-    <input class="form-field" type="text" name="emp_id" placeholder="SpelarID" value="{{
+<div class="body-container">
+    <h3>Ta bilder</h3>
+    <p>ID på de 5 senaste spelarna {{ Data }}</p>
+    <p>Status: {{ Status }}</p>
+    <p>Skriv in det ID som bilderna ska kopplas till.</p>
+    <form action="" method="post">
+        <input class="form-field" type="text" name="emp_id" placeholder="SpelarID" value="{{
         request.form.emp_id }}" required>  <br />
-    <input class="form-field" type="number" name="pictures" placeholder="Default=1000" value="{{
+        <input class="form-field" type="number" name="pictures" placeholder="Antal bilder (default 1000)" value="{{
         request.form.birthdate }}"> <br />
-    <input class="button" type="submit" value="Ta bilder">
-</form>
+        <input class="button" type="submit" value="Ta bilder">
+    </form>
+</div>
+
 
 {% endblock %}
 </body>

@@ -13,7 +13,7 @@
 {% block body %}
 <div class="body-container">
     <h3>Skapa en spelare</h3>
-    <h5>Observera att 'Lägg till'-knappen kan vara långt ned på sidan om det finns många karaktärer!</h5>
+    <p>Observera att 'Lägg till'-knappen kan vara långt ned på sidan om det finns många karaktärer!</p>
     <div class="form-container">
         <form class="form" action ="" method="post">
             <input class="form-field" type="text" name="firstname" placeholder="Förnamn" value="{{
@@ -30,41 +30,45 @@
     </div>
 </div>
 
-<script> 
-  picture = ""; 
-  temp = [];
-</script>
+<div class="image-container">
+    <script>
+        picture = "";
+        temp = [];
+    </script>
 
-{% for gif in images %}
-<script>
-  if ("{{gif}}" == "&#34;" || "{{gif}}" == "[" || "{{gif}}" == "]" ||  "{{gif}}" == "," || "{{gif}}" == ' ' || "{{gif}}" == '') {
-    temp.push(picture);
-    picture = "";
-  } else {
-    picture += "{{gif}}";
-  }
-</script>
-  {% endfor %}
+    {% for gif in images %}
+    <script>
+        if ("{{gif}}" == "&#34;" || "{{gif}}" == "[" || "{{gif}}" == "]" ||  "{{gif}}" == "," || "{{gif}}" == ' ' || "{{gif}}" == '') {
+            temp.push(picture);
+            picture = "";
+        } else {
+            picture += "{{gif}}";
+        }
+    </script>
+    {% endfor %}
 
-      <!-- https://stackoverflow.com/questions/10314800/flask-url-for-urls-in-javascript -->
-      {% set url=url_for('static', filename='characters/') %}
-<script>
-  imgs = []
-  $.each(temp, function (index, element) {
-      if (element.length > 0) {
-        imgs.push(element)
-      }
-  });
+    <!-- https://stackoverflow.com/questions/10314800/flask-url-for-urls-in-javascript -->
+    {% set url=url_for('static', filename='characters/') %}
+    <script>
+        imgs = []
+        $.each(temp, function (index, element) {
+            if (element.length > 0) {
+                imgs.push(element)
+            }
+        });
 
-  
-  $.each(imgs, function (index, element) {
-      $(".characters").append("<input class='form-check-input' type='radio' name='characters' id="+index+" value="+index+">")  
-      $(".characters").append("<label class='form-check-input' for="+index+"><img src='{{url}}"+element+"' name='characters' id=\'"+index+"\' value='{{request.form.characters }}'> </label> <br />")
-      
-  });
-    
-  //$('.form-check-input input:radio:checked').id()
-</script>
+
+        $.each(imgs, function (index, element) {
+            $(".characters").append("<input class='image-check' type='radio' name='characters' id="+index+" value="+index+">")
+            $(".characters").append("<label class='form-check-input' for="+index+"><img src='{{url}}"+element+"' name='characters' id=\'"+index+"\' value='{{request.form.characters }}'> </label> <br />")
+
+        });
+
+        //$('.form-check-input input:radio:checked').id()
+    </script>
+</div>
+
+
 {% endblock %}
 </body>
 </html>
