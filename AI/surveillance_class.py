@@ -24,7 +24,7 @@ class surveillance():
         self.frame = None
         self.url = "http://localhost:5000/player/newEntry"
         self.color = (0, 255, 0)
-        self.counter= 0
+        self.counter = 0
         self.surveillance()
 
     def surveillance(self):
@@ -48,12 +48,14 @@ class surveillance():
                     if y2 - y < 180:
                         break
 
-                    face_array = self.image_processing(x,y,x2,y2)
+                    face_array = self.image_processing(x, y, x2, y2)
                     label_guess = self.predict(face_array)
-                    self.draw_face(x,y,x2,y2, label_guess)
+                    self.draw_face(x, y, x2, y2, label_guess)
+
                 self.post_handler()
 
             self.check_time_for_reset()
+
             self.counter += 1
             if self.counter > 20:
                 self.reset_guest_lock()
@@ -118,8 +120,8 @@ class surveillance():
                 print('Cleared guess que unlocking guest')
                 
 
+surveillance(labels='labels.pickle', model='models/no_glasses_vgg16_Images_noaug_0.75x0.5d_N128x64.h5', video_source=0)
 
-surveillance(labels='models/labels.pickle', model='models/128x64_GnG_BN.h5', video_source=2)
 
 
 
