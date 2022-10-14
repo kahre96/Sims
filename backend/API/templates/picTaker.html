@@ -8,11 +8,11 @@
 <p> Status: {{ Status }}</p>
 
 <form action="" method="post">
-    <input type="text" name="emp_id" placeholder="Employee ID" value="{{
+    <input class="form-field" type="text" name="emp_id" placeholder="SpelarID" value="{{
         request.form.emp_id }}" required>  <br />
-    <input type="number" name="pictures" placeholder="Default=1000" value="{{
+    <input class="form-field" type="number" name="pictures" placeholder="Default=1000" value="{{
         request.form.birthdate }}"> <br />
-    <input class="btn btn-default" type="submit" value="Take pictures">
+    <input class="button" type="submit" value="Ta bilder">
 </form>
 
 {% endblock %}
