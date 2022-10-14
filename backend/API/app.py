@@ -5,6 +5,7 @@ from controllers.adminController import admincontroller
 from controllers.playerController import playercontroller
 
 
+
 db_password    = ''
 db_name        = 'sims'
 

@@ -1,7 +1,7 @@
 
 /* 	Created by:	Peter Stegeby
 	Date:		22-09-14
-	Modified:	22-10-10
+	Modified:	22-10-14
 */
 -- Create tables
 
@@ -35,12 +35,6 @@ Emp_ID					INTEGER(4) NOT NULL,
 Date					DATE,
 Xp_Month				INTEGER(3),
 PRIMARY KEY (Emp_ID),
-FOREIGN KEY (Emp_ID) REFERENCES Employee(Emp_ID));
-
-CREATE TABLE Char_emp (
-Char_ID					INTEGER(3) NOT NULL,
-Emp_ID					INTEGER(4) NOT NULL,
-PRIMARY KEY (Char_ID),
 FOREIGN KEY (Emp_ID) REFERENCES Employee(Emp_ID));
 
 CREATE TABLE Greeting (
