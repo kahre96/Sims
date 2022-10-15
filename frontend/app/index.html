@@ -28,48 +28,19 @@
 <body>
 
 
-<!-- Add your site or application content here -->
-<div class="container scrolling-track-container">
-  <div id="horizontal-scroll"></div>
-  <div id="horizontal-scroll2"></div>
-  <div id="horizontal-scroll3"></div>
-  <div id="horizontal-scroll4"></div>
-  <div id="track-init-scroll"></div>
-  <div id="track-slide1-scroll" class="props-group">
-    <div id="propslist" class="row text-danger d-flex justify-content-evenly">
-      <div class="col prop spawn0">
-      </div>
-      <div class="col prop spawn1">
-      </div>
-      <div class="col prop spawn2">
-      </div>
-      <div class="col prop spawn3">
-      </div>
-      <div class="col">
-      </div>
-    </div>
+<!-- js generated track animation -->
+<div class="container-fluid scrolling-track-container">
+  <div id="knw-bg-anim">
+
   </div>
-  <div id="track-slide2-scroll" class="props-group">
-    <div id="propslist2" class="row text-danger d-flex justify-content-evenly">
-      <div class="col prop spawn0">
-      </div>
-      <div class="col prop spawn1">
-      </div>
-      <div class="col prop spawn2">
-      </div>
-      <div class="col prop spawn3">
-      </div>
-      <div class="col">
-      </div>
-    </div>
-  </div>
-  <div id="track-characters">
-    <div class="row">
-      <div id="track-area" class="col track-area">
-      </div>
+</div>
+<div id="track-characters">
+  <div class="row">
+    <div id="track-area" class="col track-area">
     </div>
   </div>
 </div>
+
 <!--           CONTENT LAYOUT          -->
 <section class="container knw-content">
   <div class="row">
@@ -102,10 +73,11 @@
             </div>
           </header>
         </div>
-        <section class="row px-4" id="people-box">
+        <section class="row px-4 gx-5" id="people-box">
         </section>
       </section>
     </div>
+    <!--  News and last months winners  -->
     <aside class="col p-0 m-0 knw-sidebar">
       <div class="news-box p-0 m-0 rounded-0 position-relative">
         <ul class="list-group">
@@ -163,6 +135,7 @@
 
 
 <!-- Theme settings-->
+<!--toggle settings window-->
 <button class="btn bg-white anim-setting-open" type="button" data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasBottom"
         aria-controls="offcanvasBottom">
@@ -177,7 +150,10 @@
       <i class="bi bi-arrow-down-short"></i>
     </button>
   </div>
+
+
   <div class="offcanvas-body small">
+    <!-- theme setup -->
     <div class="card text-dark bg-light mb-3">
       <h4 class="card-header"><i class="bi bi-paint-bucket"></i> Themes setup</h4>
       <div class="card-body">
@@ -210,6 +186,7 @@
       </div>
     </div>
 
+    <!-- create new theme -->
     <div class="card text-dark bg-light mb-3">
       <h4 class="card-header"><i class="bi bi-palette"></i> Create new theme</h4>
       <div class="card-body">

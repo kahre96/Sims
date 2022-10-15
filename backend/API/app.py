@@ -3,8 +3,7 @@ from flask_mysqldb import MySQL
 from controllers.employeeController import employeecontroller
 from controllers.adminController import admincontroller
 from controllers.playerController import playercontroller
-
-
+from flask_cors import CORS
 
 db_password    = ''
 db_name        = 'sims'
@@ -16,6 +15,8 @@ app.config['MYSQL_USER']        = 'root'
 app.config['MYSQL_PASSWORD']    = db_password
 app.config['MYSQL_DB']          = db_name
 mysql = MySQL(app)
+
+CORS(app)
 
 # Route to create employees and get their name based on ID
 @app.route('/employee/create', methods = ['POST'])
