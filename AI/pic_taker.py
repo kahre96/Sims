@@ -14,8 +14,10 @@ class picTaker():
         self.cam.set(4, 2160)
         self.detector = MTCNN()
         self.counter = 0
+        self.counter2 = 0
         self.frame = None
         self.now = int(time.time())
+        self.picturearray = []
         self.check_folder()
         self.take_pics()
 
@@ -52,7 +54,7 @@ class picTaker():
                 break
         self.cam.release()
         cv2.destroyAllWindows()
-
+        self.write_images_to_disk()
     # look if folder already exists otherwise creates it
     def check_folder(self):
         if os.path.exists(self.dir_path):
@@ -64,7 +66,17 @@ class picTaker():
         cropped_img = self.frame[y:y2, x:x2]
 
         reimage = cv2.resize(cropped_img, (224, 224))
-        cv2.imwrite(f"{self.dir_path}/{self.label}_{self.now}_{self.counter}.jpg", reimage)
+        self.picturearray.append(reimage)
+        #cv2.imwrite(f"{self.dir_path}/{self.label}_{self.now}_{self.counter}.jpg", reimage)
         self.counter += 1
-        #print(f"Pictures taken: {self.counter}")
-        
+        print(f"Pictures taken: {self.counter}")
+
+    def write_images_to_disk(self):
+        for image in self.picturearray:
+            print("saving image")
+            cv2.imwrite(f"{self.dir_path}/{self.label}_{self.now}_{self.counter2}.jpg", image)
+            self.counter2 += 1
+
+
+
+picTaker("hej2",10)
