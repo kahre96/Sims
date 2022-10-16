@@ -366,6 +366,9 @@ a {
 .bg-pebble {
   background-color: var(--pebble);
 }
+.bg-pebble-o25 {
+  background-color: var(--pebble-o35);
+}
 .bg-clay {
   background-color: var(--clay);
 }
@@ -886,7 +889,7 @@ nav .div {
 .anim-setting-open {
   position: fixed;
   bottom: 0;
-  left: 20px;
+  left: 10px;
   z-index: 1000;
 }
 
