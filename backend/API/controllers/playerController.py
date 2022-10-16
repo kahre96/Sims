@@ -251,6 +251,14 @@ class PlayerController():
 
         return json.dumps([obj.__dict__ for obj in employees],indent=4, sort_keys=True, default=str,ensure_ascii=False).encode('utf-8'),200
 
+    def getMonthlyXP(self,mysql):
+        with mysql.connection.cursor() as cursor:
+            monthlyXP = {}
+            cursor.execute("SELECT emp_ID,XP_Month FROM Player")
+            players = cursor.fetchall()
+            for xp in players:
+                monthlyXP[xp[0]]=xp[1]
+        return monthlyXP,200
 
 playercontroller = PlayerController()
 
