@@ -5,7 +5,7 @@
 
 <div class="body-container">
     <h3>Ta bilder</h3>
-    <p>ID på de 5 senaste spelarna {{ Data }}</p>
+    <!-- <p>ID på de 5 senaste spelarna {{ Data }}</p> -->
     <p>Status: {{ Status }}</p>
     <p>Skriv in det ID som bilderna ska kopplas till.</p>
     <form action="" method="post">
@@ -16,6 +16,55 @@
         <input class="button" type="submit" value="Ta bilder">
     </form>
 </div>
+
+<ul class ="list">
+    <!-- List will be filled from below! -->
+</ul>
+
+<script>
+    user  = ""
+    temp    = []
+</script>
+
+{% for person in Data %}
+    <script>
+        arr = "{{person}}".split(",");
+        str = ""
+        $.each(arr, function (index, element) {
+            if (index == 0) {
+                element = element.substring(1);
+            }
+            else if (index == 1) {
+                element = element.substring(6, element.length-5)
+                element = element[0].toUpperCase() + element.substring(1);
+            } else if ( index == 2) {
+                element = element.substring(6, element.length-6)
+                element = element[0].toUpperCase() + element.substring(1);
+            }
+            
+            if (index == 2) {
+                str += element
+                temp.push(str)
+            } else {
+                str += element + " "
+            }
+        });
+        
+    </script>
+    {% endfor %}
+<script>
+    users = []
+        $.each(temp, function (index, element) {
+            if (element.length > 0) {
+                users.push(element)
+            }
+        });
+
+        $.each(users, function (index, element) {
+            $(".list").append("<li>" + element +" </li>");
+        });
+
+</script>
 
 
 {% endblock %}

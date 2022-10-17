@@ -59,8 +59,8 @@
 
 
         $.each(imgs, function (index, element) {
-            $(".characters").append("<input class='image-check' type='radio' name='characters' id="+index+" value="+index+">")
-            $(".characters").append("<label class='form-check-input' for="+index+"><img src='{{url}}"+element+"' name='characters' id=\'"+index+"\' value='{{request.form.characters }}'> </label> <br />")
+            $(".characters").append("<br /> <input class='image-check' type='radio' name='characters' id="+index+" value="+index+">")
+            $(".characters").append("<label class='form-check-input' for="+index+"><img src='{{url}}"+element+"' name='characters' id=\'"+index+"\' value='{{request.form.characters }}'> </label>")
 
         });
 
