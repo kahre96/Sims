@@ -48,17 +48,18 @@ class AdminController():
                 sql     = "SELECT emp_id, firstname, lastname FROM employee WHERE emp_id=%s;"
                 cursor.execute(sql, (emp_id,))
                 user = cursor.fetchone()
-                print("user: ", user)
+                #print("user: ", user)
                 deleted_user  = f"User {user[1]} {user[2]} with id {user[0]} has been removed from the database"
-                print("deleted_user: ", deleted_user)
+                #print("deleted_user: ", deleted_user)
                 query   = "DELETE FROM player WHERE emp_id=%s"
                 cursor.execute(query, (emp_id,))
 
                 for i, filename in enumerate(listdir(self.img_path)):
-                    print("filename.endswith(emp_id): ", filename.endswith(emp_id),3)
-                    print("filename: ", filename)
+                    temp = filename[:-4]
+                    print("filename.endswith(emp_id): ", temp.endswith(emp_id),3)
+                    print("filename: ", temp)
                     print("emp_id:", emp_id, " type: ", type(emp_id))
-                    if filename.endswith(emp_id,3):
+                    if temp.endswith(emp_id,3):
                         print("Image:", self.img_path+filename," was renamed to => ", self.img_path+"yyy_reverted.gif")
                         rename(self.img_path+filename, self.img_path+"yyy_reverted.gif")
                 
@@ -114,7 +115,7 @@ class AdminController():
                 return render_template('addUser.html', Error=error)
         
         #https://stackoverflow.com/questions/36774431/how-to-load-images-from-a-directory-on-the-computer-in-python
-        imagesList = [ x for x in listdir(self.img_path) if not x.startswith("xxx_")]
+        imagesList = [ x for x in listdir(self.img_path) if not x.startswith("zzz_")]
         
         if len(imagesList) == 0:
             error += "No more characters to use from, please add more characters to /static/characters!"
