@@ -3,8 +3,7 @@ from flask_mysqldb import MySQL
 from controllers.employeeController import employeecontroller
 from controllers.adminController import admincontroller
 from controllers.playerController import playercontroller
-
-
+from flask_cors import CORS
 
 db_password    = ''
 db_name        = 'sims'
@@ -15,7 +14,10 @@ app.config['MYSQL_HOST']        = 'localhost'
 app.config['MYSQL_USER']        = 'root'
 app.config['MYSQL_PASSWORD']    = db_password
 app.config['MYSQL_DB']          = db_name
+   
 mysql = MySQL(app)
+
+CORS(app)
 
 # Route to create employees and get their name based on ID
 @app.route('/employee/create', methods = ['POST'])
@@ -57,5 +59,10 @@ def getRecent():
 @app.route('/player/getTop', methods = ['GET'])
 def getTop():
     return playercontroller.getTop(mysql)        
+
+# Route to get last months heroes (top 3 most monthly XP), as well as the current Top player
+@app.route('/player/getMonthlyXP', methods = ['GET'])
+def getMonthlyXP():
+    return playercontroller.getMonthlyXP(mysql)   
 
 app.run(host='localhost', port=5000)

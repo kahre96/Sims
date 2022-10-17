@@ -1,248 +1,334 @@
-document.addEventListener('DOMContentLoaded', () => {
-  let date = new Date();
-  const months = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
-  let monthText = months[date.getMonth()];
-  let day = date.getDate();
-  const days = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
-  let weekday = days[date.getDay()];
+$(function (keyframes, options) {
+  // Inna
+  document.addEventListener('DOMContentLoaded', () => {
+    let date = new Date();
+    const months = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
+    let monthText = months[date.getMonth()];
+    let day = date.getDate();
+    const days = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
+    let weekday = days[date.getDay()];
 
-  document.getElementById("date").innerHTML = weekday + " " + day + " " + monthText;
+    document.getElementById("date").innerHTML = weekday + " " + day + " " + monthText;
 
-  let BirstaID = "ChIJ_zc5o4JgZEYR9MoQtnVmOKs";
-  let GatanID = "ChIJRzq-RFxnZEYRcYtGa2wwq4Y";
+    let BirstaID = "ChIJ_zc5o4JgZEYR9MoQtnVmOKs";
+    let GatanID = "ChIJRzq-RFxnZEYRcYtGa2wwq4Y";
 
-  const request = {
-    placeId: BirstaID,
-    fields: ['name', 'opening_hours', 'utc_offset_minutes']
-  };
-  const service = new google.maps.places.PlacesService(document.createElement('div'));
-  service.getDetails(request, callback);
+    const request = {
+      placeId: BirstaID, fields: ['name', 'opening_hours', 'utc_offset_minutes']
+    };
+    const service = new google.maps.places.PlacesService(document.createElement('div'));
+    service.getDetails(request, callback);
 
-  const request2 = {
-    placeId: GatanID,
-    fields: ['name', 'opening_hours', 'utc_offset_minutes']
-  };
-  const service2 = new google.maps.places.PlacesService(document.createElement('div'));
-  service.getDetails(request2, callback2);
+    const request2 = {
+      placeId: GatanID, fields: ['name', 'opening_hours', 'utc_offset_minutes']
+    };
+    const service2 = new google.maps.places.PlacesService(document.createElement('div'));
+    service.getDetails(request2, callback2);
 
-  function callback(place, status) {
-    if (status !== google.maps.places.PlacesServiceStatus.OK) {
-      document.getElementById("hours-text").innerHTML = "Nu var det någonting som gick fel. Skyll på Google!";
-    }
-    if (place.opening_hours && place.utc_offset_minutes) {
-      const isOpenNow = place.opening_hours.isOpen();
-      if (isOpenNow) {
-        document.getElementById("hours-text").innerHTML = "Systembolaget i Birsta har öppet just nu!\n";
+    function callback(place, status) {
+      if (status !== google.maps.places.PlacesServiceStatus.OK) {
+        document.getElementById("hours-text").innerHTML = "Nu var det någonting som gick fel. Skyll på Google!";
       }
-      else {
-        document.getElementById("hours-text").innerHTML += "Systembolaget i Birsta har stängt just nu!\n";
+      if (place.opening_hours && place.utc_offset_minutes) {
+        const isOpenNow = place.opening_hours.isOpen();
+        if (isOpenNow) {
+          document.getElementById("hours-text").innerHTML = "Systembolaget i Birsta har öppet just nu!\n";
+        } else {
+          document.getElementById("hours-text").innerHTML += "Systembolaget i Birsta har stängt just nu!\n";
+        }
+        document.getElementById("hours-text").innerHTML += "Torsdag: " + place.opening_hours.periods[3].open.time + " - " + place.opening_hours.periods[3].close.time + "<br/>" + "Fredag: " + place.opening_hours.periods[4].open.time + " - " + place.opening_hours.periods[4].close.time + "<br/>" + "Lördag: " + place.opening_hours.periods[5].open.time + " - " + place.opening_hours.periods[5].close.time + "<br/><br/>";
       }
-      document.getElementById("hours-text").innerHTML +=
-        "Torsdag: " + place.opening_hours.periods[3].open.time + " - " + place.opening_hours.periods[3].close.time + "<br/>"
-        + "Fredag: " + place.opening_hours.periods[4].open.time + " - " + place.opening_hours.periods[4].close.time + "<br/>"
-        + "Lördag: " + place.opening_hours.periods[5].open.time + " - " + place.opening_hours.periods[5].close.time + "<br/><br/>";
     }
-  }
 
-  function callback2(place, status) {
-    if (status !== google.maps.places.PlacesServiceStatus.OK) {
-      document.getElementById("hours-text").innerHTML += "Nu var det någonting som gick fel. Skyll på Google!";
-    }
-    if (place.opening_hours && place.utc_offset_minutes) {
-      const isOpenNow = place.opening_hours.isOpen();
-      if (isOpenNow) {
-        document.getElementById("hours-text").innerHTML += "Systembolaget på Sjögatan har öppet just nu!\n";
+    function callback2(place, status) {
+      if (status !== google.maps.places.PlacesServiceStatus.OK) {
+        document.getElementById("hours-text").innerHTML += "Nu var det någonting som gick fel. Skyll på Google!";
       }
-      else {
-        document.getElementById("hours-text").innerHTML += "Systembolaget på Sjögatan har stängt just nu!\n";
+      if (place.opening_hours && place.utc_offset_minutes) {
+        const isOpenNow = place.opening_hours.isOpen();
+        if (isOpenNow) {
+          document.getElementById("hours-text").innerHTML += "Systembolaget på Sjögatan har öppet just nu!\n";
+        } else {
+          document.getElementById("hours-text").innerHTML += "Systembolaget på Sjögatan har stängt just nu!\n";
+        }
+        document.getElementById("hours-text").innerHTML += "Torsdag: " + place.opening_hours.periods[3].open.time + " - " + place.opening_hours.periods[3].close.time + "<br/>" + "Fredag: " + place.opening_hours.periods[4].open.time + " - " + place.opening_hours.periods[4].close.time + "<br/>" + "Lördag: " + place.opening_hours.periods[5].open.time + " - " + place.opening_hours.periods[5].close.time + "<br/>";
       }
-      document.getElementById("hours-text").innerHTML +=
-        "Torsdag: " + place.opening_hours.periods[3].open.time + " - " + place.opening_hours.periods[3].close.time + "<br/>"
-        + "Fredag: " + place.opening_hours.periods[4].open.time + " - " + place.opening_hours.periods[4].close.time + "<br/>"
-        + "Lördag: " + place.opening_hours.periods[5].open.time + " - " + place.opening_hours.periods[5].close.time + "<br/>";
     }
-  }
-});
+  });
 
-
-
-$(function () {
+  // Nordin
+  let runningIntervals = [];
   let ppl = [];
-  let propFolder = "img/themes/seasons/summer/a/props/";
+  let currentTheme = {};
 
-  getImgsFromFolder(propFolder).then(props => {
-    spawnProps("#propslist", props);
-    spawnProps("#propslist2", props);
-    setInterval(spawnProps, 12000, "#propslist", props);
-    setTimeout(() => {
-      setInterval(spawnProps, 12000, "#propslist2", props);
-    }, 6000);
-  });
-
+  var themeConfig = (function () {
+    var json = null;
+    $.ajax({
+      'async': false,
+      'global': false,
+      'url': 'img/themes/themes-config.json',
+      'dataType': "json",
+      'success': function (data) {
+        json = data;
+      }
+    });
+    return json;
+  })();
+  var quotes = (function () {
+    var json = null;
+    $.ajax({
+      'async': false,
+      'global': false,
+      'url': 'resources/quotes.json',
+      'dataType': "json",
+      'success': function (data) {
+        json = data;
+      }
+    });
+    return json;
+  })();
+  setTheme();
+  initThemeAnimation();
+  setInterval(createPplsJson, 1000);
   spawnCharacters();
-  $('input[name="set-theme"]').on('click change', function () {
-    if ($(this).val() === "override") {
-      $("#override-theme-select").prop('disabled', false);
-    } else if ($(this).val() === "seasonal") {
-      $("#override-theme-select").prop('disabled', true);
+
+  setInterval(tipsFadeInFadeOut, 10000, $(".scrolling-tip-div"), 10000);
+
+  function setTheme() {
+    // pick random theme from season based on date if override is not set.
+    if (themeConfig.override.active) {
+      currentTheme.themeCategory = themeConfig.override.themeCategory;
+      currentTheme.themeName = themeConfig.override.themeName;
+    } else {
+      //Todo grab random theme from season folder depending on date and time
+      // currentTheme = themeConfig.themes["summer"]["city01"];
+      currentTheme.themeCategory = themeConfig.override.themeCategory;
+      currentTheme.themeName = themeConfig.override.themeName;
     }
-  });
-  $('select[id="override-theme-select"]').on('change', function () {
-    if ($(this).val() !== "Override theme") {
-      // $("#override-theme-select").prop('disabled', false);
-      alert($(this).val());
-    }
+  }
 
-  });
-
-  function createPplsJson(count) {
-    let rand = Math.floor(Math.random() * count) + 1;
-
-    $.getJSON('https://random-data-api.com/api/v2/users?size=' + rand, function (data) {
-      if (!isNaN(data.length) && (ppl.length + data.length) > count) {
-        let tempNum = ppl.length + data.length - count;
-        ppl.splice(0, tempNum);
-      }
-      if (!isNaN(data.length) && data.length > 0) {
-        for (let i = 0; i < data.length; i++) {
-          ppl.push(data[i]);
+  function initThemeAnimation() {
+    //Todo go through current theme layers and construct the animation
+    $.each(themeConfig.themes[currentTheme.themeCategory][currentTheme.themeName].layers, function (index, layer) {
+      let tempLayerDiv = $("<div>");
+      let themeFolder = 'img/themes/' + currentTheme.themeCategory + '/' + currentTheme.themeName + '/';
+      tempLayerDiv.addClass('container-fluid bg-scroll');
+      tempLayerDiv.attr('id', 'anim-layer-' + index);
+      if (layer.layerType === "bg-layer") {
+        tempLayerDiv.css({
+          'background': 'url(' + themeFolder + layer.bgImg + ')', 'background-size': '100%'
+        });
+        if (layer.options.speed > 0) {
+          slideAnimateMaybeSpawn(tempLayerDiv, layer.options.speed, {'background-position-x': '0vw'}, {'background-position-x': '-=100vw'}, 0);
+          let tempThisInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed, tempLayerDiv, layer.options.speed, {'background-position-x': '0vw'}, {'background-position-x': '-=100vw'}, 0);
+          runningIntervals.push(tempThisInterval);
         }
-      }
-      if (ppl.length >= count) {
-        $('#people-box').empty();
-      }
-      $.each(ppl.reverse(), function (index, obj) {
-        let cardStyle = 'col first-card';
-        if (index >= 1) {
-          cardStyle = 'col rest-cards';
+      } else {
+        tempLayerDiv.css({
+          'top': layer.options.spawnStartY + 'px', 'height': layer.options.randPosY + 'px',
+        });
+        let spawnContainerDivA = $("<div>");
+        let spawnContainerDivB = $("<div>");
+        // two empty divs to avoid spawn popping in beginning
+        $('<div class="col-2"></div>').appendTo(spawnContainerDivA);
+        $('<div class="col-2"></div>').appendTo(spawnContainerDivB);
+        for (let i = 0; i < layer.options.spawnsPerLoop; i++) {
+          $('<div class="col prop spawn' + i + '"></div>').appendTo(spawnContainerDivA);
+          $('<div class="col prop spawn' + i + '"></div>').appendTo(spawnContainerDivB);
         }
-        let newElement = document.createElement('div');
-        newElement.setAttribute("class", cardStyle);
-        newElement.innerHTML = `
-            <div class="card user-card bg-white" data-label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lvl. #, Rookie &nbsp;&nbsp;&nbsp;">
+
+        // Todo set slide bottom-0 from json
+        spawnContainerDivA.addClass('row spawn-slide position-absolute bottom-0');
+        spawnContainerDivB.addClass('row spawn-slide position-absolute bottom-0');
+        spawnContainerDivA.attr('id', 'spawn-layer-' + index + '-a');
+        spawnContainerDivB.attr('id', 'spawn-layer-' + index + '-b');
+        $(spawnContainerDivA).appendTo(tempLayerDiv);
+        $(spawnContainerDivB).appendTo(tempLayerDiv);
+
+
+        getImgsFromFolder(themeFolder + 'props/' + layer.spawnImgs + '/').then(props => {
+          slideAnimateMaybeSpawn(spawnContainerDivA, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, 0, props, layer.options);
+          slideAnimateMaybeSpawn(spawnContainerDivB, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, layer.options.speed * 1, props, layer.options);
+          var slideOneInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivA, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, props, layer.options);
+          runningIntervals.push(slideOneInterval);
+          setTimeout(() => {
+            var slideTwoInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivB, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, props, layer.options);
+            runningIntervals.push(slideTwoInterval);
+          }, layer.options.speed);
+        });
+      }
+      $("#knw-bg-anim").append(tempLayerDiv);
+    });
+  }
+
+  function slideAnimateMaybeSpawn(element, speed, propertyStart, propertyEnd, delayTime, props = [], options) {
+    $(element).delay(delayTime).animate(propertyEnd, speed, 'linear', () => {
+      // go back to original state
+      $(element).css(propertyStart);
+      // spawn items
+      if (props.length) {
+        spawnProps(element, props, options);
+      }
+    });
+  }
+
+
+  function createPplsJson() {
+    $.ajax({
+      url: 'http://localhost:5000/player/getRecent',
+      type: "GET",
+      dataType: "json",
+      success: function (data) {
+        let newPpl = data.filter(o1 => !ppl.some(o2 => o1.emp_id === o2.emp_id));
+        if (!isNaN(newPpl.length) && newPpl.length > 0) {
+          ppl = newPpl;
+          if (($('#people-box').children().length + ppl.length) > 4) {
+            for (let i = 0; i < newPpl.length; i++) {
+              $('#people-box > div:last').remove();
+            }
+          }
+
+          //Todo iterate and render each person once there is new persons in the card, make into a function
+          $.each(ppl, function (index, obj) {
+            let cardStyleFirst = 'col first-card';
+            let cardStyleRest = 'col rest-cards';
+            let newElement = document.createElement('div');
+            $(newElement).attr("class", cardStyleFirst);
+            newElement.innerHTML = `
+            <div class="card user-card bg-white" data-label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lvl: ${obj.level}, rank: ${obj.ranking} &nbsp;&nbsp;&nbsp;">
                 <div class="card-block position-relative">
                     <div class="user-image">
-                        <img src="${obj.avatar}" class="img-radius" alt="User-Profile-Image">
+                        <img src="img/characters/idle_avatar/char_${obj.emp_id}.gif" class="img-radius" alt="User-Profile-Image">
                     </div>
-                    <h6 class="f-w-600 m-t-25 m-b-10">${obj.first_name} ${obj.last_name}</h6>
-                    <p class="mt-15 text-muted text-start">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                    <h4 class="f-w-600 m-b-10">${obj.displayName}</h4>
+                    <p class="m-t-10 fs-4 text-muted text-start">${obj.greeting}</p>
                     <div class="start-0 w-100">
                         <p class="m-0 p-0 text-start fw-bold fs-6 text-uppercase .text-black">next level xp:</p>
                       <div class="progress position-relative bg-clay" style="height: 30px;">
-                        <div class="m-0 py-auto my-auto pe-2 position-absolute text-end w-100 fw-bolder fs-5 text-white text-stroke-black">${Math.floor(obj.social_insurance_number * 0.5 / 10000)} / ${Math.floor(obj.social_insurance_number / 10000)}</div>
-                        <div class="progress-bar bg-forest" role="progressbar" style="width: ${((obj.social_insurance_number * Math.random()) / obj.social_insurance_number) * 100}%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="m-0 py-auto my-auto pe-2 position-absolute text-end w-100 fw-bolder fs-5 text-white text-stroke-black">${obj.xpLevel} / ${obj.xpNextLevel}</div>
+                        <div class="progress-bar bg-forest" role="progressbar" style="width: ${(obj.xpLevel / obj.xpNextLevel) * 100}%;" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
                       </div>
+                    <p class="m-t-25 fs-4 text-muted text-start">${quotes.quotes[Math.floor((Math.random() - 0.001) * quotes.quotes.length)].quote}</p>
                     </div>
-                    <div class="knw-moodchart">
-                        <canvas id="knw-moodchart-${index}"></canvas>
+                    <div class="knw-moodchart position-absolute bottom-0 start-50 translate-middle-x hide">
+                        <canvas id="knw-moodchart-${obj.emp_id}"></canvas>
                     </div>
                 </div>
             </div>`;
-        $(newElement).css({'margin-left': '-300px', 'opacity': '0.95'});
-        $('#people-box').append(newElement);
+            $(newElement).css({'margin-left': '-300px', 'opacity': '0.95'});
+            $('#people-box > div').attr("class", cardStyleRest);
+            $('#people-box').prepend(newElement);
 
-        let grumpy = Math.floor(Math.random() * 21);
-        let happy = Math.floor(Math.random() * 21);
-        let sad = Math.floor(Math.random() * 21);
-        let ambition = Math.floor(Math.random() * 21);
-        let curious = Math.floor(Math.random() * 21);
-        createPersonChart('knw-moodchart-' + index, grumpy, happy, sad, ambition, curious);
+            // let grumpy = Math.floor(Math.random() * 21);
+            // let happy = Math.floor(Math.random() * 21);
+            // let sad = Math.floor(Math.random() * 21);
+            // let ambition = Math.floor(Math.random() * 21);
+            // let curious = Math.floor(Math.random() * 21);
+            // createPersonChart('knw-moodchart-' + obj.emp_id, grumpy, happy, sad, ambition, curious);
 
-        $(newElement).animate({
-          marginLeft: "0px"
-        }, 500);
-      });
-      $.each($('#people-box').children(), function (index, child) {
-        $(child).delay(8000 + 1000 / (index + 1)).fadeOut(1000);
-      });
-
+            $(newElement).animate({
+              marginLeft: "0px",
+            }, 500);
+          });
+          $.each($('#people-box').children(), function (index, child) {
+            $(child).delay(12000 / (index + 1)).fadeOut(1000);
+          });
+        }
+      }
     });
+  }
 
-    function createPersonChart(where, grumpy, happy, sad,  ambition, curious) {
-      const labels = [
-        'Grumpiness',
-        'Happiness',
-        'Curiousity',
-        'Ambition',
-        'Sadness',
-      ];
+  function createPersonChart(where, grumpy, happy, sad, ambition, curious) {
+    const labels = ['Grumpiness', 'Happiness', 'Curiousity', 'Ambition', 'Sadness',];
 
-      const data = {
-        labels: labels,
-        datasets: [{
-          label: 'My First dataset',
-          data: [grumpy, happy, sad, ambition, curious],
-          fill: true,
-          backgroundColor: 'rgba(255, 0, 255, 0.2)',
-          borderColor: 'rgb(255, 0, 255)',
-          pointBackgroundColor: 'rgb(255, 0, 255)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgb(255, 0, 255)'
-        }]
-      };
+    const data = {
+      labels: labels, datasets: [{
+        label: 'My First dataset',
+        data: [grumpy, happy, sad, ambition, curious],
+        fill: true,
+        backgroundColor: 'rgba(255, 0, 255, 0.2)',
+        borderColor: 'rgb(255, 0, 255)',
+        pointBackgroundColor: 'rgb(255, 0, 255)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgb(255, 0, 255)'
+      }]
+    };
 
-      const config = {
-        type: 'radar',
-        data: data,
-        options: {
-          elements: {
-            line: {
-              borderWidth: 3
-            }
-          },
-          plugins: {
-            legend: {
-              display: false,
-            }
-          },
-          scales: {
-            r: {
-              pointLabels: {
-                font: {
-                  size: 16
-                }
+    const config = {
+      type: 'radar', data: data, options: {
+        elements: {
+          line: {
+            borderWidth: 3
+          }
+        }, plugins: {
+          legend: {
+            display: false,
+          }
+        }, scales: {
+          r: {
+            pointLabels: {
+              font: {
+                size: 16
               }
             }
           }
         }
-      };
-      Chart.defaults.font.size = 14;
-      // Chart.defaults.label.font.size = 20;
-      const myChart = new Chart(
-        document.getElementById(where),
-        config
-      );
-    }
+      }
+    };
+    Chart.defaults.font.size = 14;
+    const myChart = new Chart(document.getElementById(where), config);
   }
 
-  createPplsJson(4);
-  setInterval(createPplsJson, 12000, 4);
+  // clear all intervalls for this theme
+  function clearAllIntervals() {
+    $.each(runningIntervals, (index, interval) => {
+      clearInterval(interval);
+    });
+  }
+
 });
 
 
-function spawnProps(where = '', props) {
-  for (let i = 0; i < $(where + " .prop").length; i++) {
-    $(where + " .spawn" + i).find("img").remove();
+function tipsFadeInFadeOut(element, speed) {
+  let tips = [
+    "Visste du att man kan få bonus XP om man kommer in tidigt på dagen?",
+    "Kommer man in flera dagar i rad så kan man få extra XP",
+    "Om man fyller år kan man ju få bonus XP",
+  ];
+  element.html(tips[Math.floor(Math.random() * tips.length)]);
+  element.hide().fadeIn(speed * 0.2).delay(speed * 0.4).fadeOut(speed * 0.2).delay(speed * 0.2);
+}
+
+function spawnProps(where, props, options) {
+  for (let i = 0; i < $('#' + where.attr('id') + " .prop").length; i++) {
+    let currentSpawnImg;
+    // create an img tag if one douse not exist already
+    if (!(currentSpawnImg = $('#' + where.attr('id') + " .spawn" + i + ' img')).length) {
+      currentSpawnImg = $('<img alt="spawn-item" src="" />');
+      $('#' + where.attr('id') + " .spawn" + i).append(currentSpawnImg);
+    }
     let tempImgUrl = props[Math.floor(Math.random() * props.length)];
-    getMeta(tempImgUrl).done((imgSize) => {
-      imgSize.w = imgSize.w * (1 + (Math.random()) / 5);
-      imgSize.h = imgSize.h * (1 + (Math.random()) / 5);
-      let tempImg = "<img src='" + tempImgUrl + "' style='width: " + imgSize.w + "px; height: " + imgSize.h + "px;' >";
-      $(where + " .spawn" + i).append(tempImg);
-      let deg = Math.floor(Math.random() * 3) + 1;
-      deg *= Math.round(Math.random()) ? 1 : -1;
-      $(where + " .spawn" + i).find("img").css("transform", "rotate(" + deg + "deg)");
-      let posLeft = Math.floor(Math.random() * 20) + 5;
-      let posBottom = Math.floor(Math.random() * 14) + 80;
-      let hueRand = Math.floor(Math.random() * 10);
-      let satRand = Math.floor(Math.random() * 0.5) + 1.5;
-      $(where + " .spawn" + i + " img").css({
-        'left': posLeft + "%",
-        'bottom': posBottom + "%",
-        'position': 'absolute',
-        'filter': 'hue-rotate(' + hueRand + 'deg) saturate(' + satRand + ')'
-      });
+    let posLeft = Math.floor(Math.random() * options.randPosX);
+    posLeft *= Math.round(Math.random()) ? 1 : -1;
+
+    let randMargin = Math.floor(Math.random() * options.randPosY * 0.85);
+    let topMargin = options.topOrBot === 'top' ? randMargin + 'px' : 'auto';
+    let btmMargin = options.topOrBot === 'bottom' ? randMargin + 'px' : 'auto';
+
+    let hueRand = options.randHue ? Math.floor(Math.random() * (options.randHue / 100) * 360) : 0;
+    let satRand = options.randSat ? Math.floor(Math.random() * options.randSat) + 100 - (options.randSat / 2) : 100;
+    let deg = Math.floor(Math.random() * options.randRotation);
+    deg *= Math.round(Math.random()) ? 1 : -1;
+    currentSpawnImg.attr({'src': tempImgUrl});
+    currentSpawnImg.addClass(options.topOrBot + '-0 end-50');
+    currentSpawnImg.css({
+      'position': 'absolute',
+      'margin-left': posLeft + '%',
+      'margin-top': topMargin,
+      'margin-bottom': btmMargin,
+      'filter': 'hue-rotate(' + hueRand + 'deg) saturate(' + satRand + '%)',
+      'transform': 'rotate(' + deg + 'deg)'
     });
   }
 }
@@ -256,14 +342,9 @@ function spawnCharacters() {
       let tempImgUrl = characters[Math.floor(Math.random() * characters.length)];
       randTop += (Math.random() * 100) / amount;
       let randLeft = Math.floor(Math.random() * 70);
-      let hueRand = Math.floor(Math.random() * 360);
-      let tempImg = "<img src='" + tempImgUrl +
-        "' style='width: " + 150 +
-        "px; z-index:10000; " +
-        "position: absolute; " +
-        "left:" + randLeft +
-        "%; top:" + randTop +
-        "%; filter:hue-rotate(" + hueRand + "deg)'>";
+      // let hueRand = Math.floor(Math.random() * 360);
+      let hueRand = 0;
+      let tempImg = "<img src='" + tempImgUrl + "' style='width: " + 150 + "px; z-index:10000; " + "position: absolute; " + "left:" + randLeft + "%; top:" + randTop + "%; filter:hue-rotate(" + hueRand + "deg)'>";
       $("#track-area").append(tempImg);
     }
   }).catch(error => {
@@ -271,38 +352,40 @@ function spawnCharacters() {
   });
 }
 
-function getMeta(url) {
-  let r = $.Deferred();
-
-  $('<img/>').attr('src', url).one("load", () => {
-    let s = {w: this.width, h: this.height};
-    r.resolve(s)
-  });
-  return r;
-}
-
 function getImgsFromFolder(folderUrl) {
   return new Promise((resolve, reject) => {
     let imgs = [];
     $.ajax({
-      url: folderUrl,
-      success: (data) => {
+      url: folderUrl, success: (data) => {
         $(data).find("a").attr("href", (i, val) => {
           if (val.match(/\.(png|gif)$/)) {
             imgs.push(folderUrl + val);
           }
           resolve(imgs);
         });
-      },
-      error: (error) => {
+      }, error: (error) => {
         reject(error);
       }
     });
   });
 }
 
-
+// handeling settings menu
 $(document).ready(function () {
+  $('input[name="set-theme"]').on('click change', function () {
+    if ($(this).val() === "override") {
+      $("#override-theme-select").prop('disabled', false);
+    } else if ($(this).val() === "seasonal") {
+      $("#override-theme-select").prop('disabled', true);
+    }
+  });
+  $('select[id="override-theme-select"]').on('change', function () {
+    if ($(this).val() !== "Override theme") {
+      // $("#override-theme-select").prop('disabled', false);
+      alert($(this).val());
+    }
+  });
+
   var $tableBody = $('#sortable');
   $(document).on('click', '.add-bg-layer', function () {
     var htmlString = $('#rowTemplate').html();
