@@ -249,7 +249,7 @@ class PlayerController():
         self.newEntries.clear() # Clear the Dictionary, which is temporarily storing the recently recognized players
         
         if len(employees) == 0:
-            return "No new entries!", 400
+            return [],204
 
         return json.dumps([obj.__dict__ for obj in employees],indent=4, sort_keys=True, default=str,ensure_ascii=False).encode('utf-8'),200
 
