@@ -62,11 +62,9 @@ document.addEventListener('DOMContentLoaded', () => {
     .then((response) => {
       return response.json()
       }).then((data) => {
-        data.articles.forEach(article => {
-          document.getElementById("extern-head").innerHTML = article.title;
-          document.getElementById("extern-content").innerHTML = article.description;
-          document.getElementById("extern-time").innerHTML = article.publishedAt;
-        })
+        document.getElementById("extern-head").innerHTML = data.articles[0].title;
+        document.getElementById("extern-content").innerHTML = data.articles[0].description;
+        document.getElementById("extern-time").innerHTML = data.articles[0].publishedAt;
       }
     )
 });
