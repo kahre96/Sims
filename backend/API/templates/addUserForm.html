@@ -2,8 +2,6 @@
 <html>
 <head>
  <title>Lägg till spelare</title>
- <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 </head>
 <body>
@@ -33,35 +31,24 @@
 <div class="image-container">
     <script>
         picture = "";
-        temp = [];
+        imgs = [];
+        console.log("images: {{images}}")
+        console.log("typeof: ", typeof("{{images}}"))
     </script>
 
     {% for gif in images %}
     <script>
-        if ("{{gif}}" == "&#34;" || "{{gif}}" == "[" || "{{gif}}" == "]" ||  "{{gif}}" == "," || "{{gif}}" == ' ' || "{{gif}}" == '') {
-            temp.push(picture);
-            picture = "";
-        } else {
-            picture += "{{gif}}";
-        }
+        console.log("gif: {{gif}}");
+        imgs.push("{{gif}}");
     </script>
     {% endfor %}
 
     <!-- https://stackoverflow.com/questions/10314800/flask-url-for-urls-in-javascript -->
-    {% set url=url_for('static', filename='characters/') %}
+    {% set url=url_for('static', filename='characters/running_avatar/') %}
     <script>
-        imgs = []
-        $.each(temp, function (index, element) {
-            if (element.length > 0) {
-                imgs.push(element)
-            }
-        });
-
-
         $.each(imgs, function (index, element) {
-            $(".characters").append("<br /> <input class='image-check' type='radio' name='characters' id="+index+" value="+index+">")
-            $(".characters").append("<label class='form-check-input' for="+index+"><img src='{{url}}"+element+"' name='characters' id=\'"+index+"\' value='{{request.form.characters }}'> </label>")
-
+            $(".characters").append("<input class='image-check' type='radio' name='characters' id="+element+" value="+element+">")
+            $(".characters").append("<label class='form-check-input' for="+element+"><img src='{{url}}"+element+"' name='characters' id=\'"+element+"\' value='{{request.form.characters }}'> </label>")
         });
 
         //$('.form-check-input input:radio:checked').id()

@@ -28,47 +28,25 @@
 
 <script>
     user  = ""
-    temp    = []
+    temp  = []
+    console.log("data: {{Data}}")
+    console.log("typeof: ", typeof("{{Data}}"))
 </script>
 
 {% for person in Data %}
     <script>
-        arr = "{{person}}".split(",");
-        str = ""
-        $.each(arr, function (index, element) {
-            if (index == 0) {
-                element = element.substring(1);
-            }
-            else if (index == 1) {
-                element = element.substring(6, element.length-5)
-                element = element[0].toUpperCase() + element.substring(1);
-            } else if ( index == 2) {
-                element = element.substring(6, element.length-6)
-                element = element[0].toUpperCase() + element.substring(1);
-            }
-            
-            if (index == 2) {
-                str += element
-                temp.push(str)
-            } else {
-                str += element + " "
-            }
-        });
-        
+        temp.push(formatUserdataFromFlask("{{person}}"));
     </script>
     {% endfor %}
 <script>
     users = []
         $.each(temp, function (index, element) {
-            if (element.length > 0) {
-                users.push(element)
-            }
+            users.push(element)
         });
 
         $.each(users, function (index, element) {
             $(".list").append("<li>" + element +" </li>");
         });
-
 </script>
     
 

@@ -2,8 +2,6 @@ from flask import request, render_template
 import requests
 import sys
 from os import listdir, rename
-#from PIL import Image as PImage
-import json
 
 sys.path.append("../../AI")
 
@@ -18,7 +16,8 @@ from pic_taker import picTaker
 
 class AdminController():
     def __init__(self):
-        self.img_path = "static/characters/"
+        self.img_path_run = "static/characters/running_avatar/"
+        self.img_path_idle= "static/characters/idle_avatar/"
 
     def statisticsPage(self,mysql):
         cursor = mysql.connection.cursor()
@@ -54,14 +53,28 @@ class AdminController():
                 query   = "DELETE FROM player WHERE emp_id=%s"
                 cursor.execute(query, (emp_id,))
 
-                for i, filename in enumerate(listdir(self.img_path)):
-                    temp = filename[:-4]
-                    print("filename.endswith(emp_id): ", temp.endswith(emp_id),3)
-                    print("filename: ", temp)
-                    print("emp_id:", emp_id, " type: ", type(emp_id))
-                    if temp.endswith(emp_id,3):
-                        print("Image:", self.img_path+filename," was renamed to => ", self.img_path+"yyy_reverted.gif")
-                        rename(self.img_path+filename, self.img_path+"yyy_reverted.gif")
+                images = [ x for x in listdir(self.img_path_run) if x.startswith("char_")]
+                highest_index = -10
+                for img in images:
+                    temp = int(img[5:-4])
+                    if temp > highest_index:
+                        highest_index = temp
+
+                new_index = highest_index+1
+                print("highest_index: ",highest_index)
+
+                running_avatars = [ x for x in listdir(self.img_path_run) if x.startswith("emp_")]
+                idle_avatars    = listdir(self.img_path_idle)
+                for i, filename in enumerate(running_avatars):
+                    print("filename: ", filename)
+                    if "emp_"+emp_id+".gif" == filename:
+                        print("Image:", self.img_path_run+filename," was renamed to => ", self.img_path_run+"char_"+str(new_index)+".gif")
+                        rename(self.img_path_run+filename, self.img_path_run+"char_"+str(new_index)+".gif")
+            
+                for i, filename in enumerate(idle_avatars):
+                    if "emp_"+emp_id+".gif" == filename:
+                        print("Image:", self.img_path_idle+filename," was renamed to => ", self.img_path_idle+"char_"+str(new_index)+".gif")
+                        rename(self.img_path_idle+filename, self.img_path_idle+"char_"+str(new_index)+".gif")
                 
                 #query   = "DELETE FROM hero WHERE emp_id=%s"
                 #cursor.execute(query, emp_id)
@@ -85,7 +98,7 @@ class AdminController():
                 birthdate   = request.form['birthdate']
                 character   = request.form['characters']
 
-                #print("character: ", character)
+                print("character: ", character)
 
                 if len(birthdate) != 8:
                     error += "Sorry! Birthdate has the wrong format, please try with 4 digits of year, 2 digits for month, and 2 digits for day like YYYYMMDD, no spaces and no dashes."
@@ -115,13 +128,13 @@ class AdminController():
                 return render_template('addUser.html', Error=error)
         
         #https://stackoverflow.com/questions/36774431/how-to-load-images-from-a-directory-on-the-computer-in-python
-        imagesList = [ x for x in listdir(self.img_path) if not x.startswith("zzz_")]
+        imagesList = [ x for x in listdir(self.img_path_run) if not x.startswith("emp_")]
         
         if len(imagesList) == 0:
             error += "No more characters to use from, please add more characters to /static/characters!"
             return render_template('addUser.html', Error=error)
         else:
-            return render_template('addUserForm.html', images=json.dumps(imagesList, allow_nan=False))
+            return render_template('addUserForm.html', images=imagesList)
     
     
     def takePictures(self, mysql):
@@ -144,6 +157,12 @@ class AdminController():
                 return render_template('picTaker.html', Status=message)
 
             return render_template('picTaker.html', Data=users)
+    
+    def sendSQL(self, mysql):
+        if request.method == 'POST':
+            pass
+        else:
+            return render_template("sqlForm.html")
 
     
     

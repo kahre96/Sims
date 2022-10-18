@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block body %}
+<div class="form-container">
+    <form action="" method="post">
+        <input class="form-field" type="text" name="query" placeholder="SQL query" value="{{
+        request.form.query }}" required> <br />
+        <input class="button" type="submit" value="Skicka">
+    </form>
+</div>
+
+{% endblock %}
+</body>
+</html>
