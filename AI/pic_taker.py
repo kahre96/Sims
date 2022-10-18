@@ -79,4 +79,4 @@ class picTaker():
 
 
 
-picTaker("hej2",10)
+#picTaker("hej2",10)

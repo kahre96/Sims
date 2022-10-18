@@ -5,6 +5,7 @@ from controllers.adminController import admincontroller
 from controllers.playerController import playercontroller
 from flask_cors import CORS
 
+
 db_password    = ''
 db_name        = 'sims'
 
@@ -44,6 +45,10 @@ def deleteUser():
 @app.route('/admin/takePictures', methods = ['GET', 'POST'])
 def takePictures():
     return admincontroller.takePictures(mysql)
+
+@app.route('/admin/sql', methods = ['GET', 'POST'])
+def sendSQL():
+    return admincontroller.sendSQL(mysql);
 
 # Route to register Players that were recently recognized by the AI
 @app.route('/player/newEntry', methods = ['POST'])
