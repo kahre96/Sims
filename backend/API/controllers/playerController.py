@@ -98,6 +98,8 @@ class PlayerController():
         player = getPlayerByID(cursor, emp_ID, birthday_today)
         if player.last_login==today: # return the current stats, don't add XP when played already logged in today
             player = greet(cursor, player, False)
+            player.xpLevel = player.xpTotal % 1000 - self.Levels[player.level]
+            player.xpNextLevel = self.Levels[player.level+1]-self.Levels[player.level]
             return player
 
         if getPlayerBirthdayByID(cursor, emp_ID)[4:] == today.strftime("%Y%m%d")[4:]:
