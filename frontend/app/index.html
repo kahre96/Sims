@@ -120,11 +120,10 @@
           </li>
           <li href="#" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">List group item heading</h5>
-              <small>3 days ago</small>
+              <h5 class="mb-1" id="extern-head">List group item heading</h5>
             </div>
-            <p class="mb-1">Some placeholder content in a paragraph.</p>
-            <small>And some small print.</small>
+            <p class="mb-1" id="extern-content">Some placeholder content in a paragraph.</p>
+            <small id="extern-time">And some small print.</small>
           </li>
         </ul>
         <ul class="list-group">
@@ -134,6 +133,13 @@
           </li>
           <li class="list-group-item">Ta in lediga mötesrum från Outlook med ett dummy-konto
             Mötesrum lediga just nu och nästa bokade tid, nånting sånt
+          </li>
+        </ul>
+        <ul class="list-group">
+          <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img src="resources/Bottle-Digital%20black.svg" class="icon-images">
+            Väldigt bra att veta
+          </li>
+          <li id="hours-text" class="list-group-item">
           </li>
         </ul>
         <!--        <ul class="list-group">-->
@@ -201,9 +207,6 @@
             <select id="override-theme-select" class="form-select form-select-lg"
                     aria-label=".form-select-lg" disabled>
               <option selected>Override theme</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
             </select>
           </div>
         </form>
@@ -211,98 +214,38 @@
     </div>
 
     <!-- create new theme -->
-    <div class="card text-dark bg-light mb-3">
-      <h4 class="card-header"><i class="bi bi-palette"></i> Create new theme</h4>
-      <div class="card-body">
-        <div class="alert alert-info" role="alert">
-          Create new themes by uploading your background and props to spawn into layers.
-        </div>
-        <!--        <div class="recipe">-->
-        <!--          <div class="recipe__ingredients">-->
-        <!--            <table cellpadding="0" cellspacing="0" border="0" class="recipe-table" id="recipeTable">-->
-        <!--              <tbody id="recipeTableBody">-->
-        <!--              <tr>-->
-        <!--                <td class="drag-handler"></td>-->
-        <!--                <td class="recipe-table__cell">-->
-        <!--                  <input type="text" class="recipe__text-field" value="Large bananas" placeholder="Ingredient">-->
-        <!--                </td>-->
-        <!--                <td class="recipe-table__cell">-->
-        <!--                  <input type="text" class="recipe__text-field" value="3" placeholder="Value">-->
-        <!--                </td>-->
-        <!--                <td class="recipe-table__cell">-->
-        <!--                  <button class="recipe-table__del-row-btn">x</button>-->
-        <!--                </td>-->
-        <!--              </tr>-->
-        <!--              <tr>-->
-        <!--                <td class="drag-handler"></td>-->
-        <!--                <td class="recipe-table__cell">-->
-        <!--                  <input type="text" class="recipe__text-field" value="White sugar" placeholder="Ingredient">-->
-        <!--                </td>-->
-        <!--                <td class="recipe-table__cell">-->
-        <!--                  <input type="text" class="recipe__text-field" value="¹⁄₂" placeholder="Value">-->
-        <!--                </td>-->
-        <!--                <td class="recipe-table__cell">-->
-        <!--                  <button class="recipe-table__del-row-btn">x</button>-->
-        <!--                </td>-->
-        <!--              </tr>-->
-        <!--              <tr>-->
-        <!--                <td class="drag-handler"></td>-->
-        <!--                <td class="recipe-table__cell">-->
-        <!--                  <input type="text" class="recipe__text-field" value="Egg" placeholder="Ingredient">-->
-        <!--                </td>-->
-        <!--                <td class="recipe-table__cell">-->
-        <!--                  <input type="text" class="recipe__text-field" value="1" placeholder="Value">-->
-        <!--                </td>-->
-        <!--                <td class="recipe-table__cell">-->
-        <!--                  <button class="recipe-table__del-row-btn">x</button>-->
-        <!--                </td>-->
-        <!--              </tr>-->
-        <!--              </tbody>-->
-        <!--            </table>-->
-        <!--            <div class="recipe-table__add-row">-->
-        <!--              <span class="recipe-table__add-row-btn">+</span>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </div>-->
-        <!--        <ul id="sortable" class="list-group list-unstyled">-->
-        <!--          <li class="list-group-item active"><input type="text" class="recipe__text-field" value=""-->
-        <!--                                                    placeholder="Ingredient"></li>-->
-        <!--          <li class="list-group-item"><input type="text" class="recipe__text-field" value="" placeholder="Ingredient">-->
-        <!--          </li>-->
-        <!--          <li class="list-group-item"><input type="text" class="recipe__text-field" value="" placeholder="Ingredient">-->
-        <!--          </li>-->
-        <!--          <li class="list-group-item"><input type="text" class="recipe__text-field" value="" placeholder="Ingredient">-->
-        <!--          </li>-->
-        <!--          <li class="list-group-item"><input type="text" class="recipe__text-field" value="" placeholder="Ingredient">-->
-        <!--          </li>-->
-        <!--        </ul>-->
+<!--    <div class="card text-dark bg-light mb-3">-->
+<!--      <h4 class="card-header"><i class="bi bi-palette"></i> Create new theme</h4>-->
+<!--      <div class="card-body">-->
+<!--        <div class="alert alert-info" role="alert">-->
+<!--          Create new themes by uploading your background and props to spawn into layers.-->
+<!--        </div>-->
+<!--        <ol id="sortable" class="list-group list-group-numbered">-->
+<!--          <li class="list-group-item d-flex justify-content-between align-items-start">-->
+<!--            <div class="ms-2 me-auto">-->
+<!--              <div class="fw-bold">Subheading lorem</div>-->
+<!--              Cras justo odio-->
+<!--            </div>-->
+<!--          </li>-->
+<!--          <li class="list-group-item d-flex justify-content-between align-items-start">-->
+<!--            <div class="ms-2 me-auto">-->
+<!--              <div class="fw-bold">Subheading ipsum</div>-->
+<!--              Cras justo odio-->
+<!--            </div>-->
+<!--          </li>-->
+<!--          <li class="list-group-item d-flex justify-content-between align-items-start">-->
+<!--            <div class="ms-2 me-auto">-->
+<!--              <div class="fw-bold">Subheading dolor</div>-->
+<!--              Cras justo odio-->
+<!--            </div>-->
+<!--            <button class="del-layer">-->
+<!--              <i class="bi bi-trash"></i>-->
+<!--            </button>-->
+<!--          </li>-->
+<!--        </ol>-->
 
-        <ol id="sortable" class="list-group list-group-numbered">
-          <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-              <div class="fw-bold">Subheading lorem</div>
-              Cras justo odio
-            </div>
-          </li>
-          <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-              <div class="fw-bold">Subheading ipsum</div>
-              Cras justo odio
-            </div>
-          </li>
-          <li class="list-group-item d-flex justify-content-between align-items-start">
-            <div class="ms-2 me-auto">
-              <div class="fw-bold">Subheading dolor</div>
-              Cras justo odio
-            </div>
-            <button class="del-layer">
-              <i class="bi bi-trash"></i>
-            </button>
-          </li>
-        </ol>
-
-      </div>
-    </div>
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </div>
 

@@ -98,6 +98,8 @@ class PlayerController():
         player = getPlayerByID(cursor, emp_ID, birthday_today)
         if player.last_login==today: # return the current stats, don't add XP when played already logged in today
             player = greet(cursor, player, False)
+            player.xpLevel = player.xpTotal % 1000 - self.Levels[player.level]
+            player.xpNextLevel = self.Levels[player.level+1]-self.Levels[player.level]
             return player
 
         if getPlayerBirthdayByID(cursor, emp_ID)[4:] == today.strftime("%Y%m%d")[4:]:
@@ -247,7 +249,7 @@ class PlayerController():
         self.newEntries.clear() # Clear the Dictionary, which is temporarily storing the recently recognized players
         
         if len(employees) == 0:
-            return "No new entries!", 400
+            return [],204
 
         return json.dumps([obj.__dict__ for obj in employees],indent=4, sort_keys=True, default=str,ensure_ascii=False).encode('utf-8'),200
 
