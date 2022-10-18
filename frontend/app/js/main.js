@@ -79,8 +79,21 @@ $(function (keyframes, options) {
   let ppl = [];
   let currentTheme = {};
 
-  var themeConfig = (function () {
-    var json = null;
+  let appConfig = (function () {
+    let json = null;
+    $.ajax({
+      'async': false,
+      'global': false,
+      'url': './app-config.json',
+      'dataType': "json",
+      'success': function (data) {
+        json = data;
+      }
+    });
+    return json;
+  })();
+  let themesJson = (function () {
+    let json = null;
     $.ajax({
       'async': false,
       'global': false,
@@ -92,8 +105,8 @@ $(function (keyframes, options) {
     });
     return json;
   })();
-  var quotes = (function () {
-    var json = null;
+  let quotes = (function () {
+    let json = null;
     $.ajax({
       'async': false,
       'global': false,
@@ -106,28 +119,40 @@ $(function (keyframes, options) {
     return json;
   })();
   setTheme();
-  initThemeAnimation();
-  setInterval(createPplsJson, 1000);
   spawnCharacters();
-
+  setInterval(createPplsJson, 1000);
   setInterval(tipsFadeInFadeOut, 10000, $(".scrolling-tip-div"), 10000);
 
   function setTheme() {
-    // pick random theme from season based on date if override is not set.
-    if (themeConfig.override.active) {
-      currentTheme.themeCategory = themeConfig.override.themeCategory;
-      currentTheme.themeName = themeConfig.override.themeName;
+    clearAllIntervals();
+    $("#knw-bg-anim").empty();
+    if (appConfig.themeOverride.active) {
+      currentTheme.themeCategory = appConfig.themeOverride.themeCategory;
+      currentTheme.themeName = appConfig.themeOverride.themeName;
     } else {
-      //Todo grab random theme from season folder depending on date and time
-      // currentTheme = themeConfig.themes["summer"]["city01"];
-      currentTheme.themeCategory = themeConfig.override.themeCategory;
-      currentTheme.themeName = themeConfig.override.themeName;
+      let currentSeason = "";
+      let year = new Date().getFullYear();
+      let seasons = {
+        "autumn": new Date(year, 12, 20),
+        "summer": new Date(year, 9, 20),
+        "spring": new Date(year, 6, 20),
+        "winter": new Date(year, 3, 20)
+      };
+
+      let currentDate = new Date();
+      for (let key in seasons) {
+        if (currentDate < seasons[key])
+          currentSeason = key;
+      }
+      currentTheme.themeCategory = currentSeason;
+      currentTheme.themeName = Object.keys(themesJson[currentSeason])[Math.floor(Object.keys(themesJson[currentSeason]).length * Math.random())];
     }
+    initThemeAnimation();
   }
 
   function initThemeAnimation() {
     //Todo go through current theme layers and construct the animation
-    $.each(themeConfig.themes[currentTheme.themeCategory][currentTheme.themeName].layers, function (index, layer) {
+    $.each(themesJson[currentTheme.themeCategory][currentTheme.themeName].layers, function (index, layer) {
       let tempLayerDiv = $("<div>");
       let themeFolder = 'img/themes/' + currentTheme.themeCategory + '/' + currentTheme.themeName + '/';
       tempLayerDiv.addClass('container-fluid bg-scroll');
@@ -197,6 +222,7 @@ $(function (keyframes, options) {
       type: "GET",
       dataType: "json",
       success: function (data) {
+        spawnCharacters();
         let newPpl = data.filter(o1 => !ppl.some(o2 => o1.emp_id === o2.emp_id));
         if (!isNaN(newPpl.length) && newPpl.length > 0) {
           ppl = newPpl;
@@ -205,14 +231,27 @@ $(function (keyframes, options) {
               $('#people-box > div:last').remove();
             }
           }
-
-          //Todo iterate and render each person once there is new persons in the card, make into a function
           $.each(ppl, function (index, obj) {
             let cardStyleFirst = 'col first-card';
             let cardStyleRest = 'col rest-cards';
+            // let avatarImg;
             let newElement = document.createElement('div');
+
+
             $(newElement).attr("class", cardStyleFirst);
-            newElement.innerHTML = `
+            if (obj.emp_id === 0) {
+              newElement.innerHTML = `
+            <div class="card user-card bg-white" data-label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Gäst &nbsp;&nbsp;&nbsp;">
+                <div class="card-block position-relative">
+                    <div class="user-image">
+                        <img src="img/characters/idle_avatar/char_${obj.emp_id}.gif" class="img-radius" alt="User-Profile-Image">
+                    </div>
+                    <h4 class="f-w-600 m-b-10">Välkommen till Knowit</h4>
+                    <p class="m-t-10 fs-4 text-muted text-start">Känner inte igen dig, om du är en gäst var vänlig och presentera dig i receptionen.</p>
+                </div>
+            </div>`;
+            } else {
+              newElement.innerHTML = `
             <div class="card user-card bg-white" data-label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lvl: ${obj.level}, rank: ${obj.ranking} &nbsp;&nbsp;&nbsp;">
                 <div class="card-block position-relative">
                     <div class="user-image">
@@ -233,6 +272,7 @@ $(function (keyframes, options) {
                     </div>
                 </div>
             </div>`;
+            }
             $(newElement).css({'margin-left': '-300px', 'opacity': '0.95'});
             $('#people-box > div').attr("class", cardStyleRest);
             $('#people-box').prepend(newElement);
@@ -305,7 +345,33 @@ $(function (keyframes, options) {
     });
   }
 
-});
+
+  // handeling settings menu
+  // populate override select field
+  $.each(themesJson, (catIndex, themeCat) => {
+    $.each(themeCat, (themeIndex, theme) => {
+      $("#override-theme-select").append("<option value='{\""+ theme.category + "\":\"" + Object.keys(themeCat)[0] +"\"}'>"+ Object.keys(themeCat)[0] +"</option>");
+    })
+  })
+  // toggle seasonal theme or override theme
+  $('input[name="set-theme"]').on('click change', function () {
+    if ($(this).val() === "override") {
+      $("#override-theme-select").prop('disabled', false);
+    } else if ($(this).val() === "seasonal") {
+      $("#override-theme-select").prop('disabled', true);
+      appConfig.themeOverride.active = false;
+      setTheme();
+    }
+  });
+  $('select[id="override-theme-select"]').on('change', function () {
+    if ($(this).val() !== "Override theme") {
+      let tempThemeJson = $.parseJSON($(this).val().replace(/\\/g, ""));
+      appConfig.themeOverride.active = true;
+      appConfig.themeOverride.themeCategory = Object.keys(tempThemeJson)[0];
+      appConfig.themeOverride.themeName = tempThemeJson[Object.keys(tempThemeJson)[0]];
+      setTheme();
+    }
+  });
 
 
 function tipsFadeInFadeOut(element, speed) {
@@ -346,7 +412,8 @@ function spawnProps(where, props, options) {
       'margin-top': topMargin,
       'margin-bottom': btmMargin,
       'filter': 'hue-rotate(' + hueRand + 'deg) saturate(' + satRand + '%)',
-      'transform': 'rotate(' + deg + 'deg)'
+      'transform': 'rotate(' + deg + 'deg)',
+      'z-index': options.zIndex
     });
   }
 }
@@ -354,20 +421,48 @@ function spawnProps(where, props, options) {
 function spawnCharacters() {
   let charactersFolder = "img/characters/";
   let randTop = 0;
-  let amount = 10;
-  getImgsFromFolder(charactersFolder).then(characters => {
-    for (let i = 0; i < amount; i++) {
-      let tempImgUrl = characters[Math.floor(Math.random() * characters.length)];
-      randTop += (Math.random() * 100) / amount;
-      let randLeft = Math.floor(Math.random() * 70);
-      // let hueRand = Math.floor(Math.random() * 360);
-      let hueRand = 0;
-      let tempImg = "<img src='" + tempImgUrl + "' style='width: " + 150 + "px; z-index:10000; " + "position: absolute; " + "left:" + randLeft + "%; top:" + randTop + "%; filter:hue-rotate(" + hueRand + "deg)'>";
-      $("#track-area").append(tempImg);
+  $.ajax({
+    url: 'http://localhost:5000/player/getMonthlyXP',
+    type: "GET",
+    dataType: "json",
+    success: function (data) {
+      let maxValue = 0;
+      $.each(data, (i, el) => {
+        if (el > maxValue)
+          maxValue = el;
+      });
+
+      $.each(data, function (index, person) {
+        if (randTop === 0) {
+          randTop = 1;
+        } else {
+          randTop += (100 / Object.keys(data).length) * 0.70;
+        }
+        let leftPos = person / maxValue * 70; // 70% the track is the front of the track
+        let tempImg = $("#emp-char-" + index);
+        if (!tempImg.length) {
+          tempImg = "<img src='" + charactersFolder + "char_" + index + ".gif' id='emp-char-" + index + "' style='width: " + 150 + "px; z-index:10000; " + "position: absolute; " + "left:" + leftPos + "%; top:" + randTop + "%;'>";
+          $("#track-area").append(tempImg);
+        } else {
+          tempImg.animate({"left": leftPos + "%"}, 2000);
+        }
+      });
     }
-  }).catch(error => {
-    console.log(error)
   });
+
+  // getImgsFromFolder(charactersFolder).then(characters => {
+  //   for (let i = 0; i < amount; i++) {
+  //     let tempImgUrl = characters[Math.floor(Math.random() * characters.length)];
+  //     randTop += (Math.random() * 100) / amount;
+  //     let randLeft = Math.floor(Math.random() * 70);
+  //     // let hueRand = Math.floor(Math.random() * 360);
+  //     let hueRand = 0;
+  //     let tempImg = "<img src='" + tempImgUrl + "' style='width: " + 150 + "px; z-index:10000; " + "position: absolute; " + "left:" + randLeft + "%; top:" + randTop + "%; filter:hue-rotate(" + hueRand + "deg)'>";
+  //     $("#track-area").append(tempImg);
+  //   }
+  // }).catch(error => {
+  //   console.log(error)
+  // });
 }
 
 function getImgsFromFolder(folderUrl) {
@@ -388,36 +483,4 @@ function getImgsFromFolder(folderUrl) {
   });
 }
 
-// handeling settings menu
-$(document).ready(function () {
-  $('input[name="set-theme"]').on('click change', function () {
-    if ($(this).val() === "override") {
-      $("#override-theme-select").prop('disabled', false);
-    } else if ($(this).val() === "seasonal") {
-      $("#override-theme-select").prop('disabled', true);
-    }
-  });
-  $('select[id="override-theme-select"]').on('change', function () {
-    if ($(this).val() !== "Override theme") {
-      // $("#override-theme-select").prop('disabled', false);
-      alert($(this).val());
-    }
-  });
-
-  var $tableBody = $('#sortable');
-  $(document).on('click', '.add-bg-layer', function () {
-    var htmlString = $('#rowTemplate').html();
-    $tableBody.append(htmlString);
-    return false;
-  });
-
-  $tableBody.on('click', '.del-layer', function (e) {
-    var $el = $(e.currentTarget);
-    var $row = $el.closest('li');
-    $row.remove();
-    return false;
-  });
-  $tableBody.sortable({
-    placeholder: 'drop-shadow'
-  });
 });

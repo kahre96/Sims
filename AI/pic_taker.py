@@ -78,5 +78,3 @@ class picTaker():
             self.counter2 += 1
 
 
-
-picTaker("hej2",10)
