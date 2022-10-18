@@ -25,7 +25,6 @@ class surveillance():
         self.url = "http://localhost:5000/player/newEntry"
         self.color = (0, 255, 0)
         self.counter = 0
-        self.to_emp = {"Andreas": 1, "Glenn":3, "Guest":0, "Ina":4, "Peter":6, "Fredrik":2, "Nordin":5} ## för knowit presentationen.
         self.surveillance()
 
     def surveillance(self):
@@ -83,14 +82,14 @@ class surveillance():
         predictions = self.model.predict(face_array)
         score = tf.nn.softmax(predictions)
         label_guess = self.labels[np.argmax(score)]  # the label with the highest score
-        print(label_guess)
-        print("Score", score)
-        print("predictions", predictions)
-        print("label to emp id", self.to_emp[label_guess])
+        #print(label_guess)
+        #print("Score", score)
+        #print("predictions", predictions)
+
         if label_guess in self.already_detected:
             pass
-        #self.guess_queue.append(label_guess)
-        self.guess_queue.append(self.to_emp[label_guess])
+
+        self.guess_queue.append(label_guess)
         return label_guess
 
     def post_handler(self):
@@ -108,7 +107,7 @@ class surveillance():
     def draw_face(self,x,y,x2,y2, label_guess):
         cv2.rectangle(self.frame, (x, y), (x2, y2), self.color, 2)
         cv2.putText(self.frame, label_guess, (x, y - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 2, self.color, 3)
+                    cv2.FONT_HERSHEY_SIMPLEX, 2, self.color, 2)
 
     def check_time_for_reset(self):
         now = time.localtime()
@@ -126,7 +125,7 @@ class surveillance():
                 print('Cleared guess que unlocking guest')
                 
 
-surveillance(labels='labels.pickle', model='models/no_glasses_vgg16_Images_noaug_0.75x0.5d_N128x64.h5', video_source=1)
+surveillance(labels='labels.pickle', model='models/no_glasses_vgg16_Images_noaug_0.75x0.5d_N128x64.h5', video_source=0)
 
 
 
