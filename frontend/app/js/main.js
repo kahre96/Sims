@@ -1,61 +1,79 @@
+// Ina
+document.addEventListener('DOMContentLoaded', () => {
+  let date = new Date();
+  const months = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
+  let monthText = months[date.getMonth()];
+  let day = date.getDate();
+  const days = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
+  let weekday = days[date.getDay()];
+
+  document.getElementById("date").innerHTML = weekday + " " + day + " " + monthText;
+
+  let BirstaID = "ChIJ_zc5o4JgZEYR9MoQtnVmOKs";
+  let GatanID = "ChIJRzq-RFxnZEYRcYtGa2wwq4Y";
+
+  const request = {
+    placeId: BirstaID, fields: ['name', 'opening_hours', 'utc_offset_minutes']
+  };
+  const service = new google.maps.places.PlacesService(document.createElement('div'));
+  service.getDetails(request, callback);
+
+  const request2 = {
+    placeId: GatanID, fields: ['name', 'opening_hours', 'utc_offset_minutes']
+  };
+  const service2 = new google.maps.places.PlacesService(document.createElement('div'));
+  service.getDetails(request2, callback2);
+
+  function callback(place, status) {
+    if (status !== google.maps.places.PlacesServiceStatus.OK) {
+      document.getElementById("hours-text").innerHTML = "Nu var det någonting som gick fel. Skyll på Google!";
+    }
+    if (place.opening_hours && place.utc_offset_minutes) {
+      const isOpenNow = place.opening_hours.isOpen();
+      if (isOpenNow) {
+        document.getElementById("hours-text").innerHTML = "Systembolaget i Birsta har öppet just nu!\n";
+      } else {
+        document.getElementById("hours-text").innerHTML += "Systembolaget i Birsta har stängt just nu!\n";
+      }
+      //document.getElementById("hours-text").innerHTML += "Torsdag: " + place.opening_hours.periods[3].open.time + " - " + place.opening_hours.periods[3].close.time + "<br/>" + "Fredag: " + place.opening_hours.periods[4].open.time + " - " + place.opening_hours.periods[4].close.time + "<br/>" + "Lördag: " + place.opening_hours.periods[5].open.time + " - " + place.opening_hours.periods[5].close.time + "<br/><br/>";
+    }
+  }
+
+  function callback2(place, status) {
+    if (status !== google.maps.places.PlacesServiceStatus.OK) {
+      document.getElementById("hours-text").innerHTML += "Nu var det någonting som gick fel. Skyll på Google!";
+    }
+    if (place.opening_hours && place.utc_offset_minutes) {
+      const isOpenNow = place.opening_hours.isOpen();
+      if (isOpenNow) {
+        document.getElementById("hours-text").innerHTML += "Systembolaget på Sjögatan har öppet just nu!\n";
+      } else {
+        document.getElementById("hours-text").innerHTML += "Systembolaget på Sjögatan har stängt just nu!\n";
+      }
+      //document.getElementById("hours-text").innerHTML += "Torsdag: " + place.opening_hours.periods[3].open.time + " - " + place.opening_hours.periods[3].close.time + "<br/>" + "Fredag: " + place.opening_hours.periods[4].open.time + " - " + place.opening_hours.periods[4].close.time + "<br/>" + "Lördag: " + place.opening_hours.periods[5].open.time + " - " + place.opening_hours.periods[5].close.time + "<br/>";
+    }
+  }
+
+
+  const url = 'https://newsapi.org/v2/top-headlines?' +
+    'country=se&' + 'language=sv&' +
+    'apiKey=cd53af30e4fb4539b42e418cf5a0a384';
+  fetch(url)
+    .then((response) => {
+      return response.json()
+      }).then((data) => {
+        data.articles.forEach(article => {
+          document.getElementById("extern-head").innerHTML = article.title;
+          document.getElementById("extern-content").innerHTML = article.description;
+          document.getElementById("extern-time").innerHTML = article.publishedAt;
+        })
+      }
+    )
+});
+
+
+
 $(function (keyframes, options) {
-  // Inna
-  document.addEventListener('DOMContentLoaded', () => {
-    let date = new Date();
-    const months = ["januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december"];
-    let monthText = months[date.getMonth()];
-    let day = date.getDate();
-    const days = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
-    let weekday = days[date.getDay()];
-
-    document.getElementById("date").innerHTML = weekday + " " + day + " " + monthText;
-
-    let BirstaID = "ChIJ_zc5o4JgZEYR9MoQtnVmOKs";
-    let GatanID = "ChIJRzq-RFxnZEYRcYtGa2wwq4Y";
-
-    const request = {
-      placeId: BirstaID, fields: ['name', 'opening_hours', 'utc_offset_minutes']
-    };
-    const service = new google.maps.places.PlacesService(document.createElement('div'));
-    service.getDetails(request, callback);
-
-    const request2 = {
-      placeId: GatanID, fields: ['name', 'opening_hours', 'utc_offset_minutes']
-    };
-    const service2 = new google.maps.places.PlacesService(document.createElement('div'));
-    service.getDetails(request2, callback2);
-
-    function callback(place, status) {
-      if (status !== google.maps.places.PlacesServiceStatus.OK) {
-        document.getElementById("hours-text").innerHTML = "Nu var det någonting som gick fel. Skyll på Google!";
-      }
-      if (place.opening_hours && place.utc_offset_minutes) {
-        const isOpenNow = place.opening_hours.isOpen();
-        if (isOpenNow) {
-          document.getElementById("hours-text").innerHTML = "Systembolaget i Birsta har öppet just nu!\n";
-        } else {
-          document.getElementById("hours-text").innerHTML += "Systembolaget i Birsta har stängt just nu!\n";
-        }
-        document.getElementById("hours-text").innerHTML += "Torsdag: " + place.opening_hours.periods[3].open.time + " - " + place.opening_hours.periods[3].close.time + "<br/>" + "Fredag: " + place.opening_hours.periods[4].open.time + " - " + place.opening_hours.periods[4].close.time + "<br/>" + "Lördag: " + place.opening_hours.periods[5].open.time + " - " + place.opening_hours.periods[5].close.time + "<br/><br/>";
-      }
-    }
-
-    function callback2(place, status) {
-      if (status !== google.maps.places.PlacesServiceStatus.OK) {
-        document.getElementById("hours-text").innerHTML += "Nu var det någonting som gick fel. Skyll på Google!";
-      }
-      if (place.opening_hours && place.utc_offset_minutes) {
-        const isOpenNow = place.opening_hours.isOpen();
-        if (isOpenNow) {
-          document.getElementById("hours-text").innerHTML += "Systembolaget på Sjögatan har öppet just nu!\n";
-        } else {
-          document.getElementById("hours-text").innerHTML += "Systembolaget på Sjögatan har stängt just nu!\n";
-        }
-        document.getElementById("hours-text").innerHTML += "Torsdag: " + place.opening_hours.periods[3].open.time + " - " + place.opening_hours.periods[3].close.time + "<br/>" + "Fredag: " + place.opening_hours.periods[4].open.time + " - " + place.opening_hours.periods[4].close.time + "<br/>" + "Lördag: " + place.opening_hours.periods[5].open.time + " - " + place.opening_hours.periods[5].close.time + "<br/>";
-      }
-    }
-  });
-
   // Nordin
   let runningIntervals = [];
   let ppl = [];
