@@ -16,16 +16,24 @@ from custom_data_gen import CustomDataGen
 
 class ModelBuilder:
 
-    def __init__(self, path="images_ds", epochs=3000, patience=15, alb_aug=False):
-        self.img_height, self.img_width = 224, 224
+    def __init__(self, path="images_ds", epochs=3000, patience=15, alb_aug=False,
+                 img_h=224, img_w=224, batch_size=32, neurons=None, drop_rate=None, model_type="vgg16"):
+        self.img_height = img_h
+        self.img_width = img_w
         self.ds_dir = path
         self.amount_of_classes = self.count_classes()
         self.patience = patience
-        self.batch_size = 32
+        self.batch_size = batch_size
         self.epochs = epochs
-        self.model_type = "vgg16"
-        self.neurons = [256, 128]
-        self.drop_rate = [0.75, 0.5]
+        self.model_type = model_type
+        if neurons is None:
+            self.neurons = [256, 128]
+        else:
+            self.neurons = neurons
+        if drop_rate is None:
+            self.drop_rate = [0.75, 0.5]
+        else:
+            self.drop_rate = drop_rate
         if alb_aug:
             self.train_ds, self.val_ds = self.create_generator()
         else:
