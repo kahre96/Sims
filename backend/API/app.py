@@ -59,6 +59,10 @@ def takePictures():
 def showCharacters():
     return admincontroller.showCharacters()
 
+@app.route('/admin/theme', methods = ['GET','POST'])
+def theme():
+    return admincontroller.theme(mysql) 
+
 '''
 PLAYER ROUTES
 '''
