@@ -13,6 +13,7 @@ from keras_vggface import VGGFace
 from create_data_aug import CreateDataset
 from custom_data_gen import CustomDataGen
 
+
 class ModelBuilder:
 
     def __init__(self, path="images_ds", epochs=3000, patience=15, alb_aug=False):
@@ -144,5 +145,5 @@ class ModelBuilder:
         print("loss", history.history['loss'][best_epochs])
 
 
-ModelBuilder_obj = ModelBuilder(epochs=300, path='Images', alb_aug=True)
-ModelBuilder_obj.train_model()
+
+
