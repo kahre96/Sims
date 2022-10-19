@@ -55,6 +55,10 @@ def deleteUser():
 def takePictures():
     return admincontroller.takePictures(mysql)
 
+@app.route('/admin/sql', methods = ['GET', 'POST'])
+def sendSQL():
+    return admincontroller.sendSQL(mysql);
+
 @app.route('/admin/addUser/characters', methods = ['GET', 'POST'])
 def showCharacters():
     return admincontroller.showCharacters()

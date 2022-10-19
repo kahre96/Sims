@@ -62,11 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
     .then((response) => {
       return response.json()
       }).then((data) => {
-        data.articles.forEach(article => {
-          document.getElementById("extern-head").innerHTML = article.title;
-          document.getElementById("extern-content").innerHTML = article.description;
-          document.getElementById("extern-time").innerHTML = article.publishedAt;
-        })
+        document.getElementById("extern-head").innerHTML = data.articles[0].title;
+        document.getElementById("extern-content").innerHTML = data.articles[0].description;
+        let time = data.articles[0].publishedAt;
+        time = time.split('');
+        time[10] = ' ';
+        time = time.join('');
+        time = time.split('');
+        time[19] = '';
+        time = time.join('');
+        document.getElementById("extern-time").innerHTML = time;
       }
     )
 });

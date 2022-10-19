@@ -33,7 +33,8 @@ class EmployeeController():
             cursor.execute(sql, values)
             
             # Fetching the id from the newly created employee
-            emp_id  = int(cursor.fetchone()[0])
+            result  = cursor.fetchall()
+            emp_id  = result[-1][0]
 
             user    = Employee(emp_id, firstname.lower(), lastname.lower(), birthdate)
             
@@ -42,15 +43,19 @@ class EmployeeController():
             values  = user.player.getSQLData()
             cursor.execute(sql,values)
 
-            #self.addCharacter(mysql, character, emp_id)
-
-            path = "static/characters/" 
-            images_in_dir = listdir(path)
-            for i, filename in enumerate(images_in_dir):
-                if i == int(character):
-                    print("Image:", path+filename," was renamed to => ", path+"zzz_"+str(emp_id)+".gif")
-                    rename(path+filename, path+"zzz_"+str(emp_id)+".gif")
+            path_run        = "static/characters/running_avatar/"
+            path_idle       = "static/characters/idle_avatar/"
+            running_avatars = listdir(path_run)
+            idle_avatars    = listdir(path_idle)
+            for i, filename in enumerate(running_avatars):
+                if filename == character:
+                    print("Image:", path_run+filename," was renamed to => ", path_run+"emp_"+str(emp_id)+".gif")
+                    rename(path_run+filename, path_run+"emp_"+str(emp_id)+".gif")
             
+            for i, filename in enumerate(idle_avatars):
+                if filename == character:
+                    print("Image:", path_idle+filename," was renamed to => ", path_idle+"emp_"+str(emp_id)+".gif")
+                    rename(path_idle+filename, path_idle+"emp_"+str(emp_id)+".gif")
             #Closing the cursor
             cursor.close()   
 
@@ -65,16 +70,6 @@ class EmployeeController():
 
             # Adding Employee into DB
             sql     = "INSERT INTO Employee(firstname, lastname, birthdate) VALUES (%s, %s, %s)"
-            cursor.execute(sql, values)
-        mysql.connection.commit()
-
-    # Should probably be able to remove this We´re not going to store character in database! [22-10-14]
-    def addCharacter(self, mysql, character_id, emp_id):
-        with mysql.connection.cursor() as cursor:
-            values  = (character_id, emp_id)
-
-            # Adding Character into DB
-            sql     = "INSERT INTO Char_emp(char_id, emp_id) VALUES (%s, %s)"
             cursor.execute(sql, values)
         mysql.connection.commit()
     
