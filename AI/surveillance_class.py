@@ -125,7 +125,7 @@ class surveillance():
                 print('Cleared guess que unlocking guest')
                 
 
-surveillance(labels='labels.pickle', model='models/no_glasses_vgg16_Images_noaug_0.75x0.5d_N128x64.h5', video_source=0)
+surveillance(labels='labels.pickle', model='models/knowit_vgg16_Images_noaug_0.75x0.5d_N512x256.h5', video_source=0)
 
 
 
