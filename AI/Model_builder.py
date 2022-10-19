@@ -8,14 +8,14 @@ import keras
 from keras.layers import Dense, Dropout, Flatten
 from keras.callbacks import ModelCheckpoint
 from keras.callbacks import EarlyStopping
-import os
 import pickle
 from keras_vggface import VGGFace
-
+from create_data_aug import CreateDataset
+from custom_data_gen import CustomDataGen
 
 class ModelBuilder:
 
-    def __init__(self, path="images_ds", epochs=3000, patience=15):
+    def __init__(self, path="images_ds", epochs=3000, patience=15, alb_aug=False):
         self.img_height, self.img_width = 224, 224
         self.ds_dir = path
         self.amount_of_classes = self.count_classes()
@@ -25,7 +25,10 @@ class ModelBuilder:
         self.model_type = "vgg16"
         self.neurons = [256, 128]
         self.drop_rate = [0.75, 0.5]
-        self.train_ds, self.val_ds = self.import_data()
+        if alb_aug:
+            self.train_ds, self.val_ds = self.create_generator()
+        else:
+            self.train_ds, self.val_ds = self.import_data()
         self.callbacks = self.generate_callback()
         self.model = self.generate_model()
 
@@ -73,6 +76,15 @@ class ModelBuilder:
         val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
 
         return train_ds,val_ds
+
+
+    def create_generator(self):
+        train_ds, val_ds = CreateDataset(self.ds_dir, cat=True).set_dataset()
+        training = CustomDataGen(data=train_ds, batch_size=32, normalization='minmax')
+        validation = CustomDataGen(data=val_ds, batch_size=32, normalization='minmax')
+        return training,validation
+
+
 
     # creates a base model based on model_types archtitecture and adds toplayer
     # based on neurons,drop and amount of classes
@@ -132,5 +144,5 @@ class ModelBuilder:
         print("loss", history.history['loss'][best_epochs])
 
 
-ModelBuilder_obj = ModelBuilder(epochs=300, path='Images')
+ModelBuilder_obj = ModelBuilder(epochs=300, path='Images', alb_aug=True)
 ModelBuilder_obj.train_model()

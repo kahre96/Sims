@@ -10,15 +10,15 @@ import collections as col
 
 
 takepics = False  # decide if you want to take pics or not
-correct_label = "Fredrik"
+correct_label = "2"
 color = (0, 255, 0)
 namecolor = (36, 255, 12)
 guess_array = col.deque(maxlen=20)
 
 
-# labels=['Andreas','Fredrik','Glenn','Ina','Nordin', "Peter"]
-labels = pickle.loads(open('labels.pickle', "rb").read())  # load the pickle file with labels
-model = keras.models.load_model('models/Images_anoaug_wGlasses_N128x128.h5')
+# labels=['1','2','3','4','5', "6"]
+labels = pickle.loads(open('../labels.pickle', "rb").read())  # load the pickle file with labels
+model = keras.models.load_model('../models/Images_akaug_wGuest_N128x128.h5')
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
