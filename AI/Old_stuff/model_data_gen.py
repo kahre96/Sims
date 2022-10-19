@@ -36,7 +36,7 @@ class createDataset():
     
     def setDataset(self):
         class_names = self.class_names # this will save the labels for the model
-        f = open('labels.pickle', "wb")
+        f = open('../labels.pickle', "wb")
         f.write(pickle.dumps(class_names))
         f.close()        
         i = 0
@@ -49,7 +49,14 @@ class createDataset():
             for img in os.listdir(os.path.join(self.directory,labels)):
                 self.paths.append(os.path.join(self.directory,labels,img))
                 self.labels.append(class_number[i-1])
-        return list(zip(self.paths,self.labels))
+
+        dataset = list(zip(self.paths,self.labels))
+        data = random.sample(dataset, len(dataset))
+        indexes = int(len(data) - 1)
+        train_ds = data[:int(indexes * 0.7)]
+        val_ds = data[len(train_ds):indexes]
+        return train_ds, val_ds
+
 
 
 
@@ -103,7 +110,7 @@ class model():
 
 # albumentation pipeline
 
-transformer = alb.Compose([
+transformer1 = alb.Compose([
     alb.RandomBrightnessContrast(brightness_limit=(-0.35, 0.35), contrast_limit=(-0.35, 0.35), p=0.3),
     # brightness and contrast in range (-0.3 and 0.7)
     alb.HorizontalFlip(p=0.3),  # flip picture vertical
@@ -125,7 +132,7 @@ class CustomDataGen(tf.keras.utils.Sequence):
 
     """
     
-    def __init__(self, normalization, transformer, data, batch_size, shuffle = True):
+    def __init__(self, normalization,data, batch_size, shuffle = True, transformer=transformer1):
         self.data = random.sample(data, len(data)) # shuffles the list again
         self.batch_size = batch_size
         self.n = int(len(self.data))
@@ -208,8 +215,8 @@ train,val= train_val_split(dataset, 0.7)
 # set normalization to 'znorm' for mean std normalization.
 # set normalization to 'minmax' for min max normalization
 # each normalization is done per image and not per batch.
-training = CustomDataGen(data = train, batch_size =32,normalization = 'minmax',transformer = transformer)
-validation = CustomDataGen(data = val, batch_size =32,normalization = 'minmax',transformer = transformer)
+training = CustomDataGen(data = train, batch_size =32,normalization = 'minmax',transformer = transformer1)
+validation = CustomDataGen(data = val, batch_size =32,normalization = 'minmax',transformer = transformer1)
 
 
 # model.fit

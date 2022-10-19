@@ -8,24 +8,36 @@ import keras
 from keras.layers import Dense, Dropout, Flatten
 from keras.callbacks import ModelCheckpoint
 from keras.callbacks import EarlyStopping
-import os
 import pickle
 from keras_vggface import VGGFace
+from create_data_aug import CreateDataset
+from custom_data_gen import CustomDataGen
 
 
 class ModelBuilder:
 
-    def __init__(self, path="images_ds", epochs=3000, patience=15):
-        self.img_height, self.img_width = 224, 224
+    def __init__(self, path="images_ds", epochs=3000, patience=15, alb_aug=False,
+                 img_h=224, img_w=224, batch_size=32, neurons=None, drop_rate=None, model_type="vgg16"):
+        self.img_height = img_h
+        self.img_width = img_w
         self.ds_dir = path
         self.amount_of_classes = self.count_classes()
         self.patience = patience
-        self.batch_size = 32
+        self.batch_size = batch_size
         self.epochs = epochs
-        self.model_type = "vgg16"
-        self.neurons = [256, 128]
-        self.drop_rate = [0.75, 0.5]
-        self.train_ds, self.val_ds = self.import_data()
+        self.model_type = model_type
+        if neurons is None:
+            self.neurons = [256, 128]
+        else:
+            self.neurons = neurons
+        if drop_rate is None:
+            self.drop_rate = [0.75, 0.5]
+        else:
+            self.drop_rate = drop_rate
+        if alb_aug:
+            self.train_ds, self.val_ds = self.create_generator()
+        else:
+            self.train_ds, self.val_ds = self.import_data()
         self.callbacks = self.generate_callback()
         self.model = self.generate_model()
 
@@ -73,6 +85,15 @@ class ModelBuilder:
         val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
 
         return train_ds,val_ds
+
+
+    def create_generator(self):
+        train_ds, val_ds = CreateDataset(self.ds_dir, cat=True).set_dataset()
+        training = CustomDataGen(data=train_ds, batch_size=32, normalization='minmax')
+        validation = CustomDataGen(data=val_ds, batch_size=32, normalization='minmax')
+        return training,validation
+
+
 
     # creates a base model based on model_types archtitecture and adds toplayer
     # based on neurons,drop and amount of classes
@@ -132,5 +153,5 @@ class ModelBuilder:
         print("loss", history.history['loss'][best_epochs])
 
 
-ModelBuilder_obj = ModelBuilder(epochs=300, path='Images')
-ModelBuilder_obj.train_model()
+
+
