@@ -174,9 +174,8 @@ class AdminController():
         
         if request.method == 'GET':
             configuration = str(request.args.get('config'))  
-
             with open(f"{path}/{configuration}.json", 'r') as openfile:
-                json_object = json.load(openfile) 
+                json_object = openfile.read() 
             return json_object, 200
 
         if request.method == 'POST':
