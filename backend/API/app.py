@@ -65,7 +65,7 @@ def showCharacters():
 
 @app.route('/admin/theme', methods = ['GET','POST'])
 def theme():
-    return admincontroller.theme(mysql) 
+    return admincontroller.theme() 
 
 '''
 PLAYER ROUTES
