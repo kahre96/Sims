@@ -126,7 +126,7 @@ def load_model(tl_model):
 # creates save checkpoints and rules for early stop of the model
 def create_callbacks(patience):
 
-    checkpoint = ModelCheckpoint("models/face_classifier.h5",
+    checkpoint = ModelCheckpoint("../models/face_classifier.h5",
                                  monitor="val_loss",
                                  mode="min",
                                  save_best_only=True,
@@ -145,7 +145,7 @@ def create_callbacks(patience):
 
 def save_labels(ds_dir):
     class_names = sorted(os.listdir(ds_dir))
-    f = open('labels.pickle', "wb")
+    f = open('../labels.pickle', "wb")
     f.write(pickle.dumps(class_names))
     f.close()
 

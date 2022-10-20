@@ -3,18 +3,10 @@
 
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Knowit - Sims 2022</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta property="og:title" content="">
-  <meta property="og:type" content="">
-  <meta property="og:url" content="">
-  <meta property="og:image" content="">
-
-  <!--  <link rel="manifest" href="site.webmanifest">-->
-  <link rel="apple-touch-icon" href="icon.png">
-  <!-- Place favicon.ico in the root directory -->
   <!-- CSS only -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/bootstrap-icons.min.css">
@@ -22,26 +14,21 @@
   <link rel="stylesheet" href="css/stilmall.css" type="text/css">
   <link rel="stylesheet" href="css/main.css">
 
-  <meta name="theme-color" content="#fafafa">
 </head>
-
 <body>
-
-
 <!-- js generated track animation -->
 <div class="container-fluid scrolling-track-container">
   <div id="knw-bg-anim">
-
   </div>
 </div>
+<!-- js generated track characters -->
 <div id="track-characters">
   <div class="row">
     <div id="track-area" class="col track-area">
     </div>
   </div>
 </div>
-
-<!--           CONTENT LAYOUT          -->
+<!--         CONTENT LAYOUT          -->
 <section class="container knw-content">
   <div class="row">
     <div class="col p-0 m-0">
@@ -50,9 +37,7 @@
           <header class="col-12 p-0 m-0">
             <div class="header m-0 pl-4 rounded-0">
               <img id="logo" src="resources/Logotype-Knowit-Digital-black.png" alt="Knowit logga">
-
               <div id="date"></div>
-
               <a class="weatherwidget-io" href="https://forecast7.com/sv/62d3917d31/sundsvall/"
                  data-icons="Climacons Animated"
                  data-days="3" data-textcolor="#333333" data-highcolor="#333333" data-lowcolor="#333333"
@@ -73,7 +58,7 @@
             </div>
           </header>
         </div>
-        <!-- Running characters-->
+        <!-- Character cards-->
         <section class="row px-4 gx-5" id="people-box">
         </section>
       </section>
@@ -81,15 +66,8 @@
         <div class="row w-100 position-absolute bottom-0" style="height: 40px;">
           <div class="col-1 bg-white text-dark fw-bolder fs-5 text-end pt-1">
             Tips:
-            <!--          <div class="col position-absolute bottom-0">-->
-            <!--            <div class="progress position-relative bg-pebble-o25 rounded-0" style="height: 30px;">-->
-            <!--                        <div class="m-0 position-absolute w-100 fw-bolder fs-5 text-white text-stroke-black">Lorem ipsum dolor sit amet, lorem ipsum dolor</div>-->
-            <!--              <div class="progress-bar position-absolute bg-white text-dark fw-bolder fs-5 text-end px-2" role="progressbar" style="width: 180px" aria-valuenow=""-->
-            <!--                   aria-valuemin="0"-->
-            <!--                   aria-valuemax="100"> Info/Tips: </div>-->
-            <!--            </div>-->
           </div>
-          <div class="col bg-pebble-o25 fw-bolder fs-5 text-white text-stroke-black pt-1">
+          <div class="col bg-pebble-o35 fw-bolder fs-5 text-white text-stroke-black pt-1">
             <div class="scrolling-tip-div">
             </div>
           </div>
@@ -107,10 +85,9 @@
           <li href="#" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">List group item heading</h5>
-              <small>3 days ago</small>
             </div>
             <p class="mb-1">Some placeholder content in a paragraph.</p>
-            <small>And some small print.</small>
+            <small>Time and date</small>
           </li>
         </ul>
         <ul class="list-group">
@@ -119,24 +96,23 @@
             Nyheter - extern
           </li>
           <li href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1" id="extern-head">List group item heading</h5>
-            </div>
-            <p class="mb-1" id="extern-content">Some placeholder content in a paragraph.</p>
-            <small id="extern-time">And some small print.</small>
-          </li>
+            <div class="d-flex w-100 justify-content-between"><h5 class="mb-1" id="extern-head">List group item
+              heading</h5></div>
+            <p class="mb-1" id="extern-content">Some placeholder content in a paragraph.</p>             <small
+            id="extern-time">Time and date</small></li>
         </ul>
         <ul class="list-group">
           <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img
             src="resources/Clock-Digital-black.svg" class="icon-images">
             Lediga rum
           </li>
-          <li class="list-group-item">Ta in lediga mötesrum från Outlook med ett dummy-konto
-            Mötesrum lediga just nu och nästa bokade tid, nånting sånt
+          <li class="list-group-item">
+            Mötesrum lediga just nu och nästa bokade tid
           </li>
         </ul>
         <ul class="list-group">
-          <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img src="resources/Bottle-Digital%20black.svg" class="icon-images">
+          <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img
+            src="resources/Bottle-Digital%20black.svg" class="icon-images">
             Väldigt bra att veta
           </li>
           <li id="hours-text" class="list-group-item">
@@ -181,71 +157,34 @@
     </button>
   </div>
 
-
   <div class="offcanvas-body small">
-    <!-- theme setup -->
+    <!-- toggle seasonal or override theme -->
     <div class="card text-dark bg-light mb-3">
-      <h4 class="card-header"><i class="bi bi-paint-bucket"></i> Themes setup</h4>
+      <h4 class="card-header"><i class="bi bi-paint-bucket"></i> Tema inställningar</h4>
       <div class="card-body">
-        <div class="alert alert-info" role="alert">
-          Override seasonal theme by picking a theme from the below list.
-        </div>
         <form action="#">
           <div class="input-group mb-3">
             <span class="input-group-text">
               <input class="form-check-input" type="radio" value="seasonal" checked name="set-theme"
                      id="seasonal-theme-radio">
+            <label for="seasonal-theme-radio" class="">&nbsp;&nbsp;&nbsp;Automatisk säsongs tema:</label>
             </span>
-            <input class="form-control form-control-lg" type="text" value="Random seasonal theme: summer - Beach"
-                   name="current-theme" id="seasonal-theme-current" disabled>
+            <!--            <input class="form-control form-control-lg" type="text" value="summer - Beach"-->
+            <!--                   name="current-theme" id="seasonal-theme-current" disabled>-->
           </div>
           <div class="input-group mb-3">
           <span class="input-group-text">
             <input class="form-check-input" type="radio" value="override" name="set-theme" id="override-theme-radio">
-
+            <label for="override-theme-radio" class="">&nbsp;&nbsp;&nbsp;Manuell val:</label>
           </span>
             <select id="override-theme-select" class="form-select form-select-lg"
                     aria-label=".form-select-lg" disabled>
-              <option selected>Override theme</option>
+              <option selected></option>
             </select>
           </div>
         </form>
       </div>
     </div>
-
-    <!-- create new theme -->
-<!--    <div class="card text-dark bg-light mb-3">-->
-<!--      <h4 class="card-header"><i class="bi bi-palette"></i> Create new theme</h4>-->
-<!--      <div class="card-body">-->
-<!--        <div class="alert alert-info" role="alert">-->
-<!--          Create new themes by uploading your background and props to spawn into layers.-->
-<!--        </div>-->
-<!--        <ol id="sortable" class="list-group list-group-numbered">-->
-<!--          <li class="list-group-item d-flex justify-content-between align-items-start">-->
-<!--            <div class="ms-2 me-auto">-->
-<!--              <div class="fw-bold">Subheading lorem</div>-->
-<!--              Cras justo odio-->
-<!--            </div>-->
-<!--          </li>-->
-<!--          <li class="list-group-item d-flex justify-content-between align-items-start">-->
-<!--            <div class="ms-2 me-auto">-->
-<!--              <div class="fw-bold">Subheading ipsum</div>-->
-<!--              Cras justo odio-->
-<!--            </div>-->
-<!--          </li>-->
-<!--          <li class="list-group-item d-flex justify-content-between align-items-start">-->
-<!--            <div class="ms-2 me-auto">-->
-<!--              <div class="fw-bold">Subheading dolor</div>-->
-<!--              Cras justo odio-->
-<!--            </div>-->
-<!--            <button class="del-layer">-->
-<!--              <i class="bi bi-trash"></i>-->
-<!--            </button>-->
-<!--          </li>-->
-<!--        </ol>-->
-
-<!--      </div>-->
-<!--    </div>-->
   </div>
 </div>
 
@@ -259,21 +198,5 @@
 <!-- JavaScript Bundle with Popper -->
 <script src="js/vendor/bootstrap.bundle.min.js"></script>
 <script src="js/main.js"></script>
-
-<!-- templates -->
-<script id="rowTemplate" type="text/template">
-  <tr>
-    <td class="drag-handler"></td>
-    <td class="recipe-table__cell">
-      <input type="text" class="recipe__text-field" value="" placeholder="Ingredient">
-    </td>
-    <td class="recipe-table__cell">
-      <input type="text" class="recipe__text-field" value="" placeholder="Value">
-    </td>
-    <td class="recipe-table__cell">
-      <button class="recipe-table__del-row-btn">x</button>
-    </td>
-  </tr>
-</script>
 </body>
 </html>

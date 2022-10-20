@@ -164,6 +164,34 @@ class AdminController():
         else:
             return render_template("sqlForm.html")
 
+    ''' Write or return theme configurations
+    INPUT: configuration name (GET), configuration name and actual configuration (POST)
+    OUTPUT: requested configuration (GET), Update message (POST)
+    '''
+    def theme(self,mysql):
+        path = f"themes"
+        with mysql.connection.cursor() as cursor:
+            if request.method == 'GET':
+                configuration = str(request.args.get('config'))  
+
+                with open(f"{path}/{configuration}.json", 'r') as openfile:
+                    json_object = json.load(openfile) 
+                return json_object, 200
+
+            if request.method == 'POST':
+                configuration = str(request.args.get('config'))  
+                text = json.dumps((request.args.get('text')))
+                with open(f"{path}/{configuration}.json", "w") as outfile:
+                     outfile.write(text)
+                return ("Themes Updated!",201)
+
+            return 405
+            
+            
+
+
+
+
     
     
 

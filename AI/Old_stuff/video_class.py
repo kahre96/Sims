@@ -68,7 +68,7 @@ class multimedia():
         if elem in self.guessed:
             pass
         else:
-            if elem == 'Guest':
+            if elem == '0':
                 print('Make db call guest')
                 return
             else:
