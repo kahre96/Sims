@@ -3,6 +3,7 @@ import requests
 import sys
 import json
 from os import listdir, rename
+import json
 
 sys.path.append("../../AI")
 
@@ -182,7 +183,8 @@ class AdminController():
             configuration = str(request.args.get('config'))  
             text = request.get_json()
             with open(f"{path}/{configuration}.json", "w") as outfile:
-                outfile.write(str(text))
+#                 outfile.write(text)
+                json.dump(text, outfile)
             return ("Themes Updated!",201)
 
         return 405

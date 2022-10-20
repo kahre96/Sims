@@ -7,7 +7,7 @@ from flask_cors import CORS
 
 # 'Production' Configuration
 db_password    = ''
-db_name        = 'emp_info'
+db_name        = 'sims'
 
 # Define App and open connection to the mysql database
 def createApp(db_password, db_name):
