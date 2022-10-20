@@ -332,6 +332,19 @@ $(function () {
   function saveJson(fileToSaveTo, jsonToSave) {
     // api call to save json file to db
   }
+    // api call to get json from db
+  function getJson(url) {
+    $.ajax({
+      'async': false,
+      'global': false,
+      'url': url,
+      'dataType': "json",
+      'success': function (data) {
+        return data;
+      }
+    });
+    return null;
+  }
 
   function tipsFadeInFadeOut(element, speed) {
     let tips = [

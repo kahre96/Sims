@@ -7,7 +7,7 @@ from flask_cors import CORS
 
 # 'Production' Configuration
 db_password    = ''
-db_name        = 'sims'
+db_name        = 'emp_info'
 
 # Define App and open connection to the mysql database
 def createApp(db_password, db_name):
@@ -57,11 +57,7 @@ def takePictures():
 
 @app.route('/admin/sql', methods = ['GET', 'POST'])
 def sendSQL():
-    return admincontroller.sendSQL(mysql);
-
-@app.route('/admin/addUser/characters', methods = ['GET', 'POST'])
-def showCharacters():
-    return admincontroller.showCharacters()
+    return admincontroller.sendSQL(mysql)
 
 @app.route('/admin/theme', methods = ['GET','POST'])
 def theme():

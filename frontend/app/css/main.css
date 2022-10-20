@@ -334,48 +334,63 @@ a {
   --clay: rgba(165, 177, 170, 1);
   --leather: rgba(124, 54, 71, 1);
 }
+
 .bg-white {
   background-color: var(--text-white);
 }
+
 .bg-black {
   background-color: var(--text-black);
 }
+
 .bg-digital-white {
   background-color: var(--digital-white);
 }
+
 .bg-digital-pop {
   background-color: var(--digital-pop);
 }
+
 .bg-pear {
   background-color: var(--pear);
 }
+
 .bg-flamingo {
   background-color: var(--flamingo);
 }
+
 .bg-sand {
   background-color: var(--sand);
 }
+
 .bg-forest {
   background-color: var(--forest);
 }
+
 .bg-mint {
   background-color: var(--mint);
 }
+
 .bg-melon {
   background-color: var(--melon);
 }
+
 .bg-pebble {
   background-color: var(--pebble);
 }
+
 .bg-pebble-o35 {
   background-color: var(--pebble-o35);
 }
+
 .bg-pebble-o65 {
   background-color: var(--pebble-o65);
 }
+
 .bg-clay {
   background-color: var(--clay);
 }
+
 .bg-leather {
   background-color: var(--leather);
 }
@@ -384,39 +399,51 @@ a {
 .text-white {
   color: var(--text-white);
 }
+
 .text-black {
   color: var(--text-black);
 }
+
 .text-digital-white {
   color: var(--digital-white);
 }
+
 .text-digital-pop {
   color: var(--digital-pop);
 }
+
 .text-pear {
   color: var(--pear);
 }
+
 .text-flamingo {
   color: var(--flamingo);
 }
+
 .text-sand {
   color: var(--sand);
 }
+
 .text-forest {
   color: var(--forest);
 }
+
 .text-mint {
   color: var(--mint);
 }
+
 .text-melon {
   color: var(--melon);
 }
+
 .text-pebble {
   color: var(--pebble);
 }
+
 .text-clay {
   color: var(--clay);
 }
+
 .text-leather {
   color: var(--leather);
 }
@@ -427,9 +454,10 @@ a {
 }
 
 /* i overrides*/
-.header{
+.header {
   background-color: var(--pebble-o65);
 }
+
 .knw-sidebar {
   max-width: 19vw;
 }
@@ -472,9 +500,9 @@ nav .div {
   margin-top: 60px;
 }
 
-.profiles-container {
-  margin-top: 60px;
-}
+/*.profiles-container {*/
+/*  margin-top: 60px;*/
+/*}*/
 
 .scrolling-track-container .row {
   min-height: 100vh;
@@ -546,130 +574,130 @@ nav .div {
   left: 100vw;
 }
 
-#horizontal-scroll {
-  position: absolute;
-  width: 200vw;
-  height: 100%;
-  background: url("../img/themes/seasons/summer/a/bg01.png") repeat-x;
-  background-size: 50%;
-  background-color: #9db9da;
-}
+/*#horizontal-scroll {*/
+/*  position: absolute;*/
+/*  width: 200vw;*/
+/*  height: 100%;*/
+/*  background: url("../img/themes/seasons/summer/a/bg01.png") repeat-x;*/
+/*  background-size: 50%;*/
+/*  background-color: #9db9da;*/
+/*}*/
 
-#horizontal-scroll2 {
-  position: absolute;
-  width: 200vw;
-  height: 100%;
-  background: url("../img/themes/seasons/summer/a/bg02.png") repeat-x;
-  background-size: 50%;
-  background-position: left bottom;
-  -webkit-animation: bgBottomScroll 50s linear infinite;
-  animation: bgBottomScroll 50s linear infinite;
-}
+/*#horizontal-scroll2 {*/
+/*  position: absolute;*/
+/*  width: 200vw;*/
+/*  height: 100%;*/
+/*  background: url("../img/themes/seasons/summer/a/bg02.png") repeat-x;*/
+/*  background-size: 50%;*/
+/*  background-position: left bottom;*/
+/*  -webkit-animation: bgBottomScroll 50s linear infinite;*/
+/*  animation: bgBottomScroll 50s linear infinite;*/
+/*}*/
 
-#horizontal-scroll3 {
-  position: absolute;
-  width: 200vw;
-  height: 100%;
-  background: url("../img/themes/seasons/summer/a/bg03.png") repeat-x;
-  background-size: 50%;
-  background-position: left bottom;
-  -webkit-animation: bgBottomScroll 17s linear infinite;
-  animation: bgBottomScroll 17s linear infinite;
-}
+/*#horizontal-scroll3 {*/
+/*  position: absolute;*/
+/*  width: 200vw;*/
+/*  height: 100%;*/
+/*  background: url("../img/themes/seasons/summer/a/bg03.png") repeat-x;*/
+/*  background-size: 50%;*/
+/*  background-position: left bottom;*/
+/*  -webkit-animation: bgBottomScroll 17s linear infinite;*/
+/*  animation: bgBottomScroll 17s linear infinite;*/
+/*}*/
 
-#horizontal-scroll4 {
-  position: absolute;
-  width: 200vw;
-  height: 100%;
-  background: url("../img/themes/seasons/summer/a/bg04.png") repeat-x;
-  background-size: 50%;
-  -webkit-animation: bgTopScroll 40s linear infinite;
-  animation: bgTopScroll 40s linear infinite;
-}
+/*#horizontal-scroll4 {*/
+/*  position: absolute;*/
+/*  width: 200vw;*/
+/*  height: 100%;*/
+/*  background: url("../img/themes/seasons/summer/a/bg04.png") repeat-x;*/
+/*  background-size: 50%;*/
+/*  -webkit-animation: bgTopScroll 40s linear infinite;*/
+/*  animation: bgTopScroll 40s linear infinite;*/
+/*}*/
 
-#track-init-scroll {
-  position: absolute;
-  width: 100vw;
-  height: 100%;
-  background: url("../img/themes/seasons/summer/a/track.png") repeat-x;
-  background-size: 100%;
-  background-position: left bottom;
-  -webkit-animation: bgTranslate 6s linear forwards;
-  animation: bgTranslate 6s linear forwards;
-}
+/*#track-init-scroll {*/
+/*  position: absolute;*/
+/*  width: 100vw;*/
+/*  height: 100%;*/
+/*  background: url("../img/themes/seasons/summer/a/track.png") repeat-x;*/
+/*  background-size: 100%;*/
+/*  background-position: left bottom;*/
+/*  -webkit-animation: bgTranslate 6s linear forwards;*/
+/*  animation: bgTranslate 6s linear forwards;*/
+/*}*/
 
-#track-slide1-scroll {
-  position: absolute;
-  width: 100vw;
-  height: 100%;
-  left: 100vw;
-  background: url("../img/themes/seasons/summer/a/track.png") repeat-x;
-  background-size: 100%;
-  background-position: left bottom;
-  -webkit-animation: bgTranslate2 12s linear infinite;
-  animation: bgTranslate2 12s linear infinite;
-}
+/*#track-slide1-scroll {*/
+/*  position: absolute;*/
+/*  width: 100vw;*/
+/*  height: 100%;*/
+/*  left: 100vw;*/
+/*  background: url("../img/themes/seasons/summer/a/track.png") repeat-x;*/
+/*  background-size: 100%;*/
+/*  background-position: left bottom;*/
+/*  -webkit-animation: bgTranslate2 12s linear infinite;*/
+/*  animation: bgTranslate2 12s linear infinite;*/
+/*}*/
 
-#track-slide2-scroll {
-  position: absolute;
-  width: 100vw;
-  height: 100%;
-  left: 100vw;
-  background: url("../img/themes/seasons/summer/a/track.png") repeat-x;
-  background-size: 100%;
-  background-position: left bottom;
-  -webkit-animation: bgTranslate2 12s linear infinite;
-  animation: bgTranslate2 12s linear infinite;
-  animation-delay: 6s;
-}
+/*#track-slide2-scroll {*/
+/*  position: absolute;*/
+/*  width: 100vw;*/
+/*  height: 100%;*/
+/*  left: 100vw;*/
+/*  background: url("../img/themes/seasons/summer/a/track.png") repeat-x;*/
+/*  background-size: 100%;*/
+/*  background-position: left bottom;*/
+/*  -webkit-animation: bgTranslate2 12s linear infinite;*/
+/*  animation: bgTranslate2 12s linear infinite;*/
+/*  animation-delay: 6s;*/
+/*}*/
 
-@-webkit-keyframes bgTopScroll {
-  to {
-    background-position: -100% top;
-  }
-}
+/*@-webkit-keyframes bgTopScroll {*/
+/*  to {*/
+/*    background-position: -100% top;*/
+/*  }*/
+/*}*/
 
-@keyframes bgTopScroll {
-  to {
-    background-position: -100% top;
-  }
-}
+/*@keyframes bgTopScroll {*/
+/*  to {*/
+/*    background-position: -100% top;*/
+/*  }*/
+/*}*/
 
-@-webkit-keyframes bgBottomScroll {
-  to {
-    background-position: -100% bottom;
-  }
-}
+/*@-webkit-keyframes bgBottomScroll {*/
+/*  to {*/
+/*    background-position: -100% bottom;*/
+/*  }*/
+/*}*/
 
-@keyframes bgBottomScroll {
-  to {
-    background-position: -100% bottom;
-  }
-}
+/*@keyframes bgBottomScroll {*/
+/*  to {*/
+/*    background-position: -100% bottom;*/
+/*  }*/
+/*}*/
 
-@-webkit-keyframes bgTranslate {
-  to {
-    transform: translateX(-100%);
-  }
-}
+/*@-webkit-keyframes bgTranslate {*/
+/*  to {*/
+/*    transform: translateX(-100%);*/
+/*  }*/
+/*}*/
 
-@keyframes bgTranslate {
-  to {
-    transform: translateX(-100%);
-  }
-}
+/*@keyframes bgTranslate {*/
+/*  to {*/
+/*    transform: translateX(-100%);*/
+/*  }*/
+/*}*/
 
-@-webkit-keyframes bgTranslate2 {
-  to {
-    transform: translateX(-200%);
-  }
-}
+/*@-webkit-keyframes bgTranslate2 {*/
+/*  to {*/
+/*    transform: translateX(-200%);*/
+/*  }*/
+/*}*/
 
-@keyframes bgTranslate2 {
-  to {
-    transform: translateX(-200%);
-  }
-}
+/*@keyframes bgTranslate2 {*/
+/*  to {*/
+/*    transform: translateX(-200%);*/
+/*  }*/
+/*}*/
 
 /* profile cards */
 .card.user-card {
@@ -849,33 +877,35 @@ nav .div {
   max-width: 30%;
 }
 
-.first-card > div > div{
+.first-card > div > div {
   box-shadow: 0 0 0 var(--digital-pop);
   animation: pulse 2s infinite;
 }
+
 @-webkit-keyframes pulse {
   0% {
     -webkit-box-shadow: 0 0 0 0 var(--digital-pop);
   }
   70% {
-      -webkit-box-shadow: 0 0 0 10px rgba(255,0, 255, 0);
+    -webkit-box-shadow: 0 0 0 10px rgba(255, 0, 255, 0);
   }
   100% {
-      -webkit-box-shadow: 0 0 0 0 rgba(255,0, 255, 0);
+    -webkit-box-shadow: 0 0 0 0 rgba(255, 0, 255, 0);
   }
 }
+
 @keyframes pulse {
   0% {
     -moz-box-shadow: 0 0 0 0 var(--digital-pop);
     box-shadow: 0 0 0 0 var(--digital-pop);
   }
   70% {
-      -moz-box-shadow: 0 0 0 10px rgba(255,0, 255, 0);
-      box-shadow: 0 0 0 10px rgba(255,0, 255, 0);
+    -moz-box-shadow: 0 0 0 10px rgba(255, 0, 255, 0);
+    box-shadow: 0 0 0 10px rgba(255, 0, 255, 0);
   }
   100% {
-      -moz-box-shadow: 0 0 0 0 rgba(255,0, 255, 0);
-      box-shadow: 0 0 0 0 rgba(255,0, 255, 0);
+    -moz-box-shadow: 0 0 0 0 rgba(255, 0, 255, 0);
+    box-shadow: 0 0 0 0 rgba(255, 0, 255, 0);
   }
 }
 
@@ -883,7 +913,7 @@ nav .div {
   max-width: 23.33%;
 }
 
-.knw-moodchart{
+.knw-moodchart {
   width: 300px;
   margin-left: auto;
   margin-right: auto;
@@ -936,4 +966,54 @@ nav .div {
   width: 8%;
   max-height: 28px;
   margin-right: 10px;
+}
+
+.last-month-heroes {
+  height: 280px;
+  background: url(../img/top3-bg.png) center bottom no-repeat;
+  background-size: 100% auto;
+}
+
+.top3-avatars {
+  height: 150px;
+}
+
+.top3-avatars div{
+}
+#avatar-silver {
+  background: url("../img/characters/idle_avatar/char_1.gif") center bottom no-repeat;
+  background-size: 130% auto;
+  height: 150px;
+  padding: 0;
+  margin-bottom: -58px;
+}
+
+#avatar-gold {
+  background: url("../img/characters/idle_avatar/char_2.gif") center bottom no-repeat;
+  background-size: 130% auto;
+  height: 150px;
+  padding: 0;
+  margin-bottom: -88px;
+}
+
+#avatar-bronze {
+  background: url("../img/characters/idle_avatar/char_3.gif") center bottom no-repeat;
+  background-size: 130% auto;
+  height: 150px;
+  padding: 0;
+  margin-bottom: -75px;
+}
+#nameplate-silver {
+  padding: 0;
+  margin-bottom: -88px;
+}
+
+#nameplate-gold {
+  padding: 0;
+  margin-bottom: -42px;
+}
+
+#nameplate-bronze {
+  padding: 0;
+  margin-bottom: -104px;
 }
