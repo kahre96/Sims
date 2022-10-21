@@ -330,6 +330,7 @@ a {
   --melon: rgba(252, 223, 216, 1);
   --pebble: rgba(241, 240, 237, 1);
   --pebble-o35: rgba(241, 240, 237, 0.35);
+  --pebble-o65: rgba(241, 240, 237, 0.65);
   --clay: rgba(165, 177, 170, 1);
   --leather: rgba(124, 54, 71, 1);
 }
@@ -366,8 +367,11 @@ a {
 .bg-pebble {
   background-color: var(--pebble);
 }
-.bg-pebble-o25 {
+.bg-pebble-o35 {
   background-color: var(--pebble-o35);
+}
+.bg-pebble-o65 {
+  background-color: var(--pebble-o65);
 }
 .bg-clay {
   background-color: var(--clay);
@@ -424,7 +428,7 @@ a {
 
 /* i overrides*/
 .header{
-  background-color: var(--pebble-o35);
+  background-color: var(--pebble-o65);
 }
 .knw-sidebar {
   max-width: 19vw;

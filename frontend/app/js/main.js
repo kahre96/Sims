@@ -76,14 +76,14 @@ document.addEventListener('DOMContentLoaded', () => {
     )
 });
 
+$(function () {
 
-
-$(function (keyframes, options) {
   // Nordin
   let runningIntervals = [];
   let ppl = [];
   let currentTheme = {};
-
+  let animationContainer = $("#knw-bg-anim");
+  let scrollingTipDiv = $(".scrolling-tip-div");
   let appConfig = (function () {
     let json = null;
     $.ajax({
@@ -126,11 +126,11 @@ $(function (keyframes, options) {
   setTheme();
   spawnCharacters();
   setInterval(createPplsJson, 1000);
-  setInterval(tipsFadeInFadeOut, 10000, $(".scrolling-tip-div"), 10000);
+  setInterval(tipsFadeInFadeOut, 10000, scrollingTipDiv, 10000);
 
   function setTheme() {
     clearAllIntervals();
-    $("#knw-bg-anim").empty();
+    animationContainer.empty();
     if (appConfig.themeOverride.active) {
       currentTheme.themeCategory = appConfig.themeOverride.themeCategory;
       currentTheme.themeName = appConfig.themeOverride.themeName;
@@ -158,7 +158,7 @@ $(function (keyframes, options) {
   function initThemeAnimation() {
     //Todo go through current theme layers and construct the animation
     $.each(themesJson[currentTheme.themeCategory][currentTheme.themeName].layers, function (index, layer) {
-      let tempLayerDiv = $("<div>");
+      let tempLayerDiv = $("<div id='anim-layer-" + index + "'>");
       let themeFolder = 'img/themes/' + currentTheme.themeCategory + '/' + currentTheme.themeName + '/';
       tempLayerDiv.addClass('container-fluid bg-scroll');
       tempLayerDiv.attr('id', 'anim-layer-' + index);
@@ -168,7 +168,7 @@ $(function (keyframes, options) {
         });
         if (layer.options.speed > 0) {
           slideAnimateMaybeSpawn(tempLayerDiv, layer.options.speed, {'background-position-x': '0vw'}, {'background-position-x': '-=100vw'}, 0);
-          let tempThisInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed, tempLayerDiv, layer.options.speed, {'background-position-x': '0vw'}, {'background-position-x': '-=100vw'}, 0);
+          var tempThisInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed, tempLayerDiv, layer.options.speed, {'background-position-x': '0vw'}, {'background-position-x': '-=100vw'}, 0);
           runningIntervals.push(tempThisInterval);
         }
       } else {
@@ -185,11 +185,10 @@ $(function (keyframes, options) {
           $('<div class="col prop spawn' + i + '"></div>').appendTo(spawnContainerDivB);
         }
 
-        // Todo set slide bottom-0 from json
         spawnContainerDivA.addClass('row spawn-slide position-absolute bottom-0');
         spawnContainerDivB.addClass('row spawn-slide position-absolute bottom-0');
-        spawnContainerDivA.attr('id', 'spawn-layer-' + index + '-a');
-        spawnContainerDivB.attr('id', 'spawn-layer-' + index + '-b');
+        spawnContainerDivA.attr('id', 'spawn-layer-' + index + currentTheme.themeName + '-a');
+        spawnContainerDivB.attr('id', 'spawn-layer-' + index + currentTheme.themeName + '-b');
         $(spawnContainerDivA).appendTo(tempLayerDiv);
         $(spawnContainerDivB).appendTo(tempLayerDiv);
 
@@ -205,7 +204,7 @@ $(function (keyframes, options) {
           }, layer.options.speed);
         });
       }
-      $("#knw-bg-anim").append(tempLayerDiv);
+      animationContainer.append(tempLayerDiv);
     });
   }
 
@@ -282,13 +281,6 @@ $(function (keyframes, options) {
             $('#people-box > div').attr("class", cardStyleRest);
             $('#people-box').prepend(newElement);
 
-            // let grumpy = Math.floor(Math.random() * 21);
-            // let happy = Math.floor(Math.random() * 21);
-            // let sad = Math.floor(Math.random() * 21);
-            // let ambition = Math.floor(Math.random() * 21);
-            // let curious = Math.floor(Math.random() * 21);
-            // createPersonChart('knw-moodchart-' + obj.emp_id, grumpy, happy, sad, ambition, curious);
-
             $(newElement).animate({
               marginLeft: "0px",
             }, 500);
@@ -301,49 +293,7 @@ $(function (keyframes, options) {
     });
   }
 
-  function createPersonChart(where, grumpy, happy, sad, ambition, curious) {
-    const labels = ['Grumpiness', 'Happiness', 'Curiousity', 'Ambition', 'Sadness',];
-
-    const data = {
-      labels: labels, datasets: [{
-        label: 'My First dataset',
-        data: [grumpy, happy, sad, ambition, curious],
-        fill: true,
-        backgroundColor: 'rgba(255, 0, 255, 0.2)',
-        borderColor: 'rgb(255, 0, 255)',
-        pointBackgroundColor: 'rgb(255, 0, 255)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgb(255, 0, 255)'
-      }]
-    };
-
-    const config = {
-      type: 'radar', data: data, options: {
-        elements: {
-          line: {
-            borderWidth: 3
-          }
-        }, plugins: {
-          legend: {
-            display: false,
-          }
-        }, scales: {
-          r: {
-            pointLabels: {
-              font: {
-                size: 16
-              }
-            }
-          }
-        }
-      }
-    };
-    Chart.defaults.font.size = 14;
-    const myChart = new Chart(document.getElementById(where), config);
-  }
-
-  // clear all intervalls for this theme
+  // clear all intervals for this theme
   function clearAllIntervals() {
     $.each(runningIntervals, (index, interval) => {
       clearInterval(interval);
@@ -351,11 +301,11 @@ $(function (keyframes, options) {
   }
 
 
-  // handeling settings menu
+  // handling settings menu
   // populate override select field
   $.each(themesJson, (catIndex, themeCat) => {
     $.each(themeCat, (themeIndex, theme) => {
-      $("#override-theme-select").append("<option value='{\""+ theme.category + "\":\"" + Object.keys(themeCat)[0] +"\"}'>"+ Object.keys(themeCat)[0] +"</option>");
+      $("#override-theme-select").append("<option value='{\"" + theme.category + "\":\"" + Object.keys(themeCat)[0] + "\"}'>" + Object.keys(themeCat)[0] + "</option>");
     })
   })
   // toggle seasonal theme or override theme
@@ -375,117 +325,107 @@ $(function (keyframes, options) {
       appConfig.themeOverride.themeCategory = Object.keys(tempThemeJson)[0];
       appConfig.themeOverride.themeName = tempThemeJson[Object.keys(tempThemeJson)[0]];
       setTheme();
+      // TODO save theme settings to db
     }
   });
 
-
-function tipsFadeInFadeOut(element, speed) {
-  let tips = [
-    "Visste du att man kan få bonus XP om man kommer in tidigt på dagen?",
-    "Kommer man in flera dagar i rad så kan man få extra XP",
-    "Om man fyller år kan man ju få bonus XP",
-  ];
-  element.html(tips[Math.floor(Math.random() * tips.length)]);
-  element.hide().fadeIn(speed * 0.2).delay(speed * 0.4).fadeOut(speed * 0.2).delay(speed * 0.2);
-}
-
-function spawnProps(where, props, options) {
-  for (let i = 0; i < $('#' + where.attr('id') + " .prop").length; i++) {
-    let currentSpawnImg;
-    // create an img tag if one douse not exist already
-    if (!(currentSpawnImg = $('#' + where.attr('id') + " .spawn" + i + ' img')).length) {
-      currentSpawnImg = $('<img alt="spawn-item" src="" />');
-      $('#' + where.attr('id') + " .spawn" + i).append(currentSpawnImg);
-    }
-    let tempImgUrl = props[Math.floor(Math.random() * props.length)];
-    let posLeft = Math.floor(Math.random() * options.randPosX);
-    posLeft *= Math.round(Math.random()) ? 1 : -1;
-
-    let randMargin = Math.floor(Math.random() * options.randPosY * 0.85);
-    let topMargin = options.topOrBot === 'top' ? randMargin + 'px' : 'auto';
-    let btmMargin = options.topOrBot === 'bottom' ? randMargin + 'px' : 'auto';
-
-    let hueRand = options.randHue ? Math.floor(Math.random() * (options.randHue / 100) * 360) : 0;
-    let satRand = options.randSat ? Math.floor(Math.random() * options.randSat) + 100 - (options.randSat / 2) : 100;
-    let deg = Math.floor(Math.random() * options.randRotation);
-    deg *= Math.round(Math.random()) ? 1 : -1;
-    currentSpawnImg.attr({'src': tempImgUrl});
-    currentSpawnImg.addClass(options.topOrBot + '-0 end-50');
-    currentSpawnImg.css({
-      'position': 'absolute',
-      'margin-left': posLeft + '%',
-      'margin-top': topMargin,
-      'margin-bottom': btmMargin,
-      'filter': 'hue-rotate(' + hueRand + 'deg) saturate(' + satRand + '%)',
-      'transform': 'rotate(' + deg + 'deg)',
-      'z-index': options.zIndex
-    });
+  function saveJson(fileToSaveTo, jsonToSave) {
+    // api call to save json file to db
   }
-}
 
-function spawnCharacters() {
-  let charactersFolder = "img/characters/";
-  let randTop = 0;
-  $.ajax({
-    url: 'http://localhost:5000/player/getMonthlyXP',
-    type: "GET",
-    dataType: "json",
-    success: function (data) {
-      let maxValue = 0;
-      $.each(data, (i, el) => {
-        if (el > maxValue)
-          maxValue = el;
-      });
+  function tipsFadeInFadeOut(element, speed) {
+    let tips = [
+      "Visste du att man kan få bonus XP om man kommer in tidigt på dagen?",
+      "Kommer man in flera dagar i rad så kan man få extra XP",
+      "Om man fyller år kan man ju få bonus XP",
+    ];
+    element.html(tips[Math.floor(Math.random() * tips.length)]);
+    element.hide().fadeIn(speed * 0.2).delay(speed * 0.4).fadeOut(speed * 0.2).delay(speed * 0.2);
+  }
 
-      $.each(data, function (index, person) {
-        if (randTop === 0) {
-          randTop = 1;
-        } else {
-          randTop += (100 / Object.keys(data).length) * 0.70;
-        }
-        let leftPos = person / maxValue * 70; // 70% the track is the front of the track
-        let tempImg = $("#emp-char-" + index);
-        if (!tempImg.length) {
-          tempImg = "<img src='" + charactersFolder + "char_" + index + ".gif' id='emp-char-" + index + "' style='width: " + 150 + "px; z-index:10000; " + "position: absolute; " + "left:" + leftPos + "%; top:" + randTop + "%;'>";
-          $("#track-area").append(tempImg);
-        } else {
-          tempImg.animate({"left": leftPos + "%"}, 2000);
-        }
+  function spawnProps(where, props, options) {
+    for (let i = 0; i < $('#' + where.attr('id') + " .prop").length; i++) {
+      let currentSpawnImg;
+      // create an img tag if one douse not exist already
+      if (!(currentSpawnImg = $('#' + where.attr('id') + " .spawn" + i + ' img')).length) {
+        currentSpawnImg = $('<img alt="spawn-item" src="" />');
+        $('#' + where.attr('id') + " .spawn" + i).append(currentSpawnImg);
+      }
+      let tempImgUrl = props[Math.floor(Math.random() * props.length)];
+      let posLeft = Math.floor(Math.random() * options.randPosX);
+      posLeft *= Math.round(Math.random()) ? 1 : -1;
+
+      let randMargin = Math.floor(Math.random() * options.randPosY * 0.85);
+      let topMargin = options.topOrBot === 'top' ? randMargin + 'px' : 'auto';
+      let btmMargin = options.topOrBot === 'bottom' ? randMargin + 'px' : 'auto';
+
+      let hueRand = options.randHue ? Math.floor(Math.random() * (options.randHue / 100) * 360) : 0;
+      let satRand = options.randSat ? Math.floor(Math.random() * options.randSat) + 100 - (options.randSat / 2) : 100;
+      let deg = Math.floor(Math.random() * options.randRotation);
+      deg *= Math.round(Math.random()) ? 1 : -1;
+      currentSpawnImg.attr({'src': tempImgUrl});
+      currentSpawnImg.addClass(options.topOrBot + '-0 end-50');
+      currentSpawnImg.css({
+        'position': 'absolute',
+        'margin-left': posLeft + '%',
+        'margin-top': topMargin,
+        'margin-bottom': btmMargin,
+        'filter': 'hue-rotate(' + hueRand + 'deg) saturate(' + satRand + '%)',
+        'transform': 'rotate(' + deg + 'deg)',
+        'z-index': options.zIndex
       });
     }
-  });
+  }
 
-  // getImgsFromFolder(charactersFolder).then(characters => {
-  //   for (let i = 0; i < amount; i++) {
-  //     let tempImgUrl = characters[Math.floor(Math.random() * characters.length)];
-  //     randTop += (Math.random() * 100) / amount;
-  //     let randLeft = Math.floor(Math.random() * 70);
-  //     // let hueRand = Math.floor(Math.random() * 360);
-  //     let hueRand = 0;
-  //     let tempImg = "<img src='" + tempImgUrl + "' style='width: " + 150 + "px; z-index:10000; " + "position: absolute; " + "left:" + randLeft + "%; top:" + randTop + "%; filter:hue-rotate(" + hueRand + "deg)'>";
-  //     $("#track-area").append(tempImg);
-  //   }
-  // }).catch(error => {
-  //   console.log(error)
-  // });
-}
-
-function getImgsFromFolder(folderUrl) {
-  return new Promise((resolve, reject) => {
-    let imgs = [];
+  function spawnCharacters() {
+    let charactersFolder = "img/characters/";
+    let randTop = 0;
     $.ajax({
-      url: folderUrl, success: (data) => {
-        $(data).find("a").attr("href", (i, val) => {
-          if (val.match(/\.(png|gif)$/)) {
-            imgs.push(folderUrl + val);
-          }
-          resolve(imgs);
+      url: 'http://localhost:5000/player/getMonthlyXP',
+      type: "GET",
+      dataType: "json",
+      success: function (data) {
+        let maxValue = 0;
+        $.each(data, (i, el) => {
+          if (el > maxValue)
+            maxValue = el;
         });
-      }, error: (error) => {
-        reject(error);
+
+        $.each(data, function (index, person) {
+          if (randTop === 0) {
+            randTop = 1;
+          } else {
+            randTop += (100 / Object.keys(data).length) * 0.70;
+          }
+          let leftPos = person / maxValue * 70; // 70% the track is the front of the track
+          let tempImg = $("#emp-char-" + index);
+          if (!tempImg.length) {
+            tempImg = "<img src='" + charactersFolder + "char_" + index + ".gif' id='emp-char-" + index + "' style='width: " + 150 + "px; z-index:10000; " + "position: absolute; " + "left:" + leftPos + "%; top:" + randTop + "%;'>";
+            $("#track-area").append(tempImg);
+          } else {
+            tempImg.animate({"left": leftPos + "%"}, 2000);
+          }
+        });
       }
     });
-  });
-}
+  }
+
+  function getImgsFromFolder(folderUrl) {
+    return new Promise((resolve, reject) => {
+      let imgs = [];
+      $.ajax({
+        url: folderUrl, success: (data) => {
+          $(data).find("a").attr("href", (i, val) => {
+            if (val.match(/\.(png|gif)$/)) {
+              imgs.push(folderUrl + val);
+            }
+            resolve(imgs);
+          });
+        }, error: (error) => {
+          reject(error);
+        }
+      });
+    });
+  }
 
 });
