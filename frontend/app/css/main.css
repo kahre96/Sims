@@ -871,11 +871,12 @@ nav .div {
   margin-right: 20px !important;
 }
 
-.top3-avatars > .p-avatar{
+.top3-avatars > .p-avatar {
   background-size: 130% auto !important;
   height: 150px !important;
   padding: 0 !important;
 }
+
 #nameplate-silver {
   padding: 0;
   margin-bottom: -88px;
@@ -890,6 +891,70 @@ nav .div {
   padding: 0;
   margin-bottom: -104px;
 }
-.spawnChars{
+
+.spawnChars {
   display: none;
+}
+
+.display-sign > #display-buzz {
+  animation: buzz 0.01s infinite alternate;
+}
+
+.display-text {
+  text-shadow: 0 0 0 transparent, 0 0 4px #ff003c, 0 0 8px rgba(255, 0, 60, 0.8), 0 0 10px #ff003c, 0 0 12px #ff003c, 0 0 16px #ff003c;
+  -webkit-animation: blink 4s infinite alternate;
+  animation: blink 4s infinite alternate;
+}
+
+#display-buzz > div {
+  font-family: 'Roboto Flex', sans-serif;
+  font-weight: 400 !important;
+}
+
+@-webkit-keyframes buzz {
+  70% {
+    opacity: 0.80;
+  }
+}
+
+@keyframes buzz {
+  70% {
+    opacity: 0.80;
+  }
+}
+
+@-webkit-keyframes blink {
+  40% {
+    opacity: 1;
+  }
+  42% {
+    opacity: 0.8;
+  }
+  43% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.2;
+  }
+  46% {
+    opacity: 1;
+  }
+}
+
+@keyframes blink {
+  40% {
+    opacity: 1;
+  }
+  42% {
+    opacity: 0.8;
+  }
+  43% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.2;
+  }
+  46% {
+    opacity: 1;
+  }
 }

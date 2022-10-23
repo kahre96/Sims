@@ -7,6 +7,10 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <!-- Google fonts -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300;8..144,400;8..144,500&display=swap');
+  </style>
   <!-- CSS only -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/bootstrap-icons.min.css">
@@ -18,6 +22,21 @@
 <body>
 <!-- js generated track animation -->
 <div class="container-fluid scrolling-track-container">
+<!--  <div class="display-sign pt-2"-->
+<!--       style="position: absolute; background: url('./img/digital-display.png') no-repeat; width: 192px; height: 400px; top: 365px; left: 1200px; z-index: 100;">-->
+<!--    <div id="display-buzz" class="fs-5">-->
+
+<!--      <div class="display-text text-danger text-center p-0 m-0">Nuvarande placeringar</div>-->
+<!--      <div class="display-text text-danger text-left px-3 pt-2 m-0">-->
+<!--        #01: Nordin S <br>-->
+<!--        #02: Fredrik K <br>-->
+<!--        #03: Ivan S <br>-->
+<!--        #04: Ouri Q <br>-->
+<!--        #05: Naru Q <br>-->
+<!--        ........... <br>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
   <div id="knw-bg-anim">
   </div>
 </div>
@@ -45,7 +64,7 @@
                  data-snowcolor="#ffffff">Sundsvall, Sweden</a>
               <script>
                 !function (d, s, id) {
-                  var js, fjs = d.getElementsByTagName(s)[0];
+                  let js, fjs = d.getElementsByTagName(s)[0];
                   if (!d.getElementById(id)) {
                     js = d.createElement(s);
                     js.id = id;
@@ -73,12 +92,12 @@
         </div>
       </div>
     </div>
-    <!--  News and last months winners  -->
+    <!--  News and last month's winners  -->
     <aside class="col p-0 m-0 knw-sidebar">
       <div class="news-box p-0 m-0 rounded-0 position-relative">
         <ul class="list-group">
           <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img
-            src="resources/Light-bulb-Digital-black.svg" class="icon-images"> Nyheter
+            src="resources/Light-bulb-Digital-black.svg" class="icon-images" alt="interna nyheter"> Nyheter
             - intranät
           </li>
           <li href="#" class="list-group-item list-group-item-action">
@@ -91,7 +110,7 @@
         </ul>
         <ul class="list-group">
           <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img
-            src="resources/Sustainability1-Digital-black.svg" class="icon-images">
+            src="resources/Sustainability1-Digital-black.svg" class="icon-images" alt="externa nyheter">
             Nyheter - extern
           </li>
           <li href="#" class="list-group-item list-group-item-action">
@@ -102,7 +121,7 @@
         </ul>
         <ul class="list-group">
           <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img
-            src="resources/Clock-Digital-black.svg" class="icon-images">
+            src="resources/Clock-Digital-black.svg" class="icon-images" alt="lediga rum">
             Lediga rum
           </li>
           <li class="list-group-item">
@@ -111,7 +130,7 @@
         </ul>
         <ul class="list-group">
           <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img
-            src="resources/Bottle-Digital%20black.svg" class="icon-images">
+            src="resources/Bottle-Digital%20black.svg" class="icon-images" alt="bra att veta">
             Väldigt bra att veta
           </li>
           <li id="hours-text" class="list-group-item">
@@ -119,7 +138,7 @@
         </ul>
         <ul class="list-group position-absolute bottom-0 w-100">
           <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img
-            src="resources/Tag-Digital-black_1.svg" class="icon-images"> Månadens
+            src="resources/Tag-Digital-black_1.svg" class="icon-images" alt="förra månadens hjältar"> Förra månadens
             hjältar
           </li>
           <li class="container-fluid last-month-heroes">

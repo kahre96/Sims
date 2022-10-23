@@ -132,6 +132,24 @@ $(function () {
     $.each(themesJson[currentTheme.themeCategory][currentTheme.themeName].layers, function (index, layer) {
       let tempLayerDiv = $("<div id='anim-layer-" + index + "'>");
       let themeFolder = 'img/themes/' + currentTheme.themeCategory + '/' + currentTheme.themeName + '/';
+
+
+      let signHtml = $(`<div class="display-sign pt-2"
+        style="position: absolute; background: url('./img/digital-display.png') no-repeat; width: 192px; height: 400px;">
+          <div id="display-buzz" class="fs-5">
+
+          <div class="display-text text-danger text-center p-0 m-0">Nuvarande placeringar</div>
+        <div class="display-text text-danger text-left px-3 pt-2 m-0">
+          #01: Nordin S <br>
+          #02: Fredrik K <br>
+          #03: Ivan S <br>
+          #04: Ouri Q <br>
+          #05: Naru Q <br>
+          ........... <br>
+        </div>
+      </div>
+      </div>`);
+
       tempLayerDiv.addClass('container-fluid bg-scroll');
       tempLayerDiv.attr('id', 'anim-layer-' + index);
       if (layer.layerType === "bg-layer") {
@@ -164,23 +182,35 @@ $(function () {
         $(spawnContainerDivA).appendTo(tempLayerDiv);
         $(spawnContainerDivB).appendTo(tempLayerDiv);
 
-
-        getImgsFromFolder(themeFolder + 'props/' + layer.spawnImgs + '/').then(props => {
-          slideAnimateMaybeSpawn(spawnContainerDivA, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, 0, props, layer.options);
-          slideAnimateMaybeSpawn(spawnContainerDivB, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, layer.options.speed * 1, props, layer.options);
-          var slideOneInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivA, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, props, layer.options);
+        if (layer.layerType === "spawn-layer") {
+          getImgsFromFolder(themeFolder + 'props/' + layer.spawnImgs + '/').then(props => {
+            slideAnimateMaybeSpawn(spawnContainerDivA, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
+            slideAnimateMaybeSpawn(spawnContainerDivB, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, layer.options.speed * 1, layer.options, props);
+            var slideOneInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivA, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
+            runningIntervals.push(slideOneInterval);
+            setTimeout(() => {
+              var slideTwoInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivB, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
+              runningIntervals.push(slideTwoInterval);
+            }, layer.options.speed);
+          });
+        } else {
+          $(signHtml).appendTo(spawnContainerDivA);
+          $(signHtml).appendTo(spawnContainerDivB);
+          slideAnimateMaybeSpawn(spawnContainerDivA, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
+          slideAnimateMaybeSpawn(spawnContainerDivB, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, layer.options.speed * 1, layer.options);
+          var slideOneInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivA, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
           runningIntervals.push(slideOneInterval);
           setTimeout(() => {
-            var slideTwoInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivB, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, props, layer.options);
+            var slideTwoInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivB, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
             runningIntervals.push(slideTwoInterval);
           }, layer.options.speed);
-        });
+        }
       }
       animationContainer.append(tempLayerDiv);
     });
   }
 
-  function slideAnimateMaybeSpawn(element, speed, propertyStart, propertyEnd, delayTime, props = [], options) {
+  function slideAnimateMaybeSpawn(element, speed, propertyStart, propertyEnd, delayTime, options, props = []) {
     $(element).delay(delayTime).animate(propertyEnd, speed, 'linear', () => {
       // go back to original state
       $(element).css(propertyStart);
@@ -356,10 +386,11 @@ $(function () {
 
   function tipsFadeInFadeOut(element, speed, tips) {
     element.html(tips[Math.floor(Math.random() * tips.length)]);
-    element.hide().fadeIn(speed * 0.2).delay(speed * 0.4).fadeOut(speed * 0.2).delay(speed * 0.2);
+    element.hide().fadeIn(speed * 0.1).delay(speed * 0.7).fadeOut(speed * 0.1).delay(speed * 0.1);
   }
 
   function spawnProps(where, props, options) {
+    // props are from current theme folder
     for (let i = 0; i < $('#' + where.attr('id') + " .prop").length; i++) {
       let currentSpawnImg;
       // create an img tag if one douse not exist already
@@ -396,7 +427,6 @@ $(function () {
   function spawnCharacters() {
     let charactersFolder = "../../backend/API/static/characters/running_avatar/";
     let randTop = 0;
-    // $("#track-area > .smokeSpawn").remove();
     $.ajax({
       url: siteUrl + 'player/getMonthlyXP',
       type: "GET",
@@ -441,35 +471,25 @@ $(function () {
           }
           if (!$("#track-area").children().length) {
             $("#track-area").append(tempImg);
-            $("#emp-char-"+index + " .spawnChars").delay(600).fadeIn(400);
-            $("#spawnSmoke-"+index).attr("src", "./img/spawnSmoke.gif");
-            // previousEmpId = index;
+            $("#emp-char-" + index + " .spawnChars").delay(600).fadeIn(400);
+            $("#spawnSmoke-" + index).attr("src", "./img/spawnSmoke.gif");
           } else {
-            if ($("#emp-char-"+index).length) {
-              $("#emp-char-"+index).insertAfter("#emp-char-" + previousEmpId);
-              // $("#spawnSmoke-"+index).insertAfter("#emp-char-" + index);
-              $("#spawnSmoke-"+index).attr("src", "./img/invisible-smoke.png");
+            if ($("#emp-char-" + index).length) {
+              $("#emp-char-" + index).insertAfter("#emp-char-" + previousEmpId);
+              $("#spawnSmoke-" + index).attr("src", "./img/invisible-smoke.png");
             } else {
               $(tempImg).insertAfter("#emp-char-" + previousEmpId);
-              $("#emp-char-"+index + " .spawnChars").delay(600).fadeIn(400);
-              // $("#spawnSmoke-"+index).insertAfter("#emp-char-" + index);
-              $("#spawnSmoke-"+index).attr("src", "./img/spawnSmoke.gif");
+              $("#emp-char-" + index + " .spawnChars").delay(600).fadeIn(400);
+              $("#spawnSmoke-" + index).attr("src", "./img/spawnSmoke.gif");
             }
           }
-          // $("#smokeSpawn-"+index).delay(3500).remove();
           previousEmpId = index;
 
-          if ($("#emp-char-"+index).length) {
-            // if (!$("#smokeSpawn-" + index).length) {
-            //   $(smokeSpawn).insertAfter($(tempImg));
-            //   $(smokeSpawn).hide().attr("src", "./img/spawnSmoke.gif").show();
-            // }
-            $("#emp-char-"+index).stop().delay(2000).animate({left: leftPos + "%", top: randTop + "%"}, {
+          if ($("#emp-char-" + index).length) {
+            $("#emp-char-" + index).stop().animate({left: leftPos + "%", top: randTop + "%"}, {
               duration: 2000,
               queue: false
             });
-            // $(tempImg).stop().delay(1000).animate({top: randTop + "%"}, {duration: 300, queue: false});
-            // $(tempImg).stop().delay(1000).animate({left: leftPos + "%"}, {duration: 2000, queue: false});
           }
           return true;
         });
