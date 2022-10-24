@@ -19,6 +19,7 @@ def getPlayerByID(cursor, emp_ID, birthday_today):
         display_name = f"{name[0].capitalize()} {name[1].capitalize()[0]}"
         return Player(player[0], player[1], player[2], player[3], player[4], player[5], player[6], display_name, birthday_today)
 
+
 ''' Helper Function to return players birthday '''
 def getPlayerBirthdayByID(cursor, emp_ID):
     
@@ -26,6 +27,7 @@ def getPlayerBirthdayByID(cursor, emp_ID):
             "SELECT birthdate FROM Employee WHERE emp_ID = %s " % emp_ID)
         employee = cursor.fetchone()
         return employee[0].strftime("%Y%m%d")
+
 
 ''' Helper function to select Greeting for the player'''
 def greet(cursor, player, first_login):   
@@ -45,6 +47,7 @@ def greet(cursor, player, first_login):
         player.greeting = greeting # Update the players greeting
         return player    
                 
+
 class PlayerController():
 
     def __init__(self):
@@ -62,6 +65,7 @@ class PlayerController():
             10: 800
         }
         self.usedMonths = []
+
 
     ''' Daily Login function to update player and heroes + return the updated player
     INPUT:  mysql connection and Employee ID
@@ -254,6 +258,7 @@ class PlayerController():
 
         return json.dumps([obj.__dict__ for obj in employees],indent=4, sort_keys=True, default=str,ensure_ascii=False).encode('utf-8'),200
 
+
     ''' Get all monthly XP for all players
     INPUT: Mysql connection 
     OUTPUT: Dictionary with all Employee IDs and corresponding XP this month
@@ -261,6 +266,7 @@ class PlayerController():
     def getMonthlyXP(self,mysql):
         today = date.today()
         now   = str(today)
+        print("now: ", now)
         today_day = int(now[-2:])
         if today_day == 1:
             with mysql.connection.cursor() as cursor:
@@ -278,8 +284,13 @@ class PlayerController():
             cursor.execute("SELECT emp_ID,XP_Month FROM Player")
             players = cursor.fetchall()
             for xp in players:
-                monthlyXP[xp[0]]=xp[1]
+                cursor.execute(
+                    "SELECT firstname,lastname FROM Employee WHERE emp_ID = %s " % xp[0])
+                name = cursor.fetchone()
+                display_name = f"{name[0].capitalize()} {name[1].capitalize()[0]}"
+                monthlyXP[xp[0]]=(xp[1],display_name)
             return monthlyXP,200
+
 
 playercontroller = PlayerController()
 
