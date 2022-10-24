@@ -16,8 +16,9 @@
     <div class="menu-items">
         <a href="{{ url_for('statistics') }}" class="menu-link">Statistik</a>
         <a href="{{ url_for('addUser') }}" class="menu-link">Lägg till</a>
-        <a href="{{ url_for('takePictures') }}" class="menu-link">Ta bilder</a>
+        <a href="{{ url_for('takePictures') }}" class="menu-link">AI bilder</a>
         <a href="{{ url_for('deleteUser') }}" class="menu-link">Ta bort</a>
+        <a href="{{ url_for('localNews') }}" class="menu-link">Lokal nyhet</a>
         <a href="{{ url_for('sendSQL') }}" class="menu-link">SQL</a>
         <a href="{{ url_for('admin') }}" class="menu-link">Logga ut</a>
     </div>
@@ -25,7 +26,6 @@
 
 <script>
     function formatUserdataFromFlask(person_str) {
-        // console.log("person_str: ", person_str);
         arr = person_str.split(",");
         str = ""
         $.each(arr, function (index, element) {
@@ -42,7 +42,6 @@
             
             if (index == 2) {
                 str += element
-                // console.log("str: ", str);
             } else {
                 str += element + " "
             }

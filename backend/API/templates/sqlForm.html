@@ -1,6 +1,9 @@
 {% extends 'index.html' %}
 
 {% block body %}
+
+<h5>Här kan man skriva in egna sql queries för att modifiera databasen, annat alternativ är `phpMyAdmin` via Xxamp!</h5>
+
 <div class="form-container">
     <form action="" method="post">
         <input class="form-field" type="text" name="query" placeholder="SQL query" value="{{
@@ -8,6 +11,8 @@
         <input class="button" type="submit" value="Skicka">
     </form>
 </div>
+
+{{ Data }}
 
 {% endblock %}
 </body>

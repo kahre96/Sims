@@ -1,9 +1,13 @@
+#coding=windows-1252
+
+from json.decoder import JSONDecodeError
 from flask import request, render_template
 import requests
 import sys
 import json
 from os import listdir, rename
 import json
+from datetime import date
 
 sys.path.append("../../AI")
 
@@ -161,10 +165,15 @@ class AdminController():
             return render_template('picTaker.html', Data=users)
     
     def sendSQL(self, mysql):
+        result = ""
         if request.method == 'POST':
-            pass
-        else:
-            return render_template("sqlForm.html")
+            with mysql.connection.cursor() as cursor:
+                sql = request.form['query']
+                cursor.execute(sql)
+                result = cursor.fetchall()
+                mysql.connection.commit()
+
+        return render_template("sqlForm.html", Data=result)
 
     ''' Write or return theme configurations
     INPUT: configuration name (GET), configuration name and actual configuration (POST)
@@ -186,6 +195,42 @@ class AdminController():
 #                 outfile.write(text)
                 json.dump(text, outfile)
             return ("Themes Updated!",201)
+
+    def localNews(self):
+        path        = "themes"
+        today       = date.today()
+        now         = str(today)
+        today_day   = now[-2:]
+        text        = {}
+        index       = 1
+
+        if request.method == 'POST':
+            news = request.form["news"]
+            date_in_file = ""
+            day = 0
+            with open(f"{path}/localNews.json", "r") as infile:
+                try:
+                    json_obj = json.load(infile)
+                    date_in_file = json_obj['date']
+                    text['news'] = json_obj['news']
+                    index = len(text['news']) + 1
+                except JSONDecodeError:
+                    print("The file is empty!")
+
+                day = date_in_file[-2:]
+                if day != today_day:
+                    index = 1
+                    with open(f"{path}/localNews.json", "w") as outfile:
+                        outfile.write("")
+                text['date'] = now
+                if index == 1:
+                    text['news'] = {index:news} 
+                else: 
+                    text['news'][index] = news
+                with open(f"{path}/localNews.json", "w") as outfile:
+                    json.dump(text, outfile, indent=2, ensure_ascii=False)
+            
+        return render_template("localNewsForm.html", Status=text)
 
         return 405
             

@@ -261,7 +261,6 @@ class PlayerController():
     def getMonthlyXP(self,mysql):
         today = date.today()
         now   = str(today)
-        print("now: ", now)
         today_day = int(now[-2:])
         if today_day == 1:
             with mysql.connection.cursor() as cursor:

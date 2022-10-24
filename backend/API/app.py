@@ -61,7 +61,11 @@ def sendSQL():
 
 @app.route('/admin/theme', methods = ['GET','POST'])
 def theme():
-    return admincontroller.theme() 
+    return admincontroller.theme()
+
+@app.route('/admin/localNews', methods = ["GET", 'POST'])
+def localNews():
+    return admincontroller.localNews()
 
 '''
 PLAYER ROUTES

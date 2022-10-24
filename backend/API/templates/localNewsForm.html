@@ -1,0 +1,21 @@
+{% extends 'index.html' %}
+
+{% block body %}
+
+<h5>Här kan man lägga in nyheter som man vill ska visas på SIMS applikationens framsida!</h5>
+
+<div class="form-container">
+    <form action="" method="post">
+        <input class="form-field" type="text" name="news" placeholder="Lokal nyhet" value="{{
+        request.form.news }}" required> <br />
+        <input class="button" type="submit" value="Skicka">
+    </form>
+   
+    <p>Status: <b>{{ Status }}</b> har lagts till i lokala nyheter</p> 
+</div>
+
+
+
+{% endblock %}
+</body>
+</html>
