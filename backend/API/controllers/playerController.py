@@ -17,8 +17,7 @@ def getPlayerByID(cursor, emp_ID, birthday_today):
             "SELECT firstname,lastname FROM Employee WHERE emp_ID = %s " % emp_ID)
         name = cursor.fetchone()
         display_name = f"{name[0].capitalize()} {name[1].capitalize()[0]}"
-        return Player(player[0], player[1], player[2], player[3], player[4], player[5], player[6], display_name, birthday_today)
-
+        return Player(player[0], player[1], player[2], player[3], player[4], player[5],display_name, birthday_today)
 
 ''' Helper Function to return players birthday '''
 def getPlayerBirthdayByID(cursor, emp_ID):
@@ -27,7 +26,6 @@ def getPlayerBirthdayByID(cursor, emp_ID):
             "SELECT birthdate FROM Employee WHERE emp_ID = %s " % emp_ID)
         employee = cursor.fetchone()
         return employee[0].strftime("%Y%m%d")
-
 
 ''' Helper function to select Greeting for the player'''
 def greet(cursor, player, first_login):   
@@ -46,6 +44,16 @@ def greet(cursor, player, first_login):
         greeting = str(greeting[0]) + "!"
         player.greeting = greeting # Update the players greeting
         return player    
+
+''' Helper function to update the XP needed for the next level, and the XP the player has towards it'''
+def setPlayerXPLevel(levels,level, player, xp):
+        if xp >= max(levels.values()): # Set xp to next level to 0 if Player has reached the maximum level
+            player.xpNextLevel = 0
+            player.xpLevel = 0
+        else:
+            player.xpLevel = player.xpTotal  - levels[level]
+            player.xpNextLevel = levels[level+1]-levels[level]
+        return player    
                 
 
 class PlayerController():
@@ -62,7 +70,17 @@ class PlayerController():
             7:  350,
             8:  450,
             9:  600,
-            10: 800
+            10: 800,
+            11: 1000,
+            12: 1300,
+            13: 1600,
+            14: 2000,
+            15: 2400,
+            16: 2800,
+            17: 3500,
+            18: 4200,
+            19: 5000,
+            20: 6000,
         }
         self.usedMonths = []
 
@@ -84,8 +102,6 @@ class PlayerController():
         _offsets = (3, 1, 1, 1, 1, 1, 2)
         last_weekday = (today-timedelta(days=_offsets[today.weekday()]))
         cursor = mysql.connection.cursor()
-        #args = request.args
-        #emp_ID = args.get("emp_ID", default="NULL", type=int)
 
         ##############################################################################################
         # CHECK IF EMP_ID IS PASSED AND VALID
@@ -103,8 +119,7 @@ class PlayerController():
         player = getPlayerByID(cursor, emp_ID, birthday_today)
         if player.last_login==today: # return the current stats, don't add XP when played already logged in today
             player = greet(cursor, player, False)
-            player.xpLevel = player.xpTotal % 1000 - self.Levels[player.level]
-            player.xpNextLevel = self.Levels[player.level+1]-self.Levels[player.level]
+            player = setPlayerXPLevel(self.Levels, player.level, player, player.xpTotal)
             return player
 
         if getPlayerBirthdayByID(cursor, emp_ID)[4:] == today.strftime("%Y%m%d")[4:]:
@@ -138,43 +153,35 @@ class PlayerController():
         cursor.execute("UPDATE Player SET xp_Total = xp_Total + %s WHERE emp_ID = %s" % (xp_to_add,emp_ID)) # Update Total XP
 
         ##############################################################################################
-        # UPDATE RANK AND LEVEL
+        # UPDATE LEVEL
         #
         xp = player.xpTotal + xp_to_add # Total XP of updated player (without another DB query)
-        rank = 1
         level = 1
-        # Calculate the rank, 0-999 = Rank 1, 1000-1999 = Rank 2 etc.
-        for i in range (1000,5000,1000):
-            if i <= xp < i+1000:
-                rank = int((i/1000)+1)
-        # Player over 5000 XP are marked by special "level 11"
-        if xp > 5000: 
-            rank = 5
-            level = 11 
-        else:   # Calculate Level, Strip away rank (1000XP * Rank), then see what level in the Levels Dict is corresponding
-            xp = xp-((rank-1)*1000)
-
-            for key in self.Levels:
-                if self.Levels[key] <= xp:
-                    level = key
-        # Update Rank and Level in the database
-        cursor.execute("UPDATE Player SET Ranking_ID = %s WHERE emp_ID = %s" % (rank,emp_ID))
+        
+        for key in self.Levels:
+            if self.Levels[key] <= xp:
+                level = key
+        # Update Level in the database
         cursor.execute("UPDATE Player SET Level = %s WHERE emp_ID = %s" % (level,emp_ID))
                     
         ##############################################################################################
-        # UPDATE HERO TABLE (AND UPDATE XPLEVEL + XPNEXTLEVEL)
+        # UPDATE XPLEVEL, XPNEXTLEVEL AND HERO TABLE
         #
         updated_player = getPlayerByID(cursor,emp_ID,birthday_today) # Get updated Player
+        updated_player = setPlayerXPLevel(self.Levels,level,updated_player,xp)
 
-        updated_player.xpLevel = updated_player.xpTotal % 1000 - self.Levels[level]
-        updated_player.xpNextLevel = self.Levels[level+1]-self.Levels[level]
         hero_date = updated_player.last_login.strftime("%Y%m%d")
         hero_xp = updated_player.xpMonth
         
         cursor.execute("SELECT * FROM Hero WHERE MONTH(Date)=%s AND YEAR(Date)=%s AND Xp_Month > %s" % (hero_date[4:6],hero_date[:4],hero_xp-1))
         results = cursor.fetchall() # Get all Heroes for current month (That have more XP than current user)
         if len(results) <= 2: # If there's two or less, insert current user regardless of XP
-            cursor.execute("INSERT INTO Hero(Emp_ID,Date,Xp_Month) VALUES (%s,%s,%s) ON DUPLICATE KEY UPDATE Date = %s, Xp_Month = %s" % (emp_ID,hero_date,hero_xp,hero_date,hero_xp))
+            cursor.execute("SELECT * FROM Hero WHERE Emp_ID = %s AND MONTH(Date)=%s AND YEAR(Date)=%s" % (emp_ID,hero_date[4:6],hero_date[:4]))
+            if cursor.fetchone() == None:
+                cursor.execute("INSERT INTO Hero(Emp_ID,Date,Xp_Month) VALUES (%s,%s,%s) ON DUPLICATE KEY UPDATE Date = %s, Xp_Month = %s" % (emp_ID,hero_date,hero_xp,hero_date,hero_xp))
+            else:
+                print("Reached")
+                cursor.execute("UPDATE Hero SET Date = %s, Xp_Month = %s WHERE Emp_ID = %s" % (hero_date,hero_xp,emp_ID))    
             # Check if there are more than 3 Heroes for this month after insertion. If so, delete the one with least XP 
             cursor.execute("SELECT * FROM Hero WHERE MONTH(Date)=%s AND YEAR(Date)=%s" % (hero_date[4:6],hero_date[:4]) )
             results = cursor.fetchall()
@@ -185,6 +192,7 @@ class PlayerController():
         # SAVE CHANGES AND RETURN PLAYER AS JSON
         #
         updated_player=greet(cursor, updated_player, True) # Update player greeting
+        updated_player.xpGained=xp_to_add
         mysql.connection.commit()
         cursor.close()
         return updated_player # Return Updated stats in JSON format
@@ -247,7 +255,7 @@ class PlayerController():
         employees = []
         for key in self.newEntries.items():
             if key[0]==0:
-                employees.append(Player(0,0,0,0,0,datetime.today(),0,"Guest",False))
+                employees.append(Player(0,0,0,0,datetime.today(),0,"Guest",False))
             else:    
                 employees.append(self.dailyLogin(mysql,int(key[0])))
 

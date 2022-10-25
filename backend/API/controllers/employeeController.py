@@ -39,7 +39,7 @@ class EmployeeController():
             user    = Employee(emp_id, firstname.lower(), lastname.lower(), birthdate)
             
             # Adding Player into DB
-            sql     = "INSERT INTO Player(emp_ID, ranking_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            sql     = "INSERT INTO Player(emp_ID, level, xp_total, xp_month, last_login, consecutive_days) VALUES (%s, %s, %s, %s, %s, %s)"
             values  = user.player.getSQLData()
             cursor.execute(sql,values)
 

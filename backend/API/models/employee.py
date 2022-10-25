@@ -32,7 +32,6 @@ class Employee():
 
     def createPlayer(self):
         displayName     = f"{self.firstname.capitalize()} {self.lastname.capitalize()[0]}"
-        ranking         = 1
         level           = 1
         xp_total        = 0
         xp_month        = 0
@@ -40,5 +39,5 @@ class Employee():
         consecutive_days= 0
         birthday_today  = False
 
-        return Player(self.id, ranking, level,xp_total, xp_month,  last_login, consecutive_days, displayName, birthday_today)
+        return Player(self.id, level,xp_total, xp_month,  last_login, consecutive_days, displayName, birthday_today)
     
