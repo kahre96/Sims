@@ -26,11 +26,33 @@ class AdminController():
         self.img_path_idle= "static/characters/idle_avatar/"
 
     def statisticsPage(self,mysql):
-        cursor = mysql.connection.cursor()
-        playercount = cursor.execute('SELECT * FROM employee ') # Get total amount of employees (To be changed to players?)
-        mysql.connection.commit()
-        cursor.close()
-        return render_template('statistics.html', data=playercount) # Return Statistics page after sucessfull login
+        users = []
+        with mysql.connection.cursor() as cursor:
+            playercount = cursor.execute('SELECT * FROM employee ') # Get total amount of employees (To be changed to players?)
+            temp = cursor.fetchall()
+            for row in temp:
+                users.append(row[0:2])
+            mysql.connection.commit
+
+            # Grabbing how many unused characters are in folder.
+        imagesList = [ x for x in listdir(self.img_path_run) if not x.startswith("emp_")]
+        
+
+        folders = listdir("images_ds")
+        users_no_pictures = [x for x in users if str(x[0]) not in folders]
+        local_news = []
+        with open("themes/localNews.json", "r") as infile:
+            try:
+                json_obj = json.load(infile)
+                news     = json_obj["news"]
+                print("news:", news)
+                for key, value in news.items():
+                    print(value)
+                    local_news.append(value)
+            except JSONDecodeError:
+                    print("The file is empty!")
+        
+        return render_template('statistics.html', data=playercount, characters=len(imagesList), users=users_no_pictures, news=local_news) # Return Statistics page after sucessfull login
 
     def adminPage(self):
         error = None
@@ -210,7 +232,7 @@ class AdminController():
             day = 0
             with open(f"{path}/localNews.json", "r") as infile:
                 try:
-                    json_obj = json.load(infile)
+                    json_obj     = json.load(infile)
                     date_in_file = json_obj['date']
                     text['news'] = json_obj['news']
                     index = len(text['news']) + 1

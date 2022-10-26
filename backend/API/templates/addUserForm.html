@@ -30,15 +30,11 @@
 
 <div class="image-container">
     <script>
-        picture = "";
         imgs = [];
-        console.log("images: {{images}}")
-        console.log("typeof: ", typeof("{{images}}"))
     </script>
 
     {% for gif in images %}
     <script>
-        console.log("gif: {{gif}}");
         imgs.push("{{gif}}");
     </script>
     {% endfor %}
@@ -51,7 +47,6 @@
             $(".characters").append("<label class='form-check-input' for="+element+"><img src='{{url}}"+element+"' name='characters' id=\'"+element+"\' value='{{request.form.characters }}'> </label>")
         });
 
-        //$('.form-check-input input:radio:checked').id()
     </script>
 </div>
 
