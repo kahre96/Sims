@@ -42,6 +42,11 @@ h5 {
     font-size: 1rem;
 }
 
+h6 {
+    color: #333333;
+    font-size: 0.8rem;
+}
+
 .menu-items {
     background-color: #F1F0ED;
     width: 100%;
