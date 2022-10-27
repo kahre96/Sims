@@ -1,10 +1,10 @@
 -- Skapar Databasen
 
-CREATE DATABASE emp_info;
+CREATE DATABASE sims2022;
 
 -- Använder databasen
 
-USE emp_info;
+USE sims2022;
 
 -- För att DELETE_FROM tabell ska kunna fungera
 
