@@ -1,9 +1,8 @@
-
-/* 	Created by:	Peter Stegeby
-	Date:		22-09-14
-	Modified:	22-10-14
+/* 	Skapad av:	Sims2022
+	Datum:		22-09-14
+	Modifierad:	22-10-25
 */
--- Create tables
+-- Skapar tabeller
 
 CREATE TABLE Employee (
 Emp_ID					INTEGER(4) NOT NULL AUTO_INCREMENT,
