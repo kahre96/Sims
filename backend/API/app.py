@@ -4,6 +4,7 @@ from controllers.employeeController import employeecontroller
 from controllers.adminController import admincontroller
 from controllers.playerController import playercontroller
 from flask_cors import CORS
+import os
 
 # 'Production' Configuration
 db_password    = ''
@@ -39,7 +40,11 @@ ADMIN ROUTES
 def admin():
     return admincontroller.adminPage()
 
-@app.route('/admin/statistics', methods = ['GET', 'POST'])
+@app.route('/admin/logout', methods = ['GET'])
+def logout():
+    return admincontroller.logout()
+
+@app.route('/admin/statistics', methods = ['GET'])
 def statistics():
     return admincontroller.statisticsPage(mysql)
 
@@ -90,4 +95,5 @@ def getTop():
 def getMonthlyXP():
     return playercontroller.getMonthlyXP(mysql)   
 
+app.secret_key = os.urandom(12)
 app.run(host='localhost', port=5000)
