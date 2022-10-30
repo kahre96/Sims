@@ -15,7 +15,7 @@
           "layerType": "bg-layer",
           "bgImg": "mountains.png",
           "options": {
-            "speed": 12000,
+            "speed": 24000,
             "delay": 0
           }
         },
@@ -23,7 +23,7 @@
           "layerType": "bg-layer",
           "bgImg": "cityscape.png",
           "options": {
-            "speed": 10000,
+            "speed": 20000,
             "delay": 0
           }
         },
@@ -31,7 +31,7 @@
           "layerType": "bg-layer",
           "bgImg": "clouds.png",
           "options": {
-            "speed": 9000,
+            "speed": 18000,
             "delay": 0
           }
         },
@@ -39,7 +39,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "3",
           "options": {
-            "speed": 5000,
+            "speed": 10000,
             "delay": 2000,
             "spawnsPerLoop": 1,
             "spawnStartY": 142,
@@ -56,7 +56,7 @@
           "layerType": "bg-layer",
           "bgImg": "grassField.png",
           "options": {
-            "speed": 8000,
+            "speed": 16000,
             "delay": 0
           }
         },
@@ -64,10 +64,10 @@
           "layerType": "spawn-layer",
           "spawnImgs": "0",
           "options": {
-            "speed": 8000,
+            "speed": 16000,
             "delay": 2000,
             "spawnsPerLoop": 10,
-            "spawnStartY": 642,
+            "spawnStartY": 652,
             "randPosY": 0,
             "randPosX": 30,
             "topOrBot": "bottom",
@@ -89,10 +89,10 @@
           "layerType": "spawn-layer",
           "spawnImgs": "1",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 2,
-            "spawnStartY": 650,
+            "spawnStartY": 655,
             "randPosY": 0,
             "randPosX": 0,
             "topOrBot": "bottom",
@@ -106,7 +106,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "2",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 1,
             "spawnStartY": 730,
@@ -123,7 +123,7 @@
           "layerType": "sign-layer",
           "spawnImgs": "",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 0,
             "spawnStartY": 755,
@@ -155,7 +155,7 @@
           "layerType": "bg-layer",
           "bgImg": "mountains.png",
           "options": {
-            "speed": 12000,
+            "speed": 24000,
             "delay": 0
           }
         },
@@ -163,7 +163,7 @@
           "layerType": "bg-layer",
           "bgImg": "cityscape.png",
           "options": {
-            "speed": 10000,
+            "speed": 20000,
             "delay": 0
           }
         },
@@ -171,7 +171,7 @@
           "layerType": "bg-layer",
           "bgImg": "clouds.png",
           "options": {
-            "speed": 9000,
+            "speed": 18000,
             "delay": 0
           }
         },
@@ -179,7 +179,7 @@
           "layerType": "bg-layer",
           "bgImg": "grassField.png",
           "options": {
-            "speed": 8000,
+            "speed": 16000,
             "delay": 0
           }
         },
@@ -187,10 +187,10 @@
           "layerType": "spawn-layer",
           "spawnImgs": "0",
           "options": {
-            "speed": 8000,
+            "speed": 16000,
             "delay": 2000,
             "spawnsPerLoop": 10,
-            "spawnStartY": 642,
+            "spawnStartY": 652,
             "randPosY": 0,
             "randPosX": 30,
             "topOrBot": "bottom",
@@ -212,10 +212,10 @@
           "layerType": "spawn-layer",
           "spawnImgs": "1",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 2,
-            "spawnStartY": 650,
+            "spawnStartY": 655,
             "randPosY": 0,
             "randPosX": 0,
             "topOrBot": "bottom",
@@ -229,7 +229,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "2",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 1,
             "spawnStartY": 730,
@@ -246,7 +246,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "3",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 6,
             "spawnStartY": 760,
@@ -263,7 +263,7 @@
           "layerType": "sign-layer",
           "spawnImgs": "",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 0,
             "spawnStartY": 755,
@@ -295,7 +295,7 @@
           "layerType": "bg-layer",
           "bgImg": "mountains.png",
           "options": {
-            "speed": 12000,
+            "speed": 24000,
             "delay": 0
           }
         },
@@ -303,7 +303,7 @@
           "layerType": "bg-layer",
           "bgImg": "cityscape.png",
           "options": {
-            "speed": 10000,
+            "speed": 20000,
             "delay": 0
           }
         },
@@ -311,7 +311,7 @@
           "layerType": "bg-layer",
           "bgImg": "clouds.png",
           "options": {
-            "speed": 9000,
+            "speed": 12000,
             "delay": 0
           }
         },
@@ -319,7 +319,7 @@
           "layerType": "bg-layer",
           "bgImg": "snowField.png",
           "options": {
-            "speed": 8000,
+            "speed": 16000,
             "delay": 0
           }
         },
@@ -327,10 +327,10 @@
           "layerType": "spawn-layer",
           "spawnImgs": "0",
           "options": {
-            "speed": 8000,
+            "speed": 16000,
             "delay": 2000,
             "spawnsPerLoop": 10,
-            "spawnStartY": 642,
+            "spawnStartY": 652,
             "randPosY": 0,
             "randPosX": 30,
             "topOrBot": "bottom",
@@ -352,10 +352,10 @@
           "layerType": "spawn-layer",
           "spawnImgs": "1",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 2,
-            "spawnStartY": 650,
+            "spawnStartY": 655,
             "randPosY": 0,
             "randPosX": 0,
             "topOrBot": "bottom",
@@ -369,7 +369,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "2",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 1,
             "spawnStartY": 730,
@@ -386,7 +386,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "3",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 4,
             "spawnStartY": 760,
@@ -403,7 +403,7 @@
           "layerType": "sign-layer",
           "spawnImgs": "",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 0,
             "spawnStartY": 755,
@@ -435,7 +435,7 @@
           "layerType": "bg-layer",
           "bgImg": "mountains.png",
           "options": {
-            "speed": 12000,
+            "speed": 24000,
             "delay": 0
           }
         },
@@ -443,7 +443,7 @@
           "layerType": "bg-layer",
           "bgImg": "cityscape.png",
           "options": {
-            "speed": 10000,
+            "speed": 20000,
             "delay": 0
           }
         },
@@ -451,7 +451,7 @@
           "layerType": "bg-layer",
           "bgImg": "clouds.png",
           "options": {
-            "speed": 9000,
+            "speed": 13000,
             "delay": 0
           }
         },
@@ -459,7 +459,7 @@
           "layerType": "bg-layer",
           "bgImg": "springGrassField.png",
           "options": {
-            "speed": 8000,
+            "speed": 12000,
             "delay": 0
           }
         },
@@ -467,7 +467,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "0",
           "options": {
-            "speed": 10000,
+            "speed": 20000,
             "delay": 2000,
             "spawnsPerLoop": 1,
             "spawnStartY": 100,
@@ -484,10 +484,10 @@
           "layerType": "spawn-layer",
           "spawnImgs": "1",
           "options": {
-            "speed": 8000,
+            "speed": 16000,
             "delay": 2000,
             "spawnsPerLoop": 5,
-            "spawnStartY": 642,
+            "spawnStartY": 652,
             "randPosY": 0,
             "randPosX": 30,
             "topOrBot": "bottom",
@@ -509,10 +509,10 @@
           "layerType": "spawn-layer",
           "spawnImgs": "2",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 2,
-            "spawnStartY": 650,
+            "spawnStartY": 655,
             "randPosY": 0,
             "randPosX": 0,
             "topOrBot": "bottom",
@@ -526,7 +526,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "3",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 1,
             "spawnStartY": 730,
@@ -543,7 +543,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "4",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 1,
             "spawnStartY": 960,
@@ -560,7 +560,7 @@
           "layerType": "sign-layer",
           "spawnImgs": "",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 0,
             "spawnStartY": 755,
@@ -600,7 +600,7 @@
           "layerType": "bg-layer",
           "bgImg": "housefarfar.png",
           "options": {
-            "speed": 15000,
+            "speed": 30000,
             "delay": 0
           }
         },
@@ -608,7 +608,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "1",
           "options": {
-            "speed": 8500,
+            "speed": 19000,
             "delay": 2000,
             "spawnsPerLoop": 8,
             "spawnStartY": 705,
@@ -625,7 +625,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "2",
           "options": {
-            "speed": 8000,
+            "speed": 16000,
             "delay": 2000,
             "spawnsPerLoop": 4,
             "spawnStartY": 710,
@@ -642,7 +642,7 @@
           "layerType": "bg-layer",
           "bgImg": "fog02.png",
           "options": {
-            "speed": 4000,
+            "speed": 8000,
             "delay": 0
           }
         },
@@ -666,7 +666,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "3",
           "options": {
-            "speed": 7000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 4,
             "spawnStartY": 700,
@@ -683,7 +683,7 @@
           "layerType": "sign-layer",
           "spawnImgs": "",
           "options": {
-            "speed": 7000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 0,
             "spawnStartY": 720,
@@ -700,7 +700,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "4",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 3,
             "spawnStartY": 710,
@@ -717,7 +717,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "5",
           "options": {
-            "speed": 7000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 1,
             "spawnStartY": 730,
@@ -742,7 +742,7 @@
           "layerType": "spawn-layer",
           "spawnImgs": "6",
           "options": {
-            "speed": 6000,
+            "speed": 12000,
             "delay": 2000,
             "spawnsPerLoop": 1,
             "spawnStartY": 750,
