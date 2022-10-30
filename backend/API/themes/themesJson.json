@@ -656,7 +656,7 @@
         },
         {
           "layerType": "bg-layer",
-          "bgImg": "track.png",
+          "bgImg": "track.webp",
           "options": {
             "speed": 6000,
             "delay": 0
