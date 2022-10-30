@@ -124,9 +124,9 @@
           "spawnImgs": "",
           "options": {
             "speed": 6000,
-            "delay": 0,
+            "delay": 2000,
             "spawnsPerLoop": 0,
-            "spawnStartY": 1435,
+            "spawnStartY": 755,
             "randPosY": 0,
             "randPosX": 0,
             "topOrBot": "bottom",
@@ -264,9 +264,9 @@
           "spawnImgs": "",
           "options": {
             "speed": 6000,
-            "delay": 0,
+            "delay": 2000,
             "spawnsPerLoop": 0,
-            "spawnStartY": 1435,
+            "spawnStartY": 755,
             "randPosY": 0,
             "randPosX": 0,
             "topOrBot": "bottom",
@@ -404,9 +404,9 @@
           "spawnImgs": "",
           "options": {
             "speed": 6000,
-            "delay": 0,
+            "delay": 2000,
             "spawnsPerLoop": 0,
-            "spawnStartY": 1435,
+            "spawnStartY": 755,
             "randPosY": 0,
             "randPosX": 0,
             "topOrBot": "bottom",
@@ -561,9 +561,9 @@
           "spawnImgs": "",
           "options": {
             "speed": 6000,
-            "delay": 0,
+            "delay": 2000,
             "spawnsPerLoop": 0,
-            "spawnStartY": 1435,
+            "spawnStartY": 755,
             "randPosY": 0,
             "randPosX": 0,
             "topOrBot": "bottom",
@@ -684,9 +684,9 @@
           "spawnImgs": "",
           "options": {
             "speed": 7000,
-            "delay": 0,
+            "delay": 2000,
             "spawnsPerLoop": 0,
-            "spawnStartY": 1400,
+            "spawnStartY": 720,
             "randPosY": 0,
             "randPosX": 0,
             "topOrBot": "bottom",
@@ -731,6 +731,14 @@
           }
         },
         {
+          "layerType": "bg-layer",
+          "bgImg": "fog03.png",
+          "options": {
+            "speed": 0,
+            "delay": 0
+          }
+        },
+        {
           "layerType": "spawn-layer",
           "spawnImgs": "6",
           "options": {
@@ -760,14 +768,6 @@
           "bgImg": "fog02.png",
           "options": {
             "speed": 2000,
-            "delay": 0
-          }
-        },
-        {
-          "layerType": "bg-layer",
-          "bgImg": "fog03.png",
-          "options": {
-            "speed": 0,
             "delay": 0
           }
         }

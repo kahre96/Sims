@@ -1,20 +1,17 @@
 <!doctype html>
-<html class="no-js" lang="sv">
-
+<html lang="sv">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <title>Knowit - Sims 2022</title>
   <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes">
 
   <!-- Google fonts -->
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300;8..144,400;8..144,500&display=swap');
-  </style>
+  <style>@import url('https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300;8..144,400;8..144,500&display=swap');</style>
   <!-- CSS only -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="vendor/bootstrap-5.0.2-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="vendor/bootstrap-5.0.2-dist/css/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="vendor/css/normalize.css">
   <link rel="stylesheet" href="css/stilmall.css" type="text/css">
   <link rel="stylesheet" href="css/main.css">
 
@@ -22,23 +19,7 @@
 <body>
 <!-- js generated track animation -->
 <div class="container-fluid scrolling-track-container">
-<!--  <div class="display-sign pt-2"-->
-<!--       style="position: absolute; background: url('./img/digital-display.png') no-repeat; width: 192px; height: 400px; top: 365px; left: 1200px; z-index: 100;">-->
-<!--    <div id="display-buzz" class="fs-5">-->
-
-<!--      <div class="display-text text-danger text-center p-0 m-0">Nuvarande placeringar</div>-->
-<!--      <div class="display-text text-danger text-left px-3 pt-2 m-0">-->
-<!--        #01: Nordin S <br>-->
-<!--        #02: Fredrik K <br>-->
-<!--        #03: Ivan S <br>-->
-<!--        #04: Ouri Q <br>-->
-<!--        #05: Naru Q <br>-->
-<!--        ........... <br>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-  <div id="knw-bg-anim">
-  </div>
+  <div id="knw-bg-anim"></div>
 </div>
 <!-- js generated track characters -->
 <div id="track-characters">
@@ -47,10 +28,10 @@
   </div>
 </div>
 <!--         CONTENT LAYOUT          -->
-<section class="container knw-content">
+<div class="container knw-content">
   <div class="row">
     <div class="col p-0 m-0">
-      <section class="container knw-header">
+      <div class="container knw-header">
         <div class="row p-0 m-0">
           <header class="col-12 p-0 m-0">
             <div class="header m-0 pl-4 rounded-0">
@@ -77,9 +58,9 @@
           </header>
         </div>
         <!-- Character cards-->
-        <section class="row px-4 gx-5" id="people-box">
-        </section>
-      </section>
+        <div class="row px-4 gx-5" id="people-box">
+        </div>
+      </div>
       <div class="container-fluid tips-container">
         <div class="row w-100 position-absolute bottom-0" style="height: 40px;">
           <div class="col-1 bg-white text-dark fw-bolder fs-5 text-end pt-1">
@@ -100,7 +81,7 @@
             src="resources/Light-bulb-Digital-black.svg" class="icon-images" alt="interna nyheter"> Nyheter
             - intranät
           </li>
-          <li href="#" class="list-group-item list-group-item-action">
+          <li class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
               <h5 class="mb-1">List group item heading</h5>
             </div>
@@ -113,7 +94,7 @@
             src="resources/Sustainability1-Digital-black.svg" class="icon-images" alt="externa nyheter">
             Nyheter - extern
           </li>
-          <li href="#" class="list-group-item list-group-item-action">
+          <li class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between"><h5 class="mb-1" id="extern-head">List group item
               heading</h5></div>
             <p class="mb-1" id="extern-content">Some placeholder content in a paragraph.</p>             <small
@@ -133,16 +114,15 @@
             src="resources/Light-bulb-Digital-black.svg" class="icon-images" alt="bra att veta">
             Väldigt bra att veta
           </li>
-<!--          <li id="hours-text" class="list-group-item">-->
-          <div id="good-to-know">
-          </div>
+          <!--          <li id="hours-text" class="list-group-item">-->
+          <li class="list-group-item" id="good-to-know"></li>
         </ul>
         <ul class="list-group position-absolute bottom-0 w-100">
           <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img
             src="resources/Tag-Digital-black_1.svg" class="icon-images" alt="förra månadens hjältar"> Förra månadens
             hjältar
           </li>
-          <li class="container-fluid last-month-heroes">
+          <li class="container-fluid last-month-heroes list-group-item">
             <div class="row top3-avatars position-relative">
               <div id="avatar-silver" class="col-4 position-absolute bottom-0 p-avatar"></div>
               <div id="avatar-gold" class="col-4 position-absolute bottom-0 start-50 translate-middle p-avatar"></div>
@@ -156,7 +136,7 @@
       </div>
     </aside>
   </div>
-</section>
+</div>
 
 
 <!-- Theme settings-->
@@ -167,7 +147,7 @@
   <i class="bi bi-gear-fill"></i>
   <i class="bi bi-arrow-up-short"></i>
 </button>
-<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom" aria-labelledby="offcanvasBottomLabel">
+<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom">
   <div class="offcanvas-header">
     <button type="button" class="btn text-reset anim-setting-close bg-white" data-bs-dismiss="offcanvas"
             aria-label="Close">
@@ -192,11 +172,11 @@
           <div class="input-group mb-3">
           <span class="input-group-text">
             <input class="form-check-input" type="radio" value="override" name="set-theme" id="override-theme-radio">
-            <label for="override-theme-radio" class="">&nbsp;&nbsp;&nbsp;Manuell val:</label>
+            <label for="override-theme-radio" class="">&nbsp;&nbsp;&nbsp;Manuellt:</label>
           </span>
             <select id="override-theme-select" class="form-select form-select-lg"
                     aria-label=".form-select-lg" disabled>
-              <option selected></option>
+              <option value="" label="Välj tema" selected></option>
             </select>
           </div>
         </form>
@@ -205,10 +185,26 @@
     <div class="card text-dark bg-light mb-3">
       <h4 class="card-header"><i class="bi bi-paint-bucket"></i> Andra inställningar</h4>
       <div class="card-body">
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adminModal">
-          Admin sida
-        </button>
+        <div class="container-fluid px-4 fw-bold">
+          <div class="row gx-5">
+            <div class="col">
+              <div class="p-3 border bg-light">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adminModal">
+                  Admin sida
+                </button>
+                Genväg: shift+alt+a
+              </div>
+            </div>
+            <div class="col">
+              <div class="p-3 border bg-light">
+                <button type="button" class="btn btn-primary" onclick="location.reload()">
+                  Ladda om application
+                </button>
+                Genväg: shift+alt+r
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -216,11 +212,10 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+<div class="modal fade" id="adminModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="adminModalLabel">Administrering</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -230,7 +225,6 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <!--        <button type="button" class="btn btn-primary">Save changes</button>-->
       </div>
     </div>
   </div>
@@ -238,11 +232,11 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAc-Abj94oczoabW4SWykc0WCR2O8DXiy0&libraries=places">
 </script>
-<script src="js/vendor/jquery-3.6.1.min.js"></script>
-<script src="js/vendor/jquery-ui.min.js"></script>
-<script src="js/vendor/modernizr-3.11.2.min.js"></script>
+<script src="vendor/js/jquery-3.6.1.min.js"></script>
+<script src="vendor/js/jquery-ui.min.js"></script>
+<script src="vendor/js/modernizr-3.11.2.min.js"></script>
 <!-- JavaScript Bundle with Popper -->
-<script src="js/vendor/bootstrap.bundle.min.js"></script>
+<script src="vendor/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

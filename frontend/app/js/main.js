@@ -1,3 +1,12 @@
+/**
+ * @AUTHOR: Nordin Suleimani <nordin.suleimani@email.com>
+ * @AUTHOR2: Ina
+ * @DATE: 9/14/2022
+ *
+ * @Description. Frontend main JS file, contains themes, animations for themes, employee cards, track characters
+ * api calls to google and Knowit endpoints, api to backend to retrieve project data.
+ */
+
 // Ina
 document.addEventListener('DOMContentLoaded', () => {
   let date = new Date();
@@ -77,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 $(function () {
-
   // Nordin
   let runningIntervals = [];
   let ppl = [];
@@ -88,7 +96,7 @@ $(function () {
 
   let appConfig = getJson(siteUrl + 'admin/theme?config=appConfig');
   let themesJson = getJson(siteUrl + 'admin/theme?config=themesJson');
-  let quotes = getJson(siteUrl + 'admin/theme?config=quotes');
+  // let quotes = getJson(siteUrl + 'admin/theme?config=quotes');
   let tips = getJson(siteUrl + 'admin/theme?config=tips');
 
   setTheme();
@@ -103,13 +111,25 @@ $(function () {
   setInterval(goodToKnow, 1000 * 60);
   settings();
 
+  // Event listener on keyup to show admin page or reload page
+  document.addEventListener('keyup', (event) => {
+    if ((event.altKey && event.shiftKey && (event.key === 'r' || event.key === 'R'))) {
+      location.reload();
+    }
+    if ((event.altKey && event.shiftKey && (event.key === 'a' || event.key === 'A'))) {
+      $("#adminModal").modal('toggle');
+    }
+  }, false);
+
   function setTheme() {
+    // clear all theme animations and empty out animation container
     clearAllIntervals();
     animationContainer.empty();
+
     if (appConfig.themeOverride.active) {
       currentTheme.themeCategory = appConfig.themeOverride.themeCategory;
       currentTheme.themeName = appConfig.themeOverride.themeName;
-    } else {
+    } else { // set theme based on date of year(season)
       let currentSeason = "";
       let year = new Date().getFullYear();
       let seasons = {
@@ -135,14 +155,12 @@ $(function () {
     $.each(themesJson[currentTheme.themeCategory][currentTheme.themeName].layers, function (index, layer) {
       let tempLayerDiv = $("<div id='anim-layer-" + index + "'>");
       let themeFolder = 'img/themes/' + currentTheme.themeCategory + '/' + currentTheme.themeName + '/';
-
-
-      let signHtml = $(`<div class="display-sign pt-2">
-          <div id="display-buzz" class="fs-5">
-          <div class="display-text text-danger text-center p-0 m-0">Nuvarande placeringar</div>
-        <div id="display-placements" class="display-text text-danger text-left px-3 pt-2 m-0"></div>
+      let signHtml = $(`<div class="col prop spawn0"><div class="display-sign pt-2 bottom-0">
+          <div id="display-buzz" class="fs-4 lh-sm">
+          <div class="display-text text-danger text-center p-0 m-0 fs-5">Nuvarande placeringar</div>
+        <div id="display-placements" class="display-text text-danger text-left px-2 pt-2 m-0"></div>
       </div>
-      </div>`);
+      </div></div>`);
 
       tempLayerDiv.addClass('container-fluid bg-scroll');
       tempLayerDiv.attr('id', 'anim-layer-' + index);
@@ -204,7 +222,16 @@ $(function () {
     });
   }
 
-  function slideAnimateMaybeSpawn(element, speed, propertyStart, propertyEnd, delayTime, options, props = []) {
+  /**
+   * @param {*} element
+   * @param {*} speed
+   * @param {*} propertyStart
+   * @param {Keyframe[] | PropertyIndexedKeyframes} propertyEnd
+   * @param {*} delayTime
+   * @param {*} options
+   * @param {*} props
+   */
+  function slideAnimateMaybeSpawn(element = HTMLElement, speed = 0, propertyStart = {}, propertyEnd= {}, delayTime = 0, options = {}, props = []) {
     $(element).delay(delayTime).animate(propertyEnd, speed, 'linear', () => {
       // go back to original state
       $(element).css(propertyStart);
@@ -216,22 +243,23 @@ $(function () {
   }
 
   function drawMonthlyHeroes() {
-    let lastMonthTop3 = getJson(siteUrl + "player/getTop");
-    let idleAvatarUrl = '../../backend/API/static/characters/idle_avatar/emp_';
-    $.each(lastMonthTop3, (index, player) => {
-      if (index === '1') {
-        $("#avatar-gold").css({'background': 'url("' + idleAvatarUrl + player[1] + '.gif")'});
-        $("#nameplate-gold").html(player[0]);
-      }
-      if (index === '2') {
-        $("#avatar-silver").css({'background': 'url("' + idleAvatarUrl + player[1] + '.gif")'});
-        $("#nameplate-silver").html(player[0]);
-      }
-      if (index === '3') {
-        $("#avatar-bronze").css({'background': 'url("' + idleAvatarUrl + player[1] + '.gif")'});
-        $("#nameplate-bronze").html(player[0]);
-      }
-    });
+    getJson(siteUrl + "player/getTop", (lastMonthTop3)=>{
+      let idleAvatarUrl = '../../backend/API/static/characters/idle_avatar/emp_';
+      $.each(lastMonthTop3, (index, player) => {
+        if (index === '1') {
+          $("#avatar-gold").css({'background': 'url("' + idleAvatarUrl + player[1] + '.gif")'});
+          $("#nameplate-gold").html(player[0]);
+        }
+        if (index === '2') {
+          $("#avatar-silver").css({'background': 'url("' + idleAvatarUrl + player[1] + '.gif")'});
+          $("#nameplate-silver").html(player[0]);
+        }
+        if (index === '3') {
+          $("#avatar-bronze").css({'background': 'url("' + idleAvatarUrl + player[1] + '.gif")'});
+          $("#nameplate-bronze").html(player[0]);
+        }
+      });
+    }, true);
   }
 
   function createPplsJson() {
@@ -310,7 +338,6 @@ $(function () {
     });
   }
 
-  // clear all intervals for this theme
   function clearAllIntervals() {
     $.each(runningIntervals, (index, interval) => {
       clearInterval(interval);
@@ -318,64 +345,102 @@ $(function () {
   }
 
   function goodToKnow(){
-    let jsonGoodToKnow =getJson(siteUrl + 'admin/theme?config=localNews');
-    $("#good-to-know").html("");
-    $.each(jsonGoodToKnow.news, (index, newsItem)=>{
-      $("#good-to-know").append("<li class='list-group-item'>" + newsItem + "</li>");
-    });
+    getJson(siteUrl + 'admin/theme?config=localNews', (jsonGoodToKnow)=>{
+      $("#good-to-know").html("");
+      $.each(jsonGoodToKnow.news, (index, newsItem)=>{
+        $("#good-to-know").append("<div class='list-group-item'>" + newsItem + "</div>");
+      });
+    }, true);
   }
 
-  // handling settings menu
   function settings() {
     // populate override select field
     $.each(themesJson, (catIndex, themeCat) => {
       $.each(themeCat, (themeIndex, theme) => {
-        $("#override-theme-select").append("<option value='{\"" + theme.category + "\":\"" + Object.keys(themeCat)[0] + "\"}'>" + Object.keys(themeCat)[0] + "</option>");
+        if(theme.category === appConfig.themeOverride.themeCategory && Object.keys(themeCat[0] === appConfig.themeOverride.themeName)){
+          $("#override-theme-select").append("<option value='{\"" + theme.category + "\":\"" + Object.keys(themeCat)[0] + "\"}' selected>" + Object.keys(themeCat)[0] + "</option>");
+        }else{
+          $("#override-theme-select").append("<option value='{\"" + theme.category + "\":\"" + Object.keys(themeCat)[0] + "\"}'>" + Object.keys(themeCat)[0] + "</option>");
+        }
       })
     })
+
+   // set theme settings form based on saved data
+    if(appConfig.themeOverride.active){
+      $("#override-theme-radio").attr('checked', true);
+      $("#override-theme-select").prop('disabled', false);
+    }else{
+      $("#seasonal-theme-radio").attr('checked', true);
+    }
+
     // toggle seasonal theme or override theme
     $('input[name="set-theme"]').on('click change', function () {
       if ($(this).val() === "override") {
         $("#override-theme-select").prop('disabled', false);
+        if($("#override-theme-select").children("option:selected").val() !== ""){
+          appConfig.themeOverride.active = true;
+        }else{
+          return true;
+        }
       } else if ($(this).val() === "seasonal") {
         $("#override-theme-select").prop('disabled', true);
         appConfig.themeOverride.active = false;
-        setTheme();
       }
+      // save theme settings and set theme
+      let tempThemeJson = $.parseJSON($("#override-theme-select").val().replace(/\\/g, ""));
+      appConfig.themeOverride.themeCategory = Object.keys(tempThemeJson)[0];
+      appConfig.themeOverride.themeName = tempThemeJson[Object.keys(tempThemeJson)[0]];
+      saveJson("admin/theme?config=appConfig", appConfig);
+      setTheme();
     });
+
     $('select[id="override-theme-select"]').on('change', function () {
       if ($(this).val() !== "Override theme") {
         let tempThemeJson = $.parseJSON($(this).val().replace(/\\/g, ""));
         appConfig.themeOverride.active = true;
         appConfig.themeOverride.themeCategory = Object.keys(tempThemeJson)[0];
         appConfig.themeOverride.themeName = tempThemeJson[Object.keys(tempThemeJson)[0]];
+
+        //save theme settings and set theme
+        saveJson("admin/theme?config=appConfig", appConfig);
         setTheme();
-        // TODO save theme settings to db
       }
     });
   }
 
-  // api call to get json from backend
-  function getJson(url) {
+  /**
+   * @param {string} url
+   * @param callback
+   * @param isAsync
+   * @returns {Object|null}
+   */
+  function getJson(url, callback = null, isAsync = false){
     let json = null;
     $.ajax({
-      'async': false,
+      'async': isAsync,
       'global': false,
       'url': url,
       'dataType': "json",
       'success': function (data) {
         if (data !== undefined)
           json = data;
+        if (typeof callback === "function"){
+          callback(data);
+          return true;
+        }
       }
     });
     return json;
   }
 
-  // api call to save json to backend
-  function saveJson(theUrl, myText) {
+  /**
+   * @param {string} theUrl
+   * @param {*} myText
+   */
+  function saveJson(theUrl, myText = {}) {
     $.ajax({
       type: 'POST',
-      url: theUrl,
+      url: siteUrl + theUrl,
       data: JSON.stringify(myText),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
@@ -385,11 +450,21 @@ $(function () {
     });
   }
 
-  function tipsFadeInFadeOut(element, speed, tips) {
+  /**
+   * @param element
+   * @param speed
+   * @param tips
+   */
+  function tipsFadeInFadeOut(element = HTMLElement, speed = 0, tips = {}) {
     element.html(tips[Math.floor(Math.random() * tips.length)]);
     element.hide().fadeIn(speed * 0.1).delay(speed * 0.7).fadeOut(speed * 0.1).delay(speed * 0.1);
   }
 
+  /**
+   * @param where
+   * @param {*[]} props
+   * @param options
+   */
   function spawnProps(where, props, options) {
     // props are from current theme folder
     for (let i = 0; i < $('#' + where.attr('id') + " .prop").length; i++) {
@@ -425,7 +500,10 @@ $(function () {
     }
   }
 
-  function refreshDisplay(persons) {
+  /**
+   * @param {{[p: string]: T}} persons
+   */
+  function refreshDisplay(persons={}) {
     let counter = 1;
     let counterLimit = 5;
     let displayPlacement = $("#display-placements");

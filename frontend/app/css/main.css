@@ -548,7 +548,6 @@ nav .div {
   display: none;
 }
 
-
 .bg-scroll {
   position: absolute;
   width: 100vw;
@@ -773,8 +772,6 @@ nav .div {
   background-image: url("../img/birthday-glitter.gif");
   background-position: center bottom;
   background-size: 100% auto;
-  /*background-blend-mode: screen;*/
-  /*filter: saturate(2) grayscale(0.5) brightness(1.5);*/
 }
 
 /* anim settings */
@@ -838,19 +835,19 @@ nav .div {
 
 #avatar-silver {
   background: center bottom no-repeat;
-  margin-bottom: -58px;
+  margin-bottom: -50px;
   margin-left: -20px !important;
 }
 
 #avatar-gold {
   background: center bottom no-repeat;
-  margin-bottom: -88px;
+  margin-bottom: -80px;
   margin-left: -20px !important;
 }
 
 #avatar-bronze {
   background: center bottom no-repeat;
-  margin-bottom: -75px;
+  margin-bottom: -67px;
   margin-right: 20px !important;
 }
 
@@ -862,17 +859,17 @@ nav .div {
 
 #nameplate-silver {
   padding: 0;
-  margin-bottom: -88px;
+  margin-bottom: -80px;
 }
 
 #nameplate-gold {
   padding: 0;
-  margin-bottom: -42px;
+  margin-bottom: -34px;
 }
 
 #nameplate-bronze {
   padding: 0;
-  margin-bottom: -104px;
+  margin-bottom: -96px;
 }
 
 .spawnChars {
@@ -887,11 +884,11 @@ nav .div {
 }
 
 .display-sign > #display-buzz {
-  animation: buzz 0.01s infinite alternate;
+  animation: buzz 0.001s infinite alternate;
 }
 
 .display-text {
-  text-shadow: 0 0 0 transparent, 0 0 4px #ff003c, 0 0 6px rgba(255, 0, 60, 0.8), 0 0 8px #ff003c, 0 0 10px #ff003c, 0 0 12px #ff003c;
+  text-shadow: 0 0 0 transparent, 0 0 4px rgba(255, 0, 60, 0.6), 0 0 6px rgba(255, 0, 60, 0.3), 0 0 8px #ff003c, 0 0 10px #ff003c;
   -webkit-animation: blink 4s infinite alternate;
   animation: blink 4s infinite alternate;
 }
