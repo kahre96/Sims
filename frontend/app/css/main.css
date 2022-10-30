@@ -890,3 +890,6 @@ nav .div {
   padding: 0;
   margin-bottom: -104px;
 }
+.spawnChars{
+  display: none;
+}

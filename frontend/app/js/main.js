@@ -93,6 +93,7 @@ $(function () {
 
   setTheme();
   spawnCharacters();
+  setInterval(spawnCharacters, 4000);
   setInterval(createPplsJson, 1000);
   setInterval(tipsFadeInFadeOut, 10000, scrollingTipDiv, 10000, tips);
   drawMonthlyHeroes();
@@ -218,7 +219,7 @@ $(function () {
         if (data === undefined) {
           return;
         }
-        spawnCharacters();
+        // spawnCharacters();
         let newPpl = data.filter(o1 => !ppl.some(o2 => o1.emp_id === o2.emp_id));
         if (!isNaN(newPpl.length) && newPpl.length > 0) {
           ppl = newPpl;
@@ -394,8 +395,8 @@ $(function () {
 
   function spawnCharacters() {
     let charactersFolder = "../../backend/API/static/characters/running_avatar/";
-
     let randTop = 0;
+    // $("#track-area > .smokeSpawn").remove();
     $.ajax({
       url: siteUrl + 'player/getMonthlyXP',
       type: "GET",
@@ -403,7 +404,8 @@ $(function () {
       success: function (data) {
         let maxValue = 0;
         let empCount = Object.keys(data).length;
-        let empCountWithPositiveProgress = empCount;
+        let previousEmpId = 0;
+
         $.each(data, (i, el) => {
           if (el > maxValue)
             maxValue = el;
@@ -411,30 +413,65 @@ $(function () {
 
         $.each(data, function (index, person) {
           let tempImg = $("#emp-char-" + index);
-          if(!person){
+          // let smokeSpawn = $("#smokeSpawn-" + index);
+          if (!person) {
             tempImg.remove();
-            empCountWithPositiveProgress--;
-            return;
+            $("#smokeSpawn-" + index).remove();
+            // randTop -= (100 / empCount) * 0.70;
+            --empCount;
+            return true;
           }
           if (randTop === 0) {
             randTop = 1;
           } else {
-            randTop += (100 / empCount - empCountWithPositiveProgress) * 0.70;
+            randTop += (100 / empCount) * 0.70;
           }
           let leftPos = person / maxValue * 70; // 70% the track is the front of the track
 
           // create running char if not created
           if (!tempImg.length) {
-            tempImg = "<img alt='' src='" +
-              charactersFolder + "emp_" +
-              index + ".gif' id='emp-char-" +
-              index + "' style='width: " +
-              150 + "px; z-index:10000; " +
+            tempImg = "<div id='emp-char-" +
+              index + "' style='z-index:10000; " +
               "position: absolute; " +
-              "left: 1%; top:" + randTop + "%;'>";
-            $("#track-area").append(tempImg);
+              "left: 1%; top:" + randTop +
+              "%;'><img class='spawnChars' alt='emp-char-avatar' src='" +
+              charactersFolder + "emp_" +
+              index + ".gif' width='150px'><img alt='spawnSmoke' class='smokeSpawn' id='spawnSmoke-" + index +
+              "' src='./img/invisible-smoke.png' style='position:absolute; left: -40px; top: -80px;'></div>";
           }
-          tempImg.animate({"left": leftPos + "%"}, 2000);
+          if (!$("#track-area").children().length) {
+            $("#track-area").append(tempImg);
+            $("#emp-char-"+index + " .spawnChars").delay(600).fadeIn(400);
+            $("#spawnSmoke-"+index).attr("src", "./img/spawnSmoke.gif");
+            // previousEmpId = index;
+          } else {
+            if ($("#emp-char-"+index).length) {
+              $("#emp-char-"+index).insertAfter("#emp-char-" + previousEmpId);
+              // $("#spawnSmoke-"+index).insertAfter("#emp-char-" + index);
+              $("#spawnSmoke-"+index).attr("src", "./img/invisible-smoke.png");
+            } else {
+              $(tempImg).insertAfter("#emp-char-" + previousEmpId);
+              $("#emp-char-"+index + " .spawnChars").delay(600).fadeIn(400);
+              // $("#spawnSmoke-"+index).insertAfter("#emp-char-" + index);
+              $("#spawnSmoke-"+index).attr("src", "./img/spawnSmoke.gif");
+            }
+          }
+          // $("#smokeSpawn-"+index).delay(3500).remove();
+          previousEmpId = index;
+
+          if ($("#emp-char-"+index).length) {
+            // if (!$("#smokeSpawn-" + index).length) {
+            //   $(smokeSpawn).insertAfter($(tempImg));
+            //   $(smokeSpawn).hide().attr("src", "./img/spawnSmoke.gif").show();
+            // }
+            $("#emp-char-"+index).stop().delay(2000).animate({left: leftPos + "%", top: randTop + "%"}, {
+              duration: 2000,
+              queue: false
+            });
+            // $(tempImg).stop().delay(1000).animate({top: randTop + "%"}, {duration: 300, queue: false});
+            // $(tempImg).stop().delay(1000).animate({left: leftPos + "%"}, {duration: 2000, queue: false});
+          }
+          return true;
         });
       }
     });
