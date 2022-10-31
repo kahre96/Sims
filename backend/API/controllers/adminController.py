@@ -49,13 +49,10 @@ class AdminController():
                     local_news.append(value)
             except JSONDecodeError:
                     print("The file is empty!")
-        
-        return render_template('statistics.html', data=playercount, characters=len(imagesList), users=users_no_pictures, news=local_news) # Return Statistics page after sucessfull login
+        # Return Statistics page after sucessfull login
+        return render_template('statistics.html', data=playercount, characters=len(imagesList), users=users_no_pictures, news=local_news)
 
     def adminPage(self):
-        if session.get('logged_in'):
-            return render_template('index.html')
-
         error = None
         if request.method == 'POST':
             with open("themes/adminCredentials.json", "r") as infile:
@@ -67,6 +64,10 @@ class AdminController():
                 session['logged_in'] = True
             else:
                 error = 'Invalid Credentials. Please try again.'
+        
+        if session.get('logged_in'):
+            return render_template('index.html')
+
         return render_template('adminForm.html', error=error)
 
     def logout(self):
@@ -128,7 +129,7 @@ class AdminController():
         if not session.get('logged_in'):
             return redirect("/admin")
 
-        error = "Error:"
+        error = "Error: "
         if request.method == 'POST':
             if len(request.form['firstname']) > 0:
                 url         = 'http://localhost:5000/employee/create'
@@ -138,30 +139,30 @@ class AdminController():
                 character   = request.form['characters']
 
                 if len(birthdate) != 8:
-                    error += "Sorry! Birthdate has the wrong format, please try with 4 digits of year, 2 digits for month, and 2 digits for day like YYYYMMDD, no spaces and no dashes."
-                #elif birthdate.find('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#"%&/()=?@${[]}\'~^*'):
-                    #error+= "Invalid characters in birthdate!"    
+                    error += f"Sorry! {birthdate} has the wrong format, please try with 4 digits of year, 2 digits for month, and 2 digits for day like YYYYMMDD, no spaces and no dashes."
+                elif not birthdate.isdigit():
+                    error+= f"{birthdate} has invalid characters, please use digits in format YYYYMMDD!"    
                     return render_template('addUser.html', Error=error)
 
                 input_month = int(birthdate[4:6])
                 input_day   = int(birthdate[-2:])
 
                 if input_month > 12 or input_month < 0:
-                    error += "Month {} is not an option! Please enter a month between 01 - 12".format(input_month)
+                    error += f"Month {input_month} is not an option! Please enter a month between 01 - 12"
                 elif input_month == 2 and input_day > 29:
                     error += "February only has 28 sometimes 29 days, please enter a lower value!"
                 elif (input_month % 2 == 0 and input_month < 7 or input_month % 2 == 1 and input_month > 8) and input_day > 30:
-                    error += "Sorry February, April, June, September, and November does not have {} days, 30 is maximum".format(input_day)
+                    error += f"Sorry February, April, June, September, and November does not have {input_day} days, 30 is maximum"
                 elif input_day > 31:
-                    error += "Sorry, no month has {} days in it!".format(input_day)
+                    error += f"Sorry, no month has {input_day} days in it!"
            
-                if error == "Error:":
+                if error == "Error: ":
                     create_str = f"?firstname={firstname}&lastname={lastname}&birthdate={birthdate}&character={character}"
                     message = f"User [{firstname} {lastname}] with birthdate {birthdate} has been created"
                     res = requests.post(url+create_str)                        
 
                     return render_template('addUser.html', Data=message)
-                print("error: ", error)
+
                 return render_template('addUser.html', Error=error)
         
         #https://stackoverflow.com/questions/36774431/how-to-load-images-from-a-directory-on-the-computer-in-python
