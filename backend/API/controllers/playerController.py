@@ -180,8 +180,9 @@ class PlayerController():
             if cursor.fetchone() == None: # Check if player is already in this months heroes 
                 cursor.execute("INSERT INTO Hero(Emp_ID,Date,Xp_Month) VALUES (%s,%s,%s) ON DUPLICATE KEY UPDATE Date = %s, Xp_Month = %s" % (emp_ID,hero_date,hero_xp,hero_date,hero_xp))
             else:
-                cursor.execute("UPDATE Hero SET Date = %s, Xp_Month = %s WHERE Emp_ID = %s ON DUPLICATE KEY UPDATE Date = %s, Xp_Month = %s" % (hero_date,hero_xp,emp_ID,hero_date,hero_xp))    
-            # Check if there are more than 3 Heroes for this month after insertion. If so, delete the one with least XP 
+#                 cursor.execute("UPDATE Hero SET Date = %s, Xp_Month = %s WHERE Emp_ID = %s ON DUPLICATE KEY UPDATE Date = %s, Xp_Month = %s" % (hero_date,hero_xp,emp_ID,hero_date,hero_xp))
+                cursor.execute("UPDATE Hero SET Date = %s, Xp_Month = %s WHERE Emp_ID = %s" % (hero_date,hero_xp,emp_ID))
+            # Check if there are more than 3 Heroes for this month after insertion. If so, delete the one with least XP
             cursor.execute("SELECT * FROM Hero WHERE MONTH(Date)=%s AND YEAR(Date)=%s" % (hero_date[4:6],hero_date[:4]) )
             results = cursor.fetchall()
             if len(results) > 3:

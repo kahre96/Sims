@@ -512,7 +512,7 @@ nav .div {
   width: 100vw;
   height: 100%;
   left: 0;
-  z-index: 600;
+  z-index: 1000;
 }
 
 #track-characters .row {
@@ -731,7 +731,7 @@ nav .div {
   max-width: 30%;
 }
 
-.first-card > div > div {
+.first-card > div > div, .message {
   box-shadow: 0 0 0 var(--digital-pop);
   animation: pulse 2s infinite;
 }
@@ -944,4 +944,27 @@ nav .div {
   46% {
     opacity: 1;
   }
+}
+
+.message {
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-top: auto;
+  margin-bottom: -65px;
+  display: none;
+  margin-left: -40px;
+  position: absolute;
+  z-index: 9999;
+  width: 130px;
+}
+.message:before {
+  content: "";
+  position: absolute;
+  background: transparent url("../img/speech-bubble-arrow.png") no-repeat top right;
+  background-size: contain;
+  z-index: 0;
+  bottom: 0;
+  left: -7px;
+  height: 20px;
+  width: 20px;
 }

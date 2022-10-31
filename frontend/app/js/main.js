@@ -92,16 +92,18 @@ $(function () {
   let currentTheme = {};
   let animationContainer = $("#knw-bg-anim");
   let scrollingTipDiv = $(".scrolling-tip-div");
+  let themeSelectOptions = $("#override-theme-select");
+
   let siteUrl = "http://localhost:5000/";
 
   let appConfig = getJson(siteUrl + 'admin/theme?config=appConfig');
   let themesJson = getJson(siteUrl + 'admin/theme?config=themesJson');
-  // let quotes = getJson(siteUrl + 'admin/theme?config=quotes');
+  let stMnts = getJson(siteUrl + 'admin/theme?config=statements');
   let tips = getJson(siteUrl + 'admin/theme?config=tips');
 
   setTheme();
   spawnCharacters();
-  setInterval(spawnCharacters, 4000);
+  setInterval(spawnCharacters, 2500);
   setInterval(createPplsJson, 1000);
   setInterval(tipsFadeInFadeOut, 10000, scrollingTipDiv, 10000, tips);
   drawMonthlyHeroes();
@@ -111,7 +113,7 @@ $(function () {
   setInterval(goodToKnow, 1000 * 60);
   settings();
 
-  // Event listener on keyup to show admin page or reload page
+  // Event listener on keyup to toggle admin page or reload application
   document.addEventListener('keyup', (event) => {
     if ((event.altKey && event.shiftKey && (event.key === 'r' || event.key === 'R'))) {
       location.reload();
@@ -151,7 +153,7 @@ $(function () {
   }
 
   function initThemeAnimation() {
-    //Todo go through current theme layers and construct the animation
+    //Goes through current theme layers and construct the animation
     $.each(themesJson[currentTheme.themeCategory][currentTheme.themeName].layers, function (index, layer) {
       let tempLayerDiv = $("<div id='anim-layer-" + index + "'>");
       let themeFolder = 'img/themes/' + currentTheme.themeCategory + '/' + currentTheme.themeName + '/';
@@ -196,26 +198,22 @@ $(function () {
 
         if (layer.layerType === "spawn-layer") {
           getImgsFromFolder(themeFolder + 'props/' + layer.spawnImgs + '/').then(props => {
-            slideAnimateMaybeSpawn(spawnContainerDivA, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
-            slideAnimateMaybeSpawn(spawnContainerDivB, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, layer.options.speed * 1, layer.options, props);
-            const slideOneInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivA, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
+            const slideOneInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed, spawnContainerDivA, layer.options.speed, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
             runningIntervals.push(slideOneInterval);
             setTimeout(() => {
-              const slideTwoInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivB, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
+              const slideTwoInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed, spawnContainerDivB, layer.options.speed, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
               runningIntervals.push(slideTwoInterval);
-            }, layer.options.speed);
+            }, layer.options.speed / 2);
           });
         } else {
           $(signHtml).appendTo(spawnContainerDivA);
           $(signHtml).appendTo(spawnContainerDivB);
-          slideAnimateMaybeSpawn(spawnContainerDivA, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
-          slideAnimateMaybeSpawn(spawnContainerDivB, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, layer.options.speed * 1, layer.options);
-          const slideOneInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivA, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
+          const slideOneInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed, spawnContainerDivA, layer.options.speed, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
           runningIntervals.push(slideOneInterval);
           setTimeout(() => {
-            const slideTwoInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivB, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
+            const slideTwoInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed, spawnContainerDivB, layer.options.speed, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
             runningIntervals.push(slideTwoInterval);
-          }, layer.options.speed);
+          }, layer.options.speed / 2);
         }
       }
       animationContainer.append(tempLayerDiv);
@@ -298,7 +296,7 @@ $(function () {
                 </div>
             </div>`;
             } else {
-              let birthDayClass = obj.birthday_today ? 'birthday-gif': 'dffdf';
+              let birthDayClass = obj.birthday_today ? 'birthday-gif': '';
               newElement.innerHTML = `
             <div class="card user-card bg-white fw-bold ${birthDayClass}" data-label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Level: ${obj.level}">
                 <div class="card-block position-relative">
@@ -313,14 +311,16 @@ $(function () {
                         <div class="m-0 py-auto my-auto pe-2 position-absolute text-end w-100 fw-bolder fs-5 text-white text-stroke-black">${obj.xpLevel} / ${obj.xpNextLevel}</div>
                         <div class="progress-bar bg-forest" role="progressbar" style="width: ${(obj.xpLevel / obj.xpNextLevel) * 100}%;" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
                       </div>
-                     <!-- quoute needs to be changed to xp gained -->
-                    </div>
-                    <div class="knw-moodchart position-absolute bottom-0 start-50 translate-middle-x hide">
-                        <canvas id="knw-moodchart-${obj.emp_id}"></canvas>
+                     <!-- show gained xp if value is set -->
+                    ${obj.xpGained ? '<p class="m-t-25 fs-4 text-muted text-start">Du fick precis ' + obj.xpGained + 'xp, bra jobbat!</p>' : ''}
                     </div>
                 </div>
             </div>`;
-                    // <!-- <p class="m-t-25 fs-4 text-muted text-start">${quotes.quotes[Math.floor((Math.random() - 0.001) * quotes.quotes.length)].quote}</p> -->
+              // trigger speech bubble for character
+              if(obj.xpGained){
+                $("#msg-emp-id-" + obj.emp_id).empty().append(stMnts.statements[Math.floor((Math.random() - 0.001) * stMnts.statements.length)].statement).fadeIn('slow').delay(4000).fadeOut('slow');
+                $("#dust-img-" + obj.emp_id).attr('src','./img/run-dust.gif?'+Math.random());
+              }
             }
             $(newElement).css({'margin-left': '-300px', 'opacity': '0.95'});
             $('#people-box > div').attr("class", cardStyleRest);
@@ -358,9 +358,10 @@ $(function () {
     $.each(themesJson, (catIndex, themeCat) => {
       $.each(themeCat, (themeIndex, theme) => {
         if(theme.category === appConfig.themeOverride.themeCategory && Object.keys(themeCat[0] === appConfig.themeOverride.themeName)){
-          $("#override-theme-select").append("<option value='{\"" + theme.category + "\":\"" + Object.keys(themeCat)[0] + "\"}' selected>" + Object.keys(themeCat)[0] + "</option>");
+          themeSelectOptions.children().removeAttr("selected");
+          themeSelectOptions.append("<option value='{\"" + theme.category + "\":\"" + Object.keys(themeCat)[0] + "\"}' selected>" + Object.keys(themeCat)[0] + "</option>");
         }else{
-          $("#override-theme-select").append("<option value='{\"" + theme.category + "\":\"" + Object.keys(themeCat)[0] + "\"}'>" + Object.keys(themeCat)[0] + "</option>");
+          themeSelectOptions.append("<option value='{\"" + theme.category + "\":\"" + Object.keys(themeCat)[0] + "\"}'>" + Object.keys(themeCat)[0] + "</option>");
         }
       })
     })
@@ -368,7 +369,7 @@ $(function () {
    // set theme settings form based on saved data
     if(appConfig.themeOverride.active){
       $("#override-theme-radio").attr('checked', true);
-      $("#override-theme-select").prop('disabled', false);
+      themeSelectOptions.prop('disabled', false);
     }else{
       $("#seasonal-theme-radio").attr('checked', true);
     }
@@ -376,18 +377,18 @@ $(function () {
     // toggle seasonal theme or override theme
     $('input[name="set-theme"]').on('click change', function () {
       if ($(this).val() === "override") {
-        $("#override-theme-select").prop('disabled', false);
-        if($("#override-theme-select").children("option:selected").val() !== ""){
+        themeSelectOptions.prop('disabled', false);
+        if(themeSelectOptions.children("option:selected").val() !== ""){
           appConfig.themeOverride.active = true;
         }else{
           return true;
         }
       } else if ($(this).val() === "seasonal") {
-        $("#override-theme-select").prop('disabled', true);
+        themeSelectOptions.prop('disabled', true);
         appConfig.themeOverride.active = false;
       }
       // save theme settings and set theme
-      let tempThemeJson = $.parseJSON($("#override-theme-select").val().replace(/\\/g, ""));
+      let tempThemeJson = $.parseJSON(themeSelectOptions.val().replace(/\\/g, ""));
       appConfig.themeOverride.themeCategory = Object.keys(tempThemeJson)[0];
       appConfig.themeOverride.themeName = tempThemeJson[Object.keys(tempThemeJson)[0]];
       saveJson("admin/theme?config=appConfig", appConfig);
@@ -533,6 +534,9 @@ $(function () {
       success: function (data) {
         refreshDisplay(data);
 
+        let maxContainerHeight = 0.7;
+        let maxContainerWidth = 70;
+
         let maxValue = 0;
         let empCount = Object.keys(data).length;
         let previousEmpId = 0;
@@ -545,20 +549,18 @@ $(function () {
         $.each(data, function (index, person) {
           person = person[0];
           let tempImg = $("#emp-char-" + index);
-          // let smokeSpawn = $("#smokeSpawn-" + index);
           if (!person) {
             tempImg.remove();
             $("#smokeSpawn-" + index).remove();
-            // randTop -= (100 / empCount) * 0.70;
             --empCount;
             return true;
           }
           if (randTop === 0) {
             randTop = 1;
           } else {
-            randTop += (100 / empCount) * 0.70;
+            randTop += (100 / empCount) * maxContainerHeight;
           }
-          let leftPos = person / maxValue * 70; // 70% the track is the front of the track
+          let leftPos = person / maxValue * maxContainerWidth; // 70% the track is the front of the track
 
           // create running char if not created
           if (!tempImg.length) {
@@ -568,13 +570,17 @@ $(function () {
               "left: 1%; top:" + randTop +
               "%;'><img class='spawnChars' alt='emp-char-avatar' src='" +
               charactersFolder + "emp_" +
-              index + ".gif' width='150px'><img alt='spawnSmoke' class='smokeSpawn' id='spawnSmoke-" + index +
-              "' src='./img/invisible-smoke.png' style='position:absolute; left: -40px; top: -80px;'></div>";
+              index + ".gif' width='150'><img alt='spawn smoke' class='smokeSpawn' id='spawnSmoke-" + index +
+              "' src='./img/invisible-smoke.png' style='position:absolute; left: -40px; top: -80px;'>" +
+              "<div id='msg-emp-id-"+ index +"' " +
+              "class='message position-absolute start-100 bottom-100 text-break text-white bg-digital-pop fw-bold'></div>" +
+              "<img id='dust-img-" + index +"' src='./img/invisible-smoke.png?"+Math.random()+"' class='position-absolute start-0 bottom-0 translate-middle-x' width='164' alt='run dust'></div>";
           }
           if (!$("#track-area").children().length) {
             $("#track-area").append(tempImg);
             $("#emp-char-" + index + " .spawnChars").delay(600).fadeIn(400);
-            $("#spawnSmoke-" + index).attr("src", "./img/spawnSmoke.gif");
+            $("#spawnSmoke-" + index).attr("src", "./img/spawnSmoke.gif?" + Math.random());
+            $("#dust-img-" + index).delay(300).attr('src','./img/run-dust.gif?'+Math.random());
           } else {
             if ($("#emp-char-" + index).length) {
               $("#emp-char-" + index).insertAfter("#emp-char-" + previousEmpId);
@@ -583,6 +589,7 @@ $(function () {
               $(tempImg).insertAfter("#emp-char-" + previousEmpId);
               $("#emp-char-" + index + " .spawnChars").delay(600).fadeIn(400);
               $("#spawnSmoke-" + index).attr("src", "./img/spawnSmoke.gif");
+              $("#dust-img-" + index).delay(300).attr('src','./img/run-dust.gif?'+Math.random());
             }
           }
           previousEmpId = index;
@@ -600,18 +607,18 @@ $(function () {
   }
 
   function getImgsFromFolder(folderUrl) {
-    return new Promise((resolve, reject) => {
+    return new Promise((res, rej) => {
       let imgs = [];
       $.ajax({
         url: folderUrl, success: (data) => {
-          $(data).find("a").attr("href", (i, val) => {
-            if (val.match(/\.(png|gif)$/)) {
-              imgs.push(folderUrl + val);
+          $(data).find("a").attr("href", (i, value) => {
+            if (value.match(/\.(png|gif|webp)$/)) {
+              imgs.push(folderUrl + value);
             }
-            resolve(imgs);
           });
-        }, error: (error) => {
-          reject(error);
+            res(imgs);
+        }, error: (e) => {
+          rej(e);
         }
       });
     });
