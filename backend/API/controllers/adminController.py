@@ -114,7 +114,7 @@ class AdminController():
                         rename(self.img_path_idle+filename, self.img_path_idle+"char_"+str(new_index)+".gif")
                 
                 query   = "DELETE FROM hero WHERE emp_id=%s"
-                cursor.execute(query, emp_id)
+                cursor.execute(query, (emp_id,))
                 
                 query   = "DELETE FROM employee WHERE emp_id=%s"
                 cursor.execute(query, (emp_id,))
@@ -141,7 +141,7 @@ class AdminController():
                 if len(birthdate) != 8:
                     error += f"Sorry! {birthdate} has the wrong format, please try with 4 digits of year, 2 digits for month, and 2 digits for day like YYYYMMDD, no spaces and no dashes."
                 elif not birthdate.isdigit():
-                    error+= f"{birthdate} has invalid characters, please use digits in format YYYYMMDD!"    
+                    error+= f"Birthdate: [{birthdate}] has invalid characters, please use digits in format YYYYMMDD!"    
                     return render_template('addUser.html', Error=error)
 
                 input_month = int(birthdate[4:6])
