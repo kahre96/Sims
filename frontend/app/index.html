@@ -118,22 +118,22 @@
           <li id="hours-text" class="list-group-item">
           </li>
         </ul>
-        <!--        <ul class="list-group">-->
-        <!--          <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img-->
-        <!--            src="resources/Bottle-Digital%20black.svg" class="icon-images">-->
-        <!--            Väldigt bra att veta-->
-        <!--          </li>-->
-        <!--          <li id="hours-text" class="list-group-item">-->
-        <!--            Öppettider-->
-        <!--          </li>-->
-        <!--        </ul>-->
-        <!--        <ul class="list-group position-absolute bottom-0">-->
-        <!--          <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img-->
-        <!--            src="resources/Tag-Digital-black_1.svg" class="icon-images"> Månadens-->
-        <!--            hjältar-->
-        <!--          </li>-->
-        <!--          <img id="podium" src="resources/podium.png">-->
-        <!--        </ul>-->
+        <ul class="list-group position-absolute bottom-0 w-100">
+          <li class="list-group-item bg-clay fw-bold fs-5 rounded-0 text-white"><img
+            src="resources/Tag-Digital-black_1.svg" class="icon-images"> Månadens
+            hjältar
+          </li>
+          <li class="container-fluid last-month-heroes">
+            <div class="row top3-avatars position-relative">
+              <div id="avatar-silver" class="col-4 position-absolute bottom-0"></div>
+              <div id="avatar-gold" class="col-4 position-absolute bottom-0 start-50 translate-middle"></div>
+              <div id="avatar-bronze" class="col-4 position-absolute bottom-0 end-0"></div>
+              <div id="nameplate-silver" class="col text-center align-self-end fw-bold">Nordin X</div>
+              <div id="nameplate-gold" class="col text-center align-self-end fw-bold">Andreas X</div>
+              <div id="nameplate-bronze" class="col text-center align-self-end fw-bold">Fredrik X</div>
+            </div>
+          </li>
+        </ul>
       </div>
     </aside>
   </div>
@@ -169,8 +169,6 @@
                      id="seasonal-theme-radio">
             <label for="seasonal-theme-radio" class="">&nbsp;&nbsp;&nbsp;Automatisk säsongs tema:</label>
             </span>
-            <!--            <input class="form-control form-control-lg" type="text" value="summer - Beach"-->
-            <!--                   name="current-theme" id="seasonal-theme-current" disabled>-->
           </div>
           <div class="input-group mb-3">
           <span class="input-group-text">
@@ -185,6 +183,37 @@
         </form>
       </div>
     </div>
+    <div class="card text-dark bg-light mb-3">
+      <h4 class="card-header"><i class="bi bi-paint-bucket"></i> Andra inställningar</h4>
+      <div class="card-body">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#adminModal">
+          Admin sida
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="adminModal" tabindex="-1" aria-labelledby="adminModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="adminModalLabel">Administrering</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <iframe src="http://localhost:5000/admin" style="position:absolute; top:0; left:0;
+  width:100%; height:100%; border: none; overflow: hidden;"></iframe>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <!--        <button type="button" class="btn btn-primary">Save changes</button>-->
+      </div>
+    </div>
   </div>
 </div>
 
@@ -192,9 +221,7 @@
 </script>
 <script src="js/vendor/jquery-3.6.1.min.js"></script>
 <script src="js/vendor/jquery-ui.min.js"></script>
-<script src="js/vendor/chart.js"></script>
 <script src="js/vendor/modernizr-3.11.2.min.js"></script>
-<script src="js/plugins.js"></script>
 <!-- JavaScript Bundle with Popper -->
 <script src="js/vendor/bootstrap.bundle.min.js"></script>
 <script src="js/main.js"></script>

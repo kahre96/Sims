@@ -61,19 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
   fetch(url)
     .then((response) => {
       return response.json()
-      }).then((data) => {
-        document.getElementById("extern-head").innerHTML = data.articles[0].title;
-        document.getElementById("extern-content").innerHTML = data.articles[0].description;
-        let time = data.articles[0].publishedAt;
-        time = time.split('');
-        time[10] = ' ';
-        time = time.join('');
-        time = time.split('');
-        time[19] = '';
-        time = time.join('');
-        document.getElementById("extern-time").innerHTML = time;
-      }
-    )
+    }).then((data) => {
+      document.getElementById("extern-head").innerHTML = data.articles[0].title;
+      document.getElementById("extern-content").innerHTML = data.articles[0].description;
+      let time = data.articles[0].publishedAt;
+      time = time.split('');
+      time[10] = ' ';
+      time = time.join('');
+      time = time.split('');
+      time[19] = '';
+      time = time.join('');
+      document.getElementById("extern-time").innerHTML = time;
+    }
+  )
 });
 
 $(function () {
@@ -84,49 +84,20 @@ $(function () {
   let currentTheme = {};
   let animationContainer = $("#knw-bg-anim");
   let scrollingTipDiv = $(".scrolling-tip-div");
-  let appConfig = (function () {
-    let json = null;
-    $.ajax({
-      'async': false,
-      'global': false,
-      'url': './app-config.json',
-      'dataType': "json",
-      'success': function (data) {
-        json = data;
-      }
-    });
-    return json;
-  })();
-  let themesJson = (function () {
-    let json = null;
-    $.ajax({
-      'async': false,
-      'global': false,
-      'url': 'img/themes/themes-config.json',
-      'dataType': "json",
-      'success': function (data) {
-        json = data;
-      }
-    });
-    return json;
-  })();
-  let quotes = (function () {
-    let json = null;
-    $.ajax({
-      'async': false,
-      'global': false,
-      'url': 'resources/quotes.json',
-      'dataType': "json",
-      'success': function (data) {
-        json = data;
-      }
-    });
-    return json;
-  })();
-  setTheme();
-  spawnCharacters();
-  setInterval(createPplsJson, 1000);
-  setInterval(tipsFadeInFadeOut, 10000, scrollingTipDiv, 10000);
+  let siteUrl = "http://localhost:5000/";
+
+  let appConfig = getJson(siteUrl + 'admin/theme?config=appConfig');
+  let themesJson = getJson(siteUrl + 'admin/theme?config=themesJson');
+  let quotes = getJson(siteUrl + 'admin/theme?config=quotes');
+  let tips = getJson(siteUrl + 'admin/theme?config=tips');
+
+  // wait for jsons to load in from backend
+  setTimeout(function () {
+    setTheme();
+    spawnCharacters();
+    setInterval(createPplsJson, 1000);
+    setInterval(tipsFadeInFadeOut, 10000, scrollingTipDiv, 10000, tips);
+  }, 100);
 
   function setTheme() {
     clearAllIntervals();
@@ -222,10 +193,13 @@ $(function () {
 
   function createPplsJson() {
     $.ajax({
-      url: 'http://localhost:5000/player/getRecent',
+      url: siteUrl + 'player/getRecent',
       type: "GET",
       dataType: "json",
       success: function (data) {
+        if (data === undefined) {
+          return;
+        }
         spawnCharacters();
         let newPpl = data.filter(o1 => !ppl.some(o2 => o1.emp_id === o2.emp_id));
         if (!isNaN(newPpl.length) && newPpl.length > 0) {
@@ -248,7 +222,7 @@ $(function () {
             <div class="card user-card bg-white" data-label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Gäst &nbsp;&nbsp;&nbsp;">
                 <div class="card-block position-relative">
                     <div class="user-image">
-                        <img src="img/characters/idle_avatar/char_${obj.emp_id}.gif" class="img-radius" alt="User-Profile-Image">
+                        <img src="../../backend/API/static/characters/idle_avatar/guest_0.gif" class="img-radius" alt="User-Profile-Image">
                     </div>
                     <h4 class="f-w-600 m-b-10">Välkommen till Knowit</h4>
                     <p class="m-t-10 fs-4 text-muted text-start">Känner inte igen dig, om du är en gäst var vänlig och presentera dig i receptionen.</p>
@@ -259,7 +233,7 @@ $(function () {
             <div class="card user-card bg-white" data-label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lvl: ${obj.level}, rank: ${obj.ranking} &nbsp;&nbsp;&nbsp;">
                 <div class="card-block position-relative">
                     <div class="user-image">
-                        <img src="img/characters/idle_avatar/char_${obj.emp_id}.gif" class="img-radius" alt="User-Profile-Image">
+                        <img src="../../backend/API/static/characters/idle_avatar/emp_${obj.emp_id}.gif" class="img-radius" alt="User-Profile-Image">
                     </div>
                     <h4 class="f-w-600 m-b-10">${obj.displayName}</h4>
                     <p class="m-t-10 fs-4 text-muted text-start">${obj.greeting}</p>
@@ -329,16 +303,23 @@ $(function () {
     }
   });
 
-  function saveJson(fileToSaveTo, jsonToSave) {
-    // api call to save json file to db
+  // api call to get json from db
+  function getJson(url) {
+    let json = null;
+    $.ajax({
+      'async': false,
+      'global': false,
+      'url': url,
+      'dataType': "json",
+      'success': function (data) {
+        if (data !== undefined)
+          json = data;
+      }
+    });
+    return json;
   }
 
-  function tipsFadeInFadeOut(element, speed) {
-    let tips = [
-      "Visste du att man kan få bonus XP om man kommer in tidigt på dagen?",
-      "Kommer man in flera dagar i rad så kan man få extra XP",
-      "Om man fyller år kan man ju få bonus XP",
-    ];
+  function tipsFadeInFadeOut(element, speed, tips) {
     element.html(tips[Math.floor(Math.random() * tips.length)]);
     element.hide().fadeIn(speed * 0.2).delay(speed * 0.4).fadeOut(speed * 0.2).delay(speed * 0.2);
   }
@@ -378,10 +359,11 @@ $(function () {
   }
 
   function spawnCharacters() {
-    let charactersFolder = "img/characters/";
+    let charactersFolder = "../../backend/API/static/characters/running_avatar/";
+
     let randTop = 0;
     $.ajax({
-      url: 'http://localhost:5000/player/getMonthlyXP',
+      url: siteUrl + 'player/getMonthlyXP',
       type: "GET",
       dataType: "json",
       success: function (data) {
@@ -400,7 +382,7 @@ $(function () {
           let leftPos = person / maxValue * 70; // 70% the track is the front of the track
           let tempImg = $("#emp-char-" + index);
           if (!tempImg.length) {
-            tempImg = "<img src='" + charactersFolder + "char_" + index + ".gif' id='emp-char-" + index + "' style='width: " + 150 + "px; z-index:10000; " + "position: absolute; " + "left:" + leftPos + "%; top:" + randTop + "%;'>";
+            tempImg = "<img src='" + charactersFolder + "emp_" + index + ".gif' id='emp-char-" + index + "' style='width: " + 150 + "px; z-index:10000; " + "position: absolute; " + "left:" + leftPos + "%; top:" + randTop + "%;'>";
             $("#track-area").append(tempImg);
           } else {
             tempImg.animate({"left": leftPos + "%"}, 2000);
