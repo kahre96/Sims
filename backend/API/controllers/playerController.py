@@ -61,6 +61,7 @@ class PlayerController():
             9:  600,
             10: 800
         }
+        self.usedMonths = []
 
     ''' Daily Login function to update player and heroes + return the updated player
     INPUT:  mysql connection and Employee ID
@@ -258,13 +259,28 @@ class PlayerController():
     OUTPUT: Dictionary with all Employee IDs and corresponding XP this month
     '''
     def getMonthlyXP(self,mysql):
+        today = date.today()
+        now   = str(today)
+        print("now: ", now)
+        today_day = int(now[-2:])
+        if today_day == 1:
+            with mysql.connection.cursor() as cursor:
+                if len(self.usedMonths) == 12:
+                    self.usedMonths.clear
+         
+                if now not in self.usedMonths:
+                    self.usedMonths.append(now)
+                    cursor.execute("UPDATE player SET xp_month = %s", ("0",))
+                    print("All the users monthly_xp has been set to 0!")
+                    mysql.connection.commit()
+        
         with mysql.connection.cursor() as cursor:
             monthlyXP = {}
             cursor.execute("SELECT emp_ID,XP_Month FROM Player")
             players = cursor.fetchall()
             for xp in players:
                 monthlyXP[xp[0]]=xp[1]
-        return monthlyXP,200
+            return monthlyXP,200
 
 playercontroller = PlayerController()
 
