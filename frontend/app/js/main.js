@@ -91,13 +91,13 @@ $(function () {
   let quotes = getJson(siteUrl + 'admin/theme?config=quotes');
   let tips = getJson(siteUrl + 'admin/theme?config=tips');
 
-  // wait for jsons to load in from backend
-  setTimeout(function () {
-    setTheme();
-    spawnCharacters();
-    setInterval(createPplsJson, 1000);
-    setInterval(tipsFadeInFadeOut, 10000, scrollingTipDiv, 10000, tips);
-  }, 100);
+  setTheme();
+  spawnCharacters();
+  setInterval(createPplsJson, 1000);
+  setInterval(tipsFadeInFadeOut, 10000, scrollingTipDiv, 10000, tips);
+  drawMonthlyHeroes();
+  setInterval(drawMonthlyHeroes, 1000 * 60 * 60);
+  settings();
 
   function setTheme() {
     clearAllIntervals();
@@ -190,6 +190,24 @@ $(function () {
     });
   }
 
+  function drawMonthlyHeroes() {
+    let lastMonthTop3 = getJson(siteUrl + "player/getTop");
+    let idleAvatarUrl = '../../backend/API/static/characters/idle_avatar/emp_';
+    $.each(lastMonthTop3, (index, player) => {
+      if (index === '1') {
+        $("#avatar-gold").css({'background': 'url("' + idleAvatarUrl + player[1] + '.gif")'});
+        $("#nameplate-gold").html(player[0]);
+      }
+      if (index === '2') {
+        $("#avatar-silver").css({'background': 'url("' + idleAvatarUrl + player[1] + '.gif")'});
+        $("#nameplate-silver").html(player[0]);
+      }
+      if (index === '3') {
+        $("#avatar-bronze").css({'background': 'url("' + idleAvatarUrl + player[1] + '.gif")'});
+        $("#nameplate-bronze").html(player[0]);
+      }
+    });
+  }
 
   function createPplsJson() {
     $.ajax({
@@ -204,7 +222,8 @@ $(function () {
         let newPpl = data.filter(o1 => !ppl.some(o2 => o1.emp_id === o2.emp_id));
         if (!isNaN(newPpl.length) && newPpl.length > 0) {
           ppl = newPpl;
-          if (($('#people-box').children().length + ppl.length) > 4) {
+          let peopleDiv = $('#people-box');
+          if ((peopleDiv.children().length + ppl.length) > 4) {
             for (let i = 0; i < newPpl.length; i++) {
               $('#people-box > div:last').remove();
             }
@@ -212,7 +231,6 @@ $(function () {
           $.each(ppl, function (index, obj) {
             let cardStyleFirst = 'col first-card';
             let cardStyleRest = 'col rest-cards';
-            // let avatarImg;
             let newElement = document.createElement('div');
 
 
@@ -253,13 +271,13 @@ $(function () {
             }
             $(newElement).css({'margin-left': '-300px', 'opacity': '0.95'});
             $('#people-box > div').attr("class", cardStyleRest);
-            $('#people-box').prepend(newElement);
+            peopleDiv.prepend(newElement);
 
             $(newElement).animate({
               marginLeft: "0px",
             }, 500);
           });
-          $.each($('#people-box').children(), function (index, child) {
+          $.each(peopleDiv.children(), function (index, child) {
             $(child).delay(12000 / (index + 1)).fadeOut(1000);
           });
         }
@@ -276,34 +294,36 @@ $(function () {
 
 
   // handling settings menu
-  // populate override select field
-  $.each(themesJson, (catIndex, themeCat) => {
-    $.each(themeCat, (themeIndex, theme) => {
-      $("#override-theme-select").append("<option value='{\"" + theme.category + "\":\"" + Object.keys(themeCat)[0] + "\"}'>" + Object.keys(themeCat)[0] + "</option>");
+  function settings() {
+    // populate override select field
+    $.each(themesJson, (catIndex, themeCat) => {
+      $.each(themeCat, (themeIndex, theme) => {
+        $("#override-theme-select").append("<option value='{\"" + theme.category + "\":\"" + Object.keys(themeCat)[0] + "\"}'>" + Object.keys(themeCat)[0] + "</option>");
+      })
     })
-  })
-  // toggle seasonal theme or override theme
-  $('input[name="set-theme"]').on('click change', function () {
-    if ($(this).val() === "override") {
-      $("#override-theme-select").prop('disabled', false);
-    } else if ($(this).val() === "seasonal") {
-      $("#override-theme-select").prop('disabled', true);
-      appConfig.themeOverride.active = false;
-      setTheme();
-    }
-  });
-  $('select[id="override-theme-select"]').on('change', function () {
-    if ($(this).val() !== "Override theme") {
-      let tempThemeJson = $.parseJSON($(this).val().replace(/\\/g, ""));
-      appConfig.themeOverride.active = true;
-      appConfig.themeOverride.themeCategory = Object.keys(tempThemeJson)[0];
-      appConfig.themeOverride.themeName = tempThemeJson[Object.keys(tempThemeJson)[0]];
-      setTheme();
-      // TODO save theme settings to db
-    }
-  });
+    // toggle seasonal theme or override theme
+    $('input[name="set-theme"]').on('click change', function () {
+      if ($(this).val() === "override") {
+        $("#override-theme-select").prop('disabled', false);
+      } else if ($(this).val() === "seasonal") {
+        $("#override-theme-select").prop('disabled', true);
+        appConfig.themeOverride.active = false;
+        setTheme();
+      }
+    });
+    $('select[id="override-theme-select"]').on('change', function () {
+      if ($(this).val() !== "Override theme") {
+        let tempThemeJson = $.parseJSON($(this).val().replace(/\\/g, ""));
+        appConfig.themeOverride.active = true;
+        appConfig.themeOverride.themeCategory = Object.keys(tempThemeJson)[0];
+        appConfig.themeOverride.themeName = tempThemeJson[Object.keys(tempThemeJson)[0]];
+        setTheme();
+        // TODO save theme settings to db
+      }
+    });
+  }
 
-  // api call to get json from db
+  // api call to get json from backend
   function getJson(url) {
     let json = null;
     $.ajax({
@@ -317,6 +337,20 @@ $(function () {
       }
     });
     return json;
+  }
+
+  // api call to save json to backend
+  function saveJson(theUrl, myText) {
+    $.ajax({
+      type: 'POST',
+      url: theUrl,
+      data: JSON.stringify(myText),
+      contentType: "application/json; charset=utf-8",
+      dataType: "json",
+      success: function (result) {
+        console.log('success save json ' + result);
+      }
+    });
   }
 
   function tipsFadeInFadeOut(element, speed, tips) {
@@ -368,25 +402,39 @@ $(function () {
       dataType: "json",
       success: function (data) {
         let maxValue = 0;
+        let empCount = Object.keys(data).length;
+        let empCountWithPositiveProgress = empCount;
         $.each(data, (i, el) => {
           if (el > maxValue)
             maxValue = el;
         });
 
         $.each(data, function (index, person) {
+          let tempImg = $("#emp-char-" + index);
+          if(!person){
+            tempImg.remove();
+            empCountWithPositiveProgress--;
+            return;
+          }
           if (randTop === 0) {
             randTop = 1;
           } else {
-            randTop += (100 / Object.keys(data).length) * 0.70;
+            randTop += (100 / empCount - empCountWithPositiveProgress) * 0.70;
           }
           let leftPos = person / maxValue * 70; // 70% the track is the front of the track
-          let tempImg = $("#emp-char-" + index);
+
+          // create running char if not created
           if (!tempImg.length) {
-            tempImg = "<img src='" + charactersFolder + "emp_" + index + ".gif' id='emp-char-" + index + "' style='width: " + 150 + "px; z-index:10000; " + "position: absolute; " + "left:" + leftPos + "%; top:" + randTop + "%;'>";
+            tempImg = "<img alt='' src='" +
+              charactersFolder + "emp_" +
+              index + ".gif' id='emp-char-" +
+              index + "' style='width: " +
+              150 + "px; z-index:10000; " +
+              "position: absolute; " +
+              "left: 1%; top:" + randTop + "%;'>";
             $("#track-area").append(tempImg);
-          } else {
-            tempImg.animate({"left": leftPos + "%"}, 2000);
           }
+          tempImg.animate({"left": leftPos + "%"}, 2000);
         });
       }
     });

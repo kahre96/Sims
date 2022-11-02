@@ -574,131 +574,6 @@ nav .div {
   left: 100vw;
 }
 
-/*#horizontal-scroll {*/
-/*  position: absolute;*/
-/*  width: 200vw;*/
-/*  height: 100%;*/
-/*  background: url("../img/themes/seasons/summer/a/bg01.png") repeat-x;*/
-/*  background-size: 50%;*/
-/*  background-color: #9db9da;*/
-/*}*/
-
-/*#horizontal-scroll2 {*/
-/*  position: absolute;*/
-/*  width: 200vw;*/
-/*  height: 100%;*/
-/*  background: url("../img/themes/seasons/summer/a/bg02.png") repeat-x;*/
-/*  background-size: 50%;*/
-/*  background-position: left bottom;*/
-/*  -webkit-animation: bgBottomScroll 50s linear infinite;*/
-/*  animation: bgBottomScroll 50s linear infinite;*/
-/*}*/
-
-/*#horizontal-scroll3 {*/
-/*  position: absolute;*/
-/*  width: 200vw;*/
-/*  height: 100%;*/
-/*  background: url("../img/themes/seasons/summer/a/bg03.png") repeat-x;*/
-/*  background-size: 50%;*/
-/*  background-position: left bottom;*/
-/*  -webkit-animation: bgBottomScroll 17s linear infinite;*/
-/*  animation: bgBottomScroll 17s linear infinite;*/
-/*}*/
-
-/*#horizontal-scroll4 {*/
-/*  position: absolute;*/
-/*  width: 200vw;*/
-/*  height: 100%;*/
-/*  background: url("../img/themes/seasons/summer/a/bg04.png") repeat-x;*/
-/*  background-size: 50%;*/
-/*  -webkit-animation: bgTopScroll 40s linear infinite;*/
-/*  animation: bgTopScroll 40s linear infinite;*/
-/*}*/
-
-/*#track-init-scroll {*/
-/*  position: absolute;*/
-/*  width: 100vw;*/
-/*  height: 100%;*/
-/*  background: url("../img/themes/seasons/summer/a/track.png") repeat-x;*/
-/*  background-size: 100%;*/
-/*  background-position: left bottom;*/
-/*  -webkit-animation: bgTranslate 6s linear forwards;*/
-/*  animation: bgTranslate 6s linear forwards;*/
-/*}*/
-
-/*#track-slide1-scroll {*/
-/*  position: absolute;*/
-/*  width: 100vw;*/
-/*  height: 100%;*/
-/*  left: 100vw;*/
-/*  background: url("../img/themes/seasons/summer/a/track.png") repeat-x;*/
-/*  background-size: 100%;*/
-/*  background-position: left bottom;*/
-/*  -webkit-animation: bgTranslate2 12s linear infinite;*/
-/*  animation: bgTranslate2 12s linear infinite;*/
-/*}*/
-
-/*#track-slide2-scroll {*/
-/*  position: absolute;*/
-/*  width: 100vw;*/
-/*  height: 100%;*/
-/*  left: 100vw;*/
-/*  background: url("../img/themes/seasons/summer/a/track.png") repeat-x;*/
-/*  background-size: 100%;*/
-/*  background-position: left bottom;*/
-/*  -webkit-animation: bgTranslate2 12s linear infinite;*/
-/*  animation: bgTranslate2 12s linear infinite;*/
-/*  animation-delay: 6s;*/
-/*}*/
-
-/*@-webkit-keyframes bgTopScroll {*/
-/*  to {*/
-/*    background-position: -100% top;*/
-/*  }*/
-/*}*/
-
-/*@keyframes bgTopScroll {*/
-/*  to {*/
-/*    background-position: -100% top;*/
-/*  }*/
-/*}*/
-
-/*@-webkit-keyframes bgBottomScroll {*/
-/*  to {*/
-/*    background-position: -100% bottom;*/
-/*  }*/
-/*}*/
-
-/*@keyframes bgBottomScroll {*/
-/*  to {*/
-/*    background-position: -100% bottom;*/
-/*  }*/
-/*}*/
-
-/*@-webkit-keyframes bgTranslate {*/
-/*  to {*/
-/*    transform: translateX(-100%);*/
-/*  }*/
-/*}*/
-
-/*@keyframes bgTranslate {*/
-/*  to {*/
-/*    transform: translateX(-100%);*/
-/*  }*/
-/*}*/
-
-/*@-webkit-keyframes bgTranslate2 {*/
-/*  to {*/
-/*    transform: translateX(-200%);*/
-/*  }*/
-/*}*/
-
-/*@keyframes bgTranslate2 {*/
-/*  to {*/
-/*    transform: translateX(-200%);*/
-/*  }*/
-/*}*/
-
 /* profile cards */
 .card.user-card {
   margin-top: 10px;
@@ -978,30 +853,28 @@ nav .div {
   height: 150px;
 }
 
-.top3-avatars div{
-}
 #avatar-silver {
-  background: url("../img/characters/idle_avatar/char_1.gif") center bottom no-repeat;
-  background-size: 130% auto;
-  height: 150px;
-  padding: 0;
+  background: center bottom no-repeat;
   margin-bottom: -58px;
+  margin-left: -20px !important;
 }
 
 #avatar-gold {
-  background: url("../img/characters/idle_avatar/char_2.gif") center bottom no-repeat;
-  background-size: 130% auto;
-  height: 150px;
-  padding: 0;
+  background: center bottom no-repeat;
   margin-bottom: -88px;
+  margin-left: -20px !important;
 }
 
 #avatar-bronze {
-  background: url("../img/characters/idle_avatar/char_3.gif") center bottom no-repeat;
-  background-size: 130% auto;
-  height: 150px;
-  padding: 0;
+  background: center bottom no-repeat;
   margin-bottom: -75px;
+  margin-right: 20px !important;
+}
+
+.top3-avatars > .p-avatar{
+  background-size: 130% auto !important;
+  height: 150px !important;
+  padding: 0 !important;
 }
 #nameplate-silver {
   padding: 0;
