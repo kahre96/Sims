@@ -16,13 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
     placeId: BirstaID, fields: ['name', 'opening_hours', 'utc_offset_minutes']
   };
   const service = new google.maps.places.PlacesService(document.createElement('div'));
-  service.getDetails(request, callback);
+  // service.getDetails(request, callback);
 
   const request2 = {
     placeId: GatanID, fields: ['name', 'opening_hours', 'utc_offset_minutes']
   };
   const service2 = new google.maps.places.PlacesService(document.createElement('div'));
-  service.getDetails(request2, callback2);
+  // service.getDetails(request2, callback2);
 
   function callback(place, status) {
     if (status !== google.maps.places.PlacesServiceStatus.OK) {
@@ -98,6 +98,9 @@ $(function () {
   setInterval(tipsFadeInFadeOut, 10000, scrollingTipDiv, 10000, tips);
   drawMonthlyHeroes();
   setInterval(drawMonthlyHeroes, 1000 * 60 * 60);
+
+  goodToKnow();
+  setInterval(goodToKnow, 1000 * 60);
   settings();
 
   function setTheme() {
@@ -134,19 +137,10 @@ $(function () {
       let themeFolder = 'img/themes/' + currentTheme.themeCategory + '/' + currentTheme.themeName + '/';
 
 
-      let signHtml = $(`<div class="display-sign pt-2"
-        style="position: absolute; background: url('./img/digital-display.png') no-repeat; width: 192px; height: 400px;">
+      let signHtml = $(`<div class="display-sign pt-2">
           <div id="display-buzz" class="fs-5">
-
           <div class="display-text text-danger text-center p-0 m-0">Nuvarande placeringar</div>
-        <div class="display-text text-danger text-left px-3 pt-2 m-0">
-          #01: Nordin S <br>
-          #02: Fredrik K <br>
-          #03: Ivan S <br>
-          #04: Ouri Q <br>
-          #05: Naru Q <br>
-          ........... <br>
-        </div>
+        <div id="display-placements" class="display-text text-danger text-left px-3 pt-2 m-0"></div>
       </div>
       </div>`);
 
@@ -158,7 +152,7 @@ $(function () {
         });
         if (layer.options.speed > 0) {
           slideAnimateMaybeSpawn(tempLayerDiv, layer.options.speed, {'background-position-x': '0vw'}, {'background-position-x': '-=100vw'}, 0);
-          var tempThisInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed, tempLayerDiv, layer.options.speed, {'background-position-x': '0vw'}, {'background-position-x': '-=100vw'}, 0);
+          const tempThisInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed, tempLayerDiv, layer.options.speed, {'background-position-x': '0vw'}, {'background-position-x': '-=100vw'}, 0);
           runningIntervals.push(tempThisInterval);
         }
       } else {
@@ -186,10 +180,10 @@ $(function () {
           getImgsFromFolder(themeFolder + 'props/' + layer.spawnImgs + '/').then(props => {
             slideAnimateMaybeSpawn(spawnContainerDivA, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
             slideAnimateMaybeSpawn(spawnContainerDivB, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, layer.options.speed * 1, layer.options, props);
-            var slideOneInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivA, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
+            const slideOneInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivA, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
             runningIntervals.push(slideOneInterval);
             setTimeout(() => {
-              var slideTwoInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivB, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
+              const slideTwoInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivB, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options, props);
               runningIntervals.push(slideTwoInterval);
             }, layer.options.speed);
           });
@@ -198,10 +192,10 @@ $(function () {
           $(signHtml).appendTo(spawnContainerDivB);
           slideAnimateMaybeSpawn(spawnContainerDivA, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
           slideAnimateMaybeSpawn(spawnContainerDivB, layer.options.speed * 1, {'left': '100vw'}, {'left': '-100vw'}, layer.options.speed * 1, layer.options);
-          var slideOneInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivA, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
+          const slideOneInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivA, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
           runningIntervals.push(slideOneInterval);
           setTimeout(() => {
-            var slideTwoInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivB, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
+            const slideTwoInterval = setInterval(slideAnimateMaybeSpawn, layer.options.speed * 2, spawnContainerDivB, layer.options.speed * 2, {'left': '100vw'}, {'left': '-100vw'}, 0, layer.options);
             runningIntervals.push(slideTwoInterval);
           }, layer.options.speed);
         }
@@ -249,7 +243,6 @@ $(function () {
         if (data === undefined) {
           return;
         }
-        // spawnCharacters();
         let newPpl = data.filter(o1 => !ppl.some(o2 => o1.emp_id === o2.emp_id));
         if (!isNaN(newPpl.length) && newPpl.length > 0) {
           ppl = newPpl;
@@ -264,11 +257,10 @@ $(function () {
             let cardStyleRest = 'col rest-cards';
             let newElement = document.createElement('div');
 
-
             $(newElement).attr("class", cardStyleFirst);
             if (obj.emp_id === 0) {
               newElement.innerHTML = `
-            <div class="card user-card bg-white" data-label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Gäst &nbsp;&nbsp;&nbsp;">
+            <div class="card user-card bg-white fw-bold" data-label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Gäst &nbsp;&nbsp;&nbsp;">
                 <div class="card-block position-relative">
                     <div class="user-image">
                         <img src="../../backend/API/static/characters/idle_avatar/guest_0.gif" class="img-radius" alt="User-Profile-Image">
@@ -278,10 +270,11 @@ $(function () {
                 </div>
             </div>`;
             } else {
+              let birthDayClass = obj.birthday_today ? 'birthday-gif': 'dffdf';
               newElement.innerHTML = `
-            <div class="card user-card bg-white" data-label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lvl: ${obj.level}, rank: ${obj.ranking} &nbsp;&nbsp;&nbsp;">
+            <div class="card user-card bg-white fw-bold ${birthDayClass}" data-label="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Level: ${obj.level}">
                 <div class="card-block position-relative">
-                    <div class="user-image">
+                    <div class="user-image position-relative">
                         <img src="../../backend/API/static/characters/idle_avatar/emp_${obj.emp_id}.gif" class="img-radius" alt="User-Profile-Image">
                     </div>
                     <h4 class="f-w-600 m-b-10">${obj.displayName}</h4>
@@ -292,13 +285,14 @@ $(function () {
                         <div class="m-0 py-auto my-auto pe-2 position-absolute text-end w-100 fw-bolder fs-5 text-white text-stroke-black">${obj.xpLevel} / ${obj.xpNextLevel}</div>
                         <div class="progress-bar bg-forest" role="progressbar" style="width: ${(obj.xpLevel / obj.xpNextLevel) * 100}%;" aria-valuenow="" aria-valuemin="0" aria-valuemax="100"></div>
                       </div>
-                    <p class="m-t-25 fs-4 text-muted text-start">${quotes.quotes[Math.floor((Math.random() - 0.001) * quotes.quotes.length)].quote}</p>
+                     <!-- quoute needs to be changed to xp gained -->
                     </div>
                     <div class="knw-moodchart position-absolute bottom-0 start-50 translate-middle-x hide">
                         <canvas id="knw-moodchart-${obj.emp_id}"></canvas>
                     </div>
                 </div>
             </div>`;
+                    // <!-- <p class="m-t-25 fs-4 text-muted text-start">${quotes.quotes[Math.floor((Math.random() - 0.001) * quotes.quotes.length)].quote}</p> -->
             }
             $(newElement).css({'margin-left': '-300px', 'opacity': '0.95'});
             $('#people-box > div').attr("class", cardStyleRest);
@@ -323,6 +317,13 @@ $(function () {
     });
   }
 
+  function goodToKnow(){
+    let jsonGoodToKnow =getJson(siteUrl + 'admin/theme?config=localNews');
+    $("#good-to-know").html("");
+    $.each(jsonGoodToKnow.news, (index, newsItem)=>{
+      $("#good-to-know").append("<li class='list-group-item'>" + newsItem + "</li>");
+    });
+  }
 
   // handling settings menu
   function settings() {
@@ -424,6 +425,26 @@ $(function () {
     }
   }
 
+  function refreshDisplay(persons) {
+    let counter = 1;
+    let counterLimit = 5;
+    let displayPlacement = $("#display-placements");
+    displayPlacement.empty();
+
+    let personsArry = Object.entries(persons);
+    personsArry.sort(function (first, next){
+      return next[1][0] - first[1][0];
+    });
+
+    $.each(personsArry, (index, person)=>{
+      if(person[1][0] && counter <= counterLimit){
+        displayPlacement.append('#' + counter + ': ' + person[1][1] + '<br>');
+        counter++;
+      }
+    });
+    displayPlacement.append('..........');
+  }
+
   function spawnCharacters() {
     let charactersFolder = "../../backend/API/static/characters/running_avatar/";
     let randTop = 0;
@@ -432,16 +453,19 @@ $(function () {
       type: "GET",
       dataType: "json",
       success: function (data) {
+        refreshDisplay(data);
+
         let maxValue = 0;
         let empCount = Object.keys(data).length;
         let previousEmpId = 0;
 
         $.each(data, (i, el) => {
-          if (el > maxValue)
-            maxValue = el;
+          if (el[0] > maxValue)
+            maxValue = el[0];
         });
 
         $.each(data, function (index, person) {
+          person = person[0];
           let tempImg = $("#emp-char-" + index);
           // let smokeSpawn = $("#smokeSpawn-" + index);
           if (!person) {
