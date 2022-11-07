@@ -117,11 +117,12 @@ class PlayerController():
         # CHECK CURRENT LAST LOGIN, BIRTHDAY (Y/N) AND CONSECUTIVE DAYS
         #
         player = getPlayerByID(cursor, emp_ID, birthday_today)
+        ''' COMMENTED OUT FOR DEMONSTRATION PURPOSES!!!
         if player.last_login==today: # return the current stats, don't add XP when played already logged in today
             player = greet(cursor, player, False)
             player = setPlayerXPLevel(self.Levels, player.level, player, player.xpTotal)
             return player
-
+        '''
         if getPlayerBirthdayByID(cursor, emp_ID)[4:] == today.strftime("%Y%m%d")[4:]:
             xp_to_add += 20 # When it's the players birthday: add 20XP and save birthday_today to add to the return object
             birthday_today = True
