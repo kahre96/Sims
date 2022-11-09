@@ -30,16 +30,19 @@ class CreateDataset:
         f = open('labels.pickle', "wb")
         f.write(pickle.dumps(class_names))
         f.close()
-        i = 0
-        if self.cat == False:
-            class_number = np.unique(self.class_names, return_inverse=True)[1]  # label encoding
+
+        if not self.cat:
+            class_number = np.unique(self.class_names, return_inverse=True)[1]
         else:
-            class_number = np.array(pd.get_dummies(self.class_names).T)  # one hot
-        for labels in self.class_names:
+            class_number = np.array(pd.get_dummies(self.class_names).T)
+        i = 0
+        for label in self.class_names:
+
+            for img in os.listdir(os.path.join(self.directory, label)):
+                self.paths.append(os.path.join(self.directory, label, img))
+
+                self.labels.append(class_number[i])
             i += 1
-            for img in os.listdir(os.path.join(self.directory, labels)):
-                self.paths.append(os.path.join(self.directory, labels, img))
-                self.labels.append(class_number[i - 1])
 
         dataset = list(zip(self.paths, self.labels))
         data = random.sample(dataset, len(dataset))

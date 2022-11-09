@@ -7,6 +7,7 @@ import pickle
 import collections as col
 import requests
 import time
+from threading import Thread
 
 
 class surveillance():
@@ -20,15 +21,18 @@ class surveillance():
         self.cam.set(4, 2160)
         self.guess_queue = col.deque(maxlen=20)
         self.already_detected = []
-        self.norm_layer = tf.keras.layers.Rescaling(1./255)
+        self.norm_layer = tf.keras.layers.Rescaling(1. / 255)
         self.frame = None
         self.url = "http://localhost:5000/player/newEntry"
         self.color = (0, 255, 0)
         self.counter = 0
+        self.guestcounter =0
+        self.reset_timer =0
         self.surveillance()
 
     def surveillance(self):
         while True:
+
             check, self.frame = self.cam.read()
             if not check:
                 print("Cant recive a frame from camera. exiting...")
@@ -36,6 +40,7 @@ class surveillance():
 
             faces, probability = self.detector.detect(self.frame)
 
+            # only run if there's a face in frame
             if faces is not None:
 
                 for face in faces:
@@ -52,15 +57,27 @@ class surveillance():
                     label_guess = self.predict(face_array)
                     self.draw_face(x, y, x2, y2, label_guess)
 
-                self.post_handler()
+                # dont run the post check every frame to improve fps
+                # run it in a different thread heavily improves fps since the program wont have to wait for it
+                if self.counter > 4:
+                    thread = Thread(target=self.post_handler)
+                    thread.start()
+                    self.counter = 0
+                self.counter += 1
 
-            self.check_time_for_reset()
+            # checks if todays guesses should be reset in preperation for next day
+            # self.reset_timer +=1
+            # if self.reset_timer == 300:
+            #     self.check_time_for_reset()
+            #     self.reset_timer = 0
 
-            self.counter += 1
-            if self.counter > 20:
-                self.reset_guest_lock()
-                self.counter = 0 
+            # allows for detection of guest again,
+            # self.guestcounter += 1
+            # if self.guestcounter > 20:
+            #     self.reset_guest_lock()
+            #     self.guestcounter = 0
 
+            # downscale so the output cna be shown on a smaller screen
             cv2.namedWindow('video', cv2.WINDOW_NORMAL)
             cv2.resizeWindow('video', 1280, 720)
             cv2.imshow('video', self.frame)
@@ -82,9 +99,9 @@ class surveillance():
         predictions = self.model.predict(face_array)
         score = tf.nn.softmax(predictions)
         label_guess = self.labels[np.argmax(score)]  # the label with the highest score
-        #print(label_guess)
-        #print("Score", score)
-        #print("predictions", predictions)
+        # print(label_guess)
+        # print("Score", score)
+        # print("predictions", predictions)
 
         if label_guess in self.already_detected:
             pass
@@ -98,16 +115,21 @@ class surveillance():
             if elem in self.already_detected:
                 print("already detected")
                 continue
-            if self.guess_queue.count(elem) > 4:
+            if self.guess_queue.count(elem) > 3:
+                for i in range(self.guess_queue.count(elem)):
+                    self.guess_queue.remove(elem)
                 self.already_detected.append(elem)
-                print(f"{elem} post")
-                request_parameters = {"emp_ID": elem}
-                requests.post(self.url, params=request_parameters)
+                try:
+                    print(f"{elem} post")
+                    request_parameters = {"emp_ID": elem}
+                    requests.post(self.url, params=request_parameters)
+                except:
+                    print("could not post")
 
-    def draw_face(self,x,y,x2,y2, label_guess):
+    def draw_face(self, x, y, x2, y2, label_guess):
         cv2.rectangle(self.frame, (x, y), (x2, y2), self.color, 2)
         cv2.putText(self.frame, label_guess, (x, y - 10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 2, self.color, 2)
+                             cv2.FONT_HERSHEY_SIMPLEX, 2, self.color, 2)
 
     def check_time_for_reset(self):
         now = time.localtime()
@@ -116,24 +138,12 @@ class surveillance():
             self.guess_queue.clear()
             self.already_detected.clear()
 
-
     def reset_guest_lock(self):
         for elem in self.already_detected:
             if elem == 0:
                 self.already_detected.remove(elem)
                 self.guess_queue.clear()
-                print('Cleared guess que unlocking guest')
-                
-
-# surveillance(labels='labels.pickle', model='models/knowit_vgg16_Images_noaug_0.75x0.5d_N512x256.h5', video_source=0)
+                print('Cleared guess queue unlocking guest')
 
 
-
-
-
-
-
-
-
-
-
+surveillance(labels='labels.pickle', model='models/face_classifier.h5', video_source=0)

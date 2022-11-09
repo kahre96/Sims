@@ -4,7 +4,6 @@ import numpy as np
 import fnmatch
 import os
 import tensorflow as tf
-import keras
 from keras.layers import Dense, Dropout, Flatten
 from keras.callbacks import ModelCheckpoint
 from keras.callbacks import EarlyStopping
@@ -26,6 +25,8 @@ class ModelBuilder:
         self.batch_size = batch_size
         self.epochs = epochs
         self.model_type = model_type
+        self.train_ds=None
+        self.val_ds = None
         if neurons is None:
             self.neurons = [256, 128]
         else:
@@ -84,15 +85,13 @@ class ModelBuilder:
         train_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
         val_ds = val_ds.map(lambda x, y: (normalization_layer(x), y))
 
-        return train_ds,val_ds
-
+        return train_ds, val_ds
 
     def create_generator(self):
         train_ds, val_ds = CreateDataset(self.ds_dir, cat=True).set_dataset()
         training = CustomDataGen(data=train_ds, batch_size=32, normalization='minmax')
         validation = CustomDataGen(data=val_ds, batch_size=32, normalization='minmax')
-        return training,validation
-
+        return training, validation
 
 
     # creates a base model based on model_types archtitecture and adds toplayer
@@ -134,7 +133,7 @@ class ModelBuilder:
 
     def train_model(self):
         self.model.summary()
-        self.model.compile(loss='categorical_crossentropy',  # sparse_categorical_crossentropy
+        self.model.compile(loss='categorical_crossentropy',
                            optimizer=Adam(learning_rate=0.001),
                            metrics=['accuracy'])
         history = self.model.fit(

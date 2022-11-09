@@ -11,5 +11,5 @@ from Model_builder import ModelBuilder
 # drop_rate drop rate inbetween each layer as an array, default [0.75 0.5]
 # modeltype string to determine model architecture, vgg16 or resnet50
 
-ModelBuilder_obj = ModelBuilder(epochs=300, path='Images', alb_aug=True)
+ModelBuilder_obj = ModelBuilder(epochs=3000, path='Images', alb_aug=True)
 ModelBuilder_obj.train_model()
