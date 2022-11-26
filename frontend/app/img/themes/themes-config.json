@@ -36,6 +36,23 @@
           }
         },
         {
+          "layerType": "spawn-layer",
+          "spawnImgs": "3",
+          "options": {
+            "speed": 5000,
+            "delay": 2000,
+            "spawnsPerLoop": 1,
+            "spawnStartY": 142,
+            "randPosY": 300,
+            "randPosX": 100,
+            "topOrBot": "bottom",
+            "randRotation": 3,
+            "randHue": 10,
+            "randSat": 90,
+            "zIndex": 0
+          }
+        },
+        {
           "layerType": "bg-layer",
           "bgImg": "grassField.png",
           "options": {
@@ -401,13 +418,13 @@
           "options": {
             "speed": 10000,
             "delay": 2000,
-            "spawnsPerLoop": 2,
-            "spawnStartY": 342,
-            "randPosY": 0,
+            "spawnsPerLoop": 1,
+            "spawnStartY": 100,
+            "randPosY": 150,
             "randPosX": 500,
             "topOrBot": "top",
             "randRotation": 3,
-            "randHue": 0,
+            "randHue": 4,
             "randSat": 90,
             "zIndex": 0
           }
@@ -583,10 +600,10 @@
           "options": {
             "speed": 7000,
             "delay": 2000,
-            "spawnsPerLoop": 6,
+            "spawnsPerLoop": 4,
             "spawnStartY": 700,
             "randPosY": 0,
-            "randPosX": 100,
+            "randPosX": 50,
             "topOrBot": "bottom",
             "randRotation": 0,
             "randHue": 5,
@@ -602,8 +619,8 @@
             "delay": 2000,
             "spawnsPerLoop": 3,
             "spawnStartY": 710,
-            "randPosY": 20,
-            "randPosX": 100,
+            "randPosY": 10,
+            "randPosX": 200,
             "topOrBot": "bottom",
             "randRotation": 2,
             "randHue": 5,
